@@ -13,7 +13,10 @@
 
   --font-sans: "Neue Montreal", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-ibm-plex-serif), Georgia, serif;
-  --font-script: "Jimmy Script", "Mrs Saint Delafield", cursive;
+  /* Section headings, postcard, project years */
+  --font-script: var(--font-homemade-apple), cursive;
+  /* Wordmark only — needs the licensed Jimmy Script webfont in /public/fonts */
+  --font-wordmark: "Jimmy Script", var(--font-homemade-apple), cursive;
 
   --spacing-gutter: 60px;
   --radius-card: 4px;
@@ -77,6 +80,9 @@
       0 98px 59px 0 rgb(181 181 181 / 0.06),
       0 174px 69px 0 rgb(181 181 181 / 0.02);
   }
+
+  .font-script { font-family: var(--font-script); }
+  .font-wordmark { font-family: var(--font-wordmark); }
 
   .chip {
     display: inline-flex;
