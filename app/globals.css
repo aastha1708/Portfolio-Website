@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Design tokens — extracted from Figma "Portfolio 2026"
+   --------------------------------------------------------------- */
+@theme {
+  --color-paper: #f5f5f5;
+  --color-ink: #000000;
+  --color-ink-muted: #666666;
+  --color-chip-bg: #ffd5e4;
+  --color-chip-text: #9e3950;
+  --color-grid-line: #e6e6e6;
+
+  --font-sans: "Neue Montreal", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-ibm-plex-serif), Georgia, serif;
+  --font-script: "Jimmy Script", "Mrs Saint Delafield", cursive;
+
+  --spacing-gutter: 60px;
+  --radius-card: 4px;
+}
+
+@layer base {
+  /* Neue Montreal — drop licensed woff2 files into /public/fonts to activate.
+     Until then the stack falls through to Inter/system sans. */
+  @font-face {
+    font-family: "Neue Montreal";
+    src: url("/fonts/NeueMontreal-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Neue Montreal";
+    src: url("/fonts/NeueMontreal-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Jimmy Script";
+    src: url("/fonts/JimmyScript.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  /* Keyboard focus stays visible even with the custom cursor active */
+  :focus-visible {
+    outline: 2px solid var(--color-chip-text);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Graph-paper ground. Pure CSS: crisp at every DPI, zero bytes. */
+  .paper-grid {
+    background-color: var(--color-paper);
+    background-image:
+      repeating-linear-gradient(to right, var(--color-grid-line) 0 1px, transparent 1px 60px),
+      repeating-linear-gradient(to bottom, var(--color-grid-line) 0 1px, transparent 1px 60px);
+  }
+
+  /* Figma effect style "Shadow new" — 5-layer soft paper lift */
+  .shadow-paper {
+    box-shadow:
+      0 11px 24px 0 rgb(181 181 181 / 0.12),
+      0 43px 43px 0 rgb(181 181 181 / 0.10),
+      0 98px 59px 0 rgb(181 181 181 / 0.06),
+      0 174px 69px 0 rgb(181 181 181 / 0.02);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    background-color: var(--color-chip-bg);
+    color: var(--color-chip-text);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 0.05px;
+    text-transform: capitalize;
+  }
+}
+
+/* Hide the native cursor only where the custom one is actually running */
+@media (hover: hover) and (pointer: fine) {
+  html[data-custom-cursor="on"],
+  html[data-custom-cursor="on"] * {
+    cursor: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

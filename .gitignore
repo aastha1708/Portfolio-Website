@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.DS_Store
+*.log
+.env*
+.vercel
+next-env.d.ts
+
+# Heavy design reference material — kept locally, not versioned
+Inspirations/
+Versions/
