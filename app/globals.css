@@ -9,7 +9,9 @@
   --color-ink-muted: #666666;
   --color-chip-bg: #ffd5e4;
   --color-chip-text: #9e3950;
-  --color-grid-line: #e6e6e6;
+  --color-grid-line: #e4e4e4;
+  --color-grid-dot: #cfcfcf;
+  --grid-size: 60px;
 
   --font-sans: "Neue Montreal", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-ibm-plex-serif), Georgia, serif;
@@ -50,7 +52,7 @@
   }
 
   body {
-    background-color: var(--color-paper);
+    background-color: #f5f5f5;
     color: var(--color-ink);
     font-family: var(--font-sans);
   }
@@ -64,12 +66,31 @@
 }
 
 @layer components {
-  /* Graph-paper ground. Pure CSS: crisp at every DPI, zero bytes. */
-  .paper-grid {
-    background-color: var(--color-paper);
+  /* ---- Section grounds ------------------------------------------------
+     Each section of the page carries a different ruling, matching the Figma
+     file: full graph grid in the hero and work sections, horizontal rules
+     behind the philosophy note, and a fading dot field behind the footer.
+     All pure CSS — crisp at every DPI, zero image weight.
+  --------------------------------------------------------------------- */
+  .bg-grid-lines {
     background-image:
-      repeating-linear-gradient(to right, var(--color-grid-line) 0 1px, transparent 1px 60px),
-      repeating-linear-gradient(to bottom, var(--color-grid-line) 0 1px, transparent 1px 60px);
+      repeating-linear-gradient(to right, var(--color-grid-line) 0 1px, transparent 1px var(--grid-size)),
+      repeating-linear-gradient(to bottom, var(--color-grid-line) 0 1px, transparent 1px var(--grid-size));
+  }
+
+  .bg-grid-rules {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--color-grid-line) 0 1px,
+      transparent 1px var(--grid-size)
+    );
+  }
+
+  .bg-grid-dots {
+    background-image: radial-gradient(var(--color-grid-dot) 1.6px, transparent 1.7px);
+    background-size: 30px 30px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 45%, #000 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 45%, #000 100%);
   }
 
   /* Figma effect style "Shadow new" — 5-layer soft paper lift */

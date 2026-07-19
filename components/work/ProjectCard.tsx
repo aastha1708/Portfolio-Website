@@ -14,9 +14,9 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
 
   const card = (
     <motion.article
-      className="relative flex flex-col gap-[10px] bg-[#f5f4f1] p-[24px] shadow-paper"
+      className="group relative flex flex-col gap-[10px] bg-[#f5f4f1] p-[24px] shadow-paper"
       style={absolute ? { width: layout.innerWidth } : undefined}
-      whileHover={reduceMotion ? undefined : { y: -6 }}
+      whileHover={reduceMotion ? undefined : { y: -8, rotate: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 28 }}
       data-cursor="label"
       data-cursor-text="View case study"
@@ -24,7 +24,7 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
       {layout.tape && (
         <span
           aria-hidden
-          className="pointer-events-none absolute left-1/2 h-[55.408px] w-[114px] overflow-hidden"
+          className="pointer-events-none absolute left-1/2 h-[55.408px] w-[114px] overflow-hidden transition-transform duration-300 group-hover:-translate-y-[3px]"
           style={{
             top: layout.tape.top,
             transform: `translateX(calc(-50% + ${layout.tape.dx}px)) rotate(${layout.tape.rotate}deg)`,
@@ -35,12 +35,14 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
       )}
 
       <div className="flex w-full flex-col gap-[24px]">
-        <div className="relative h-[282px] w-full overflow-clip">
+        {/* Image quietly pushes in on hover — the card is the target, the
+            zoom just confirms it's live. */}
+        <div className="group/media relative h-[282px] w-full overflow-hidden">
           {project.video ? (
             <>
               {/* Looping video, with a still poster for reduced-motion users. */}
               <video
-                className="absolute inset-0 size-full object-cover motion-reduce:hidden"
+                className="absolute inset-0 size-full scale-100 object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:hidden motion-reduce:transition-none"
                 src={project.video}
                 poster={project.image}
                 autoPlay
@@ -64,7 +66,7 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
               alt={`${project.title} preview`}
               fill
               sizes="(max-width: 1024px) 100vw, 660px"
-              className="object-cover"
+              className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transition-none"
             />
           )}
         </div>

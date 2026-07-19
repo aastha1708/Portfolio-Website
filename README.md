@@ -42,10 +42,35 @@ Disabled on touch devices and under `prefers-reduced-motion`, where the native c
 
 Desktop renders the exact 1440px Figma composition, scaled proportionally between 1024–1440px (`ScaledStage`). Below 1024px both pages switch to a purpose-built layout — the hero collage becomes a curated cluster of six objects rather than all eighteen.
 
+## Section grounds
+
+Base colour is `#F5F5F5` throughout. Each section carries its own ruling, defined in
+`components/layout/GridBackground.tsx` and driven by CSS gradients (no images):
+
+| Section | Ruling |
+|---|---|
+| Hero | Full graph grid — vertical + horizontal |
+| Philosophy / sticky note | Horizontal rules only |
+| Work | Full graph grid |
+| Footer | Dot field, fading in toward the bottom |
+
+## Motion
+
+| Where | What |
+|---|---|
+| Wordmark | Per-character rise on load (`SplitText`) |
+| Hero collage | Staggered entrance, pointer parallax by object depth, idle sway on the flowers |
+| Tool logos | Magnetic hover (`useMagnetic`, strength 0.35) |
+| Nav | Underline wipe, magnetic links |
+| Sections | Scroll reveal, fires once (`Reveal`) |
+| Project cards | Lift, image push-in, tape strip peel |
+| Routes | Cross-fade (`app/template.tsx`) |
+
+Everything above is bypassed under `prefers-reduced-motion`.
+
 ## Open items
 
-- **Torn dividers** — currently an SVG stand-in (`components/layout/TornDivider.tsx`), pending better assets.
-- **Paper wash behind the footer** — the Figma texture isn't exported, so this is a plain gradient for now.
+- **Torn dividers** — SVG stand-in (`components/layout/TornDivider.tsx`), by your call.
 - **About footer position** — vertical offset within Frame 88 is estimated, not read from Figma.
 - **Planned interactions** — recorded as `planned` fields in `lib/collage-landing.ts`, straight from the Figma annotations: postcard opens, book page flip, coffee ice sound, Spotify now-playing, and the camera → visitor gallery idea.
 - **Case study pages** — project cards carry a "View case study" cursor but have nowhere to go yet.

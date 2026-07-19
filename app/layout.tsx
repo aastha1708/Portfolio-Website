@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${ibmPlexSerif.variable} ${homemadeApple.variable}`}>
-      <body className="paper-grid min-h-screen antialiased">
+      <body className="min-h-screen bg-[#f5f5f5] antialiased">
         <Cursor />
         {children}
       </body>

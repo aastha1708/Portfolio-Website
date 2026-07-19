@@ -6,6 +6,9 @@ import CommunityCard from "@/components/about/CommunityCard";
 import FavouritesCarousel from "@/components/about/FavouritesCarousel";
 import { ABOUT_PHOTOS } from "@/lib/collage-about";
 import { COMMUNITIES } from "@/lib/about";
+import GridBackground, { ABOUT_BANDS } from "@/components/layout/GridBackground";
+import Reveal from "@/components/motion/Reveal";
+import SplitText from "@/components/motion/SplitText";
 
 export const metadata = {
   title: "About — Aastha Singh",
@@ -25,11 +28,14 @@ export default function AboutPage() {
       {/* ---------- Desktop ---------- */}
       <div className="max-lg:hidden">
         <ScaledStage height={2697}>
+          <GridBackground bands={ABOUT_BANDS} />
           <Nav />
 
           {/* Hero */}
           <div className="absolute left-[120px] top-[180px] flex flex-col items-start gap-[8px]">
-            <h1 className="font-wordmark text-[72px] text-black">hi, I am aastha</h1>
+            <h1 className="font-wordmark text-[72px] text-black">
+              <SplitText text="hi, I am aastha" delay={0.15} />
+            </h1>
             <div className="flex flex-col gap-[32px] text-[22px] font-medium text-[#404040]">
               <p className="w-[544px]">{BIO[0]}</p>
               <p className="w-[399px]">{BIO[1]}</p>
@@ -52,36 +58,32 @@ export default function AboutPage() {
 
           {/* Communities */}
           <div className="absolute left-[119px] top-[994px] flex w-[1200px] flex-col items-start gap-[67px]">
-            <h2 className="w-full text-[16px] uppercase text-ink-muted">my communities</h2>
+            <Reveal className="w-full">
+              <h2 className="w-full text-[16px] uppercase text-ink-muted">my communities</h2>
+            </Reveal>
             <div className="flex w-full items-center justify-between">
-              {COMMUNITIES.map((c) => (
-                <CommunityCard key={c.title} community={c} />
+              {COMMUNITIES.map((c, i) => (
+                <Reveal key={c.title} delay={i * 0.08}>
+                  <CommunityCard community={c} />
+                </Reveal>
               ))}
             </div>
           </div>
 
           {/* Favourite things */}
-          <div className="absolute left-[119px] top-[1642px] w-[1200px]">
+          <Reveal style={{ position: "absolute", left: 119, top: 1642, width: 1200 }}>
             <FavouritesCarousel />
-          </div>
+          </Reveal>
 
-          <div
-            aria-hidden
-            className="absolute inset-x-0"
-            style={{
-              top: 2137,
-              height: 560,
-              background: "linear-gradient(180deg, #f5f5f5 22%, rgba(240,239,234,0.55) 100%)",
-            }}
-          />
-          <div className="absolute left-[122px] top-[2228px] w-[1195px]">
+          <Reveal style={{ position: "absolute", left: 122, top: 2228, width: 1195 }}>
             <PostcardFooter />
-          </div>
+          </Reveal>
         </ScaledStage>
       </div>
 
       {/* ---------- Mobile / tablet ---------- */}
       <div className="lg:hidden">
+        <div className="bg-grid-lines">
         <Nav />
         <section className="px-5 pb-12 pt-28">
           <h1 className="font-wordmark text-[44px] leading-[52px] text-black">hi, I am aastha</h1>
@@ -121,8 +123,9 @@ export default function AboutPage() {
         <section className="px-5 py-12">
           <FavouritesCarousel />
         </section>
+        </div>
 
-        <div className="px-5 pb-16">
+        <div className="bg-grid-dots px-5 pb-16 pt-8">
           <PostcardFooter />
         </div>
       </div>

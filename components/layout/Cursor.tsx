@@ -1,29 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 
 /**
- * Circle cursor with three states, driven entirely by markup:
+ * Two-part cursor: a small dot that tracks the pointer almost exactly, and a
+ * ring that trails slightly behind it. Deliberately restrained — the ring grows
+ * from 28px to 44px on interactive elements rather than ballooning, and labels
+ * are a compact pill beside the cursor instead of text stuffed into a big
+ * circle. Big circles read as a template; a quiet dot reads as craft.
  *
- *   <a data-cursor="hover">                     -> circle expands
- *   <a data-cursor="label" data-cursor-text="View case study">  -> expands + shows text
+ * Opt in from markup:
+ *   data-cursor="hover"
+ *   data-cursor="label" data-cursor-text="View case study"
  *
- * Adding a new hover target never requires touching this file.
- * Disabled on touch devices and under prefers-reduced-motion, where a custom
- * cursor is either meaningless or actively harmful.
+ * Disabled on touch and under prefers-reduced-motion.
  */
 export default function Cursor() {
   const reduceMotion = useReducedMotion();
   const [enabled, setEnabled] = useState(false);
   const [label, setLabel] = useState<string | null>(null);
-  const [mode, setMode] = useState<"default" | "hover" | "label">("default");
+  const [hovering, setHovering] = useState(false);
+  const [pressed, setPressed] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 500, damping: 40, mass: 0.6 });
-  const springY = useSpring(y, { stiffness: 500, damping: 40, mass: 0.6 });
+  const x = useMotionValue(-100);
+  const y = useMotionValue(-100);
+
+  // Dot: near-instant. Ring: a touch of lag, which is what sells the weight.
+  const dotX = useSpring(x, { stiffness: 1400, damping: 70, mass: 0.25 });
+  const dotY = useSpring(y, { stiffness: 1400, damping: 70, mass: 0.25 });
+  const ringX = useSpring(x, { stiffness: 260, damping: 26, mass: 0.5 });
+  const ringY = useSpring(y, { stiffness: 260, damping: 26, mass: 0.5 });
 
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -43,58 +51,91 @@ export default function Cursor() {
       y.set(e.clientY);
       setVisible(true);
 
-      const target = (e.target as HTMLElement)?.closest<HTMLElement>("[data-cursor]");
-      if (!target) {
-        setMode("default");
+      const el = (e.target as HTMLElement)?.closest<HTMLElement>(
+        "[data-cursor], a, button, input, textarea, select, [role='button']"
+      );
+      if (!el) {
+        setHovering(false);
         setLabel(null);
         return;
       }
-      const kind = target.dataset.cursor;
-      if (kind === "label") {
-        setMode("label");
-        setLabel(target.dataset.cursorText ?? null);
+      const kind = el.dataset.cursor;
+      if (kind === "label" && el.dataset.cursorText) {
+        setLabel(el.dataset.cursorText);
+        setHovering(false);
       } else {
-        setMode("hover");
         setLabel(null);
+        setHovering(true);
       }
     };
 
-    const onLeave = () => setVisible(false);
+    const hide = () => setVisible(false);
+    const down = () => setPressed(true);
+    const up = () => setPressed(false);
 
     window.addEventListener("pointermove", onMove, { passive: true });
-    document.addEventListener("pointerleave", onLeave);
+    document.addEventListener("pointerleave", hide);
+    window.addEventListener("pointerdown", down);
+    window.addEventListener("pointerup", up);
     return () => {
       window.removeEventListener("pointermove", onMove);
-      document.removeEventListener("pointerleave", onLeave);
+      document.removeEventListener("pointerleave", hide);
+      window.removeEventListener("pointerdown", down);
+      window.removeEventListener("pointerup", up);
     };
   }, [enabled, x, y]);
 
   if (!enabled) return null;
 
-  const size = mode === "label" ? 104 : mode === "hover" ? 52 : 14;
+  const ringSize = label ? 8 : hovering ? 44 : 28;
 
   return (
-    <motion.div
-      aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center rounded-full mix-blend-difference"
-      style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
-      animate={{
-        width: size,
-        height: size,
-        backgroundColor: mode === "default" ? "#ffffff" : "rgba(255,255,255,0.92)",
-        opacity: visible ? 1 : 0,
-      }}
-      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-    >
-      {label && (
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="px-3 text-center text-[11px] font-medium uppercase leading-tight tracking-wide text-black"
-        >
-          {label}
-        </motion.span>
-      )}
-    </motion.div>
+    <>
+      {/* Trailing ring */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none fixed left-0 top-0 z-[9998] rounded-full border border-white mix-blend-difference"
+        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
+        animate={{
+          width: ringSize,
+          height: ringSize,
+          opacity: visible && !label ? 0.7 : 0,
+          scale: pressed ? 0.85 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+      />
+
+      {/* Leading dot */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full bg-white mix-blend-difference"
+        style={{ x: dotX, y: dotY, translateX: "-50%", translateY: "-50%" }}
+        animate={{
+          width: 6,
+          height: 6,
+          opacity: visible && !label ? (hovering ? 0 : 1) : 0,
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      />
+
+      {/* Label pill */}
+      <AnimatePresence>
+        {label && visible && (
+          <motion.div
+            aria-hidden
+            className="pointer-events-none fixed left-0 top-0 z-[9999]"
+            style={{ x: dotX, y: dotY }}
+            initial={{ opacity: 0, scale: 0.86 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.86 }}
+            transition={{ type: "spring", stiffness: 420, damping: 30 }}
+          >
+            <span className="-translate-x-1/2 -translate-y-1/2 block whitespace-nowrap rounded-full bg-black px-3 py-[7px] text-[11px] font-medium uppercase tracking-[0.04em] text-white shadow-sm">
+              {label}
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
