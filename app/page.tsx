@@ -68,6 +68,18 @@ export default function LandingPage() {
             <ProjectGrid />
           </div>
 
+          {/* Paper wash behind the footer (Figma Frame 78) */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0"
+            style={{
+              top: 3039,
+              height: 813,
+              background:
+                "linear-gradient(180deg, #f5f5f5 22%, rgba(240,239,234,0.55) 100%)",
+            }}
+          />
+
           <div className="absolute" style={{ left: 122, top: 3212, width: 1195 }}>
             <PostcardFooter />
           </div>
@@ -77,7 +89,7 @@ export default function LandingPage() {
       {/* ---------- Mobile / tablet ---------- */}
       <div className="lg:hidden">
         <Nav />
-        <HeroCollage />
+        <HeroCollage variant="mobile" />
         <TornDivider />
         <section className="px-5 py-16">
           <p className="text-center text-[22px] font-medium leading-[34px] text-black">
