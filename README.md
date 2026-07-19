@@ -3,23 +3,55 @@
 Next.js 16 · TypeScript · Tailwind v4 · Motion
 
 ```bash
-npm run dev      # http://localhost:3000
-npm run build    # production build
+npm run dev        # http://localhost:3000
+npm run build      # production build
 npm run typecheck
+npm run assets     # re-optimize design/assets-source -> public/assets
 ```
 
-## Where things live
+## Layout
 
-| Path | What |
+```
+app/          routes, root layout, globals.css
+components/
+  about/      community cards, favourites carousel
+  collage/    hero collage + the generic positioned-object renderer
+  layout/     nav, cursor, footer, grids, dividers, scaled stage
+  motion/     Reveal, SplitText, useMagnetic
+  work/       project grid + card
+lib/          all content and geometry data (no JSX)
+public/       optimized, web-ready assets — generated, do not edit by hand
+scripts/      asset optimization pipeline
+design/       source material, not shipped
+  assets-source/   raw Figma exports (tracked — source of truth)
+  inspirations/    reference captures (gitignored, ~436MB)
+  versions/        earlier landing page iterations (gitignored)
+  brief.md         original visual & interaction brief
+```
+
+### Content lives in `lib/`, never in components
+
+| File | What |
 |---|---|
-| `lib/collage-landing.ts` | Hero collage — every object's position, rotation and crop |
+| `lib/collage.ts` | Shared `CollageItem` type |
+| `lib/collage-landing.ts` | Hero collage — every object's position, rotation, depth, cursor label |
 | `lib/collage-about.ts` | About hero photo wall |
 | `lib/projects.ts` | Project cards, including their scatter geometry |
-| `lib/about.ts` | Community cards + the favourites carousel categories |
-| `app/globals.css` | Design tokens (`@theme`), paper grid, paper shadow, chip |
-| `components/layout/Cursor.tsx` | Custom cursor |
+| `lib/about.ts` | Community cards + favourites carousel categories |
 
-**Moving a collage object is a one-line edit** in the relevant `lib/` file. No component changes.
+**Moving a collage object, adding a project, or changing a cursor label is a one-line edit** in `lib/`. No component changes.
+
+## Assets
+
+Drop new exports into `design/assets-source/Landing page` or `/About page`, then:
+
+```bash
+npm run assets
+```
+
+PNGs become WebP capped at 1200px; MP4s are re-encoded (audio stripped, capped at 1320px) with a WebP poster frame. Filenames are lowercased and hyphenated — `Kora_thumbnail.png` becomes `kora-thumbnail.webp`, which is the name you reference from `lib/`. Currently 32.4MB of source compresses to 2.6MB shipped.
+
+Never edit `public/assets` by hand; it's regenerated.
 
 ## Custom cursor
 

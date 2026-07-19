@@ -1,4 +1,4 @@
-import type { CollageItem } from "./collage-landing";
+import type { CollageItem } from "./collage";
 
 /**
  * About hero photo wall — geometry from Figma frame 265:3190.

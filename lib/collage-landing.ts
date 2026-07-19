@@ -13,28 +13,9 @@
  * Moving an object = editing one line here.
  */
 
-export const HERO_GROUP = { left: 10, top: 81, width: 1420, height: 806 } as const;
+import type { CollageItem } from "./collage";
 
-export type CollageItem = {
-  id: string;
-  src: string;
-  alt: string;
-  /** Visual footprint on the canvas. */
-  box: { left: number; top: number; width: number; height: number };
-  rotate?: number;
-  /** Inset in px, for logo marks that sit inside a larger padded frame. */
-  pad?: { x: number; y: number } | { top: number; right: number; bottom: number; left: number };
-  cursor?: string;
-  href?: string;
-  /** Continuous idle sway (Figma note: "little movement"). */
-  idle?: boolean;
-  /** Pointer-following magnetism strength, 0–1. */
-  magnetic?: number;
-  /** Depth for the parallax layer — higher moves more. */
-  depth?: number;
-  /** Richer interaction recorded in Figma, not yet built. */
-  planned?: string;
-};
+export const HERO_GROUP = { left: 10, top: 81, width: 1420, height: 806 } as const;
 
 export const HERO_ITEMS: CollageItem[] = [
   {

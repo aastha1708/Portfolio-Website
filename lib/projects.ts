@@ -42,8 +42,8 @@ export const PROJECTS: Project[] = [
     description:
       "Revamped first-time buy, SIP and sell journeys— met with great feedback from the product team.",
     tags: ["Redesign"],
-    image: "/assets/landing/digital-gold-poster.webp",
-    video: "/assets/landing/digital-gold.mp4",
+    image: "/assets/landing/digital-gold-thumbnail-poster.webp",
+    video: "/assets/landing/digital-gold-thumbnail.mp4",
     layout: {
       left: 752, top: 0, width: 572.145, height: 455.876, rotate: 1,
       innerWidth: 564.446, tape: { dx: 395.85 - 286, top: -31, rotate: 6.92 },
@@ -56,8 +56,8 @@ export const PROJECTS: Project[] = [
     description:
       "Shipped a smoother credit card application flow. Led to fewer drop-offs at essential KYC step.",
     tags: ["Internship", "Shipped"],
-    image: "/assets/landing/cc-onboarding-poster.webp",
-    video: "/assets/landing/cc-onboarding.mp4",
+    image: "/assets/landing/cc-onboarding-thumbnail-poster.webp",
+    video: "/assets/landing/cc-onboarding-thumbnail.mp4",
     layout: {
       left: 0, top: 525, width: 635.619, height: 458.547, rotate: 1.15,
       innerWidth: 626.817, tape: { dx: -3.43, top: -40.13, rotate: 5.92 },

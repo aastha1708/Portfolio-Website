@@ -3,7 +3,7 @@
 import { motion, useReducedMotion, useTransform, type MotionValue } from "motion/react";
 import { useMotionValue } from "motion/react";
 import { useMagnetic } from "@/components/motion/useMagnetic";
-import type { CollageItem as Item } from "@/lib/collage-landing";
+import type { CollageItem as Item } from "@/lib/collage";
 
 function padStyle(pad: Item["pad"]) {
   if (!pad) return undefined;

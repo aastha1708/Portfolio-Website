@@ -1,12 +1,21 @@
+# dependencies
 node_modules
+
+# build output
 .next
 out
-.DS_Store
-*.log
+next-env.d.ts
+*.tsbuildinfo
+
+# environment / deploy
 .env*
 .vercel
-next-env.d.ts
 
-# Heavy design reference material — kept locally, not versioned
-Inspirations/
-Versions/
+# os / editor noise
+.DS_Store
+*.log
+
+# Heavy design reference — kept locally, not versioned.
+# design/assets-source IS tracked: it's the source of truth for the asset pipeline.
+design/inspirations/
+design/versions/
