@@ -8,7 +8,8 @@ import { ABOUT_PHOTOS } from "@/lib/collage-about";
 import { COMMUNITIES } from "@/lib/about";
 import GridBackground, { ABOUT_BANDS } from "@/components/layout/GridBackground";
 import Reveal from "@/components/motion/Reveal";
-import SplitText from "@/components/motion/SplitText";
+import ScriptReveal from "@/components/motion/ScriptReveal";
+import FooterMotion from "@/components/motion/FooterMotion";
 
 export const metadata = {
   title: "About — Aastha Singh",
@@ -33,8 +34,8 @@ export default function AboutPage() {
 
           {/* Hero */}
           <div className="absolute left-[120px] top-[180px] flex flex-col items-start gap-[8px]">
-            <h1 className="font-wordmark text-[72px] text-black">
-              <SplitText text="hi, I am aastha" delay={0.15} />
+            <h1 className="font-wordmark whitespace-nowrap text-[64px] leading-[1.6] text-black">
+              <ScriptReveal text="hi, I am aastha" delay={0.15} />
             </h1>
             <div className="flex flex-col gap-[32px] text-[22px] font-medium text-[#404040]">
               <p className="w-[544px]">{BIO[0]}</p>
@@ -42,9 +43,11 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* Figma frame 272:3656: 16px labels in 40px-tall chips, 8px inner
+              padding, 28px apart — quieter than the landing-page chips. */}
           <div className="absolute left-[121px] top-[480px] flex items-center gap-[28px]">
             {TAGS.map((tag) => (
-              <span key={tag} className="chip">
+              <span key={tag} className="chip px-[8px] text-[16px] leading-[24px]">
                 {tag}
               </span>
             ))}
@@ -75,9 +78,9 @@ export default function AboutPage() {
             <FavouritesCarousel />
           </Reveal>
 
-          <Reveal style={{ position: "absolute", left: 122, top: 2228, width: 1195 }}>
+          <FooterMotion style={{ position: "absolute", left: 122, top: 2228, width: 1195 }}>
             <PostcardFooter />
-          </Reveal>
+          </FooterMotion>
         </ScaledStage>
       </div>
 
@@ -126,7 +129,9 @@ export default function AboutPage() {
         </div>
 
         <div className="bg-grid-dots px-5 pb-16 pt-8">
-          <PostcardFooter />
+          <FooterMotion>
+            <PostcardFooter />
+          </FooterMotion>
         </div>
       </div>
     </main>

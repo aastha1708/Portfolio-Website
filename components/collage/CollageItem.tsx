@@ -65,11 +65,17 @@ export default function CollageItem({
     >
       <motion.div
         className="size-full"
-        initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.94 }}
+        /* Opening: each object drops in with a slight over-rotation and
+           spring-settles into place — like being laid down on the desk. */
+        initial={
+          reduceMotion
+            ? false
+            : { opacity: 0, y: 26, scale: 0.92, rotate: item.idle ? 0 : -2.5 }
+        }
         animate={
           item.idle && !reduceMotion
             ? { opacity: 1, y: 0, scale: 1, rotate: [0, 2, 0, -2, 0] }
-            : { opacity: 1, y: 0, scale: 1 }
+            : { opacity: 1, y: 0, scale: 1, rotate: 0 }
         }
         transition={
           item.idle && !reduceMotion

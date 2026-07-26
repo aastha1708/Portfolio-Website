@@ -32,7 +32,9 @@ export const PROJECTS: Project[] = [
     image: "/assets/landing/kora-thumbnail.webp",
     layout: {
       left: 0.27, top: 0.24, width: 713.739, height: 479.086, rotate: -0.66,
-      innerWidth: 708.389, tape: { dx: 2.06, top: -33.66, rotate: -5.09 },
+      /* Tape centres measured from Figma nodes 246:2594/2626/2641/2609 —
+         roughly a third above the card edge, two thirds stuck onto it. */
+      innerWidth: 708.389, tape: { dx: 2, top: -18, rotate: -5.09 },
     },
   },
   {
@@ -46,7 +48,7 @@ export const PROJECTS: Project[] = [
     video: "/assets/landing/digital-gold-thumbnail.mp4",
     layout: {
       left: 752, top: 0, width: 572.145, height: 455.876, rotate: 1,
-      innerWidth: 564.446, tape: { dx: 395.85 - 286, top: -31, rotate: 6.92 },
+      innerWidth: 564.446, tape: { dx: 18.7, top: -24.3, rotate: 6.92 },
     },
   },
   {
@@ -60,7 +62,7 @@ export const PROJECTS: Project[] = [
     video: "/assets/landing/cc-onboarding-thumbnail.mp4",
     layout: {
       left: 0, top: 525, width: 635.619, height: 458.547, rotate: 1.15,
-      innerWidth: 626.817, tape: { dx: -3.43, top: -40.13, rotate: 5.92 },
+      innerWidth: 626.817, tape: { dx: -1.7, top: -33.3, rotate: 5.92 },
     },
   },
   {
@@ -73,7 +75,7 @@ export const PROJECTS: Project[] = [
     image: "/assets/landing/sahayak-thumbnail.webp",
     layout: {
       left: 669, top: 506, width: 655.191, height: 478.415, rotate: -0.66,
-      innerWidth: 601.837 + 48, tape: { dx: 9.74, top: -45.99, rotate: -5.09 },
+      innerWidth: 601.837 + 48, tape: { dx: 7.3, top: -30.3, rotate: -5.09 },
     },
   },
 ];

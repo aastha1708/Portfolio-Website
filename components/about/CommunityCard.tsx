@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { motion, useReducedMotion } from "motion/react";
 
 export type Community = {
   title: string;
@@ -9,8 +12,15 @@ export type Community = {
 };
 
 export default function CommunityCard({ community }: { community: Community }) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <article className="flex w-full flex-col items-start rounded-[12px] bg-[#f0efea] p-[24px] lg:w-[377px]">
+    <motion.article
+      className="group flex w-full flex-col items-start rounded-[12px] bg-[#f0efea] p-[24px] lg:w-[377px]"
+      whileHover={reduceMotion ? undefined : { y: -6 }}
+      transition={{ type: "spring", stiffness: 300, damping: 28 }}
+      data-cursor="hover"
+    >
       <div className="flex w-full flex-col gap-[24px]">
         <div className="flex w-full flex-col gap-[12px]">
           <div className="flex h-[22px] w-full items-center gap-[10px]">
@@ -26,9 +36,16 @@ export default function CommunityCard({ community }: { community: Community }) {
           <p className="w-full text-[16px] leading-[20px] text-ink-muted">{community.body}</p>
         </div>
         <div className="relative h-[257.093px] w-full overflow-hidden rounded-[8px]">
-          <Image src={community.photo} alt={community.title} fill sizes="377px" className="object-cover" />
+          {/* Same quiet push-in the project cards use — one hover language everywhere. */}
+          <Image
+            src={community.photo}
+            alt={community.title}
+            fill
+            sizes="377px"
+            className="object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04] motion-reduce:transition-none"
+          />
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

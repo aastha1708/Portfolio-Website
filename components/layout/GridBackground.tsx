@@ -25,16 +25,27 @@ export default function GridBackground({ bands }: { bands: Band[] }) {
   );
 }
 
-/** Landing page: hero grid -> rules -> work grid -> fading dots. */
+/**
+ * Landing page — one band per background frame in the Figma file:
+ *   "Line grid/ section 1"        0 → 960   (hero, full graph grid)
+ *   "Horizontal line/ section 2"  1105 → 1705 (philosophy, rules only —
+ *      note the deliberate plain-paper gaps around it)
+ *   "Line grid/ section 3"        1760 → 3080 (projects)
+ *   "Dotted bg/ section 4"        3039 → end  (footer dot field)
+ */
 export const LANDING_BANDS: Band[] = [
   { top: 0, height: 960, variant: "lines" },
-  { top: 960, height: 787, variant: "rules" },
-  { top: 1747, height: 1292, variant: "lines" },
+  { top: 1105, height: 600, variant: "rules" },
+  { top: 1760, height: 1320, variant: "lines" },
   { top: 3039, height: 618, variant: "dots" },
 ];
 
-/** About page: grid through the content, dots behind the footer. */
+/**
+ * About page — per the file, the graph grid stops at the hero (Frame 51,
+ * 0 → 960); communities and favourites sit on plain paper; dots start with
+ * the footer (Frame 88 at 2137).
+ */
 export const ABOUT_BANDS: Band[] = [
-  { top: 0, height: 2137, variant: "lines" },
+  { top: 0, height: 960, variant: "lines" },
   { top: 2137, height: 560, variant: "dots" },
 ];

@@ -8,6 +8,10 @@ import ProjectGrid from "@/components/work/ProjectGrid";
 import HeroCollage from "@/components/collage/HeroCollage";
 import GridBackground, { LANDING_BANDS } from "@/components/layout/GridBackground";
 import Reveal from "@/components/motion/Reveal";
+import BounceChip from "@/components/motion/BounceChip";
+import HighlightMark from "@/components/motion/HighlightMark";
+import StickyNote from "@/components/motion/StickyNote";
+import FooterMotion from "@/components/motion/FooterMotion";
 
 const PHILOSOPHY_CHIPS = [
   { label: "Craft Obsessed", left: 211, top: 1265 },
@@ -19,8 +23,7 @@ const PHILOSOPHY_CHIPS = [
 const PHILOSOPHY = (
   <>
     I care about craft, how clearly things communicate, handle edge cases and build trust. I build with AI,
-    prototyping ideas and exploring the{" "}
-    <mark className="bg-[#eaf24c] text-black">edge of design and technology.</mark>
+    prototyping ideas and exploring the <HighlightMark>edge of design and technology.</HighlightMark>
   </>
 );
 
@@ -48,7 +51,7 @@ export default function LandingPage() {
           </Reveal>
 
           <Reveal delay={0.08} style={{ position: "absolute", left: 535, top: 1241, width: 352, height: 440 }}>
-            <div className="relative size-full">
+            <StickyNote className="relative size-full">
               <Image src="/assets/landing/sticky-note-1.webp" alt="" fill sizes="352px" className="object-contain" />
               <p
                 className="font-script absolute -translate-x-1/2 text-center text-[18px] leading-[28px] tracking-[0.9px] text-black/75"
@@ -56,12 +59,12 @@ export default function LandingPage() {
               >
                 {NOTE}
               </p>
-            </div>
+            </StickyNote>
           </Reveal>
 
           {PHILOSOPHY_CHIPS.map((chip, i) => (
             <Reveal key={chip.label} delay={0.1 + i * 0.06} y={12} style={{ position: "absolute", left: chip.left, top: chip.top }}>
-              <span className="chip">[ {chip.label} ]</span>
+              <BounceChip delay={i * 0.7}>[ {chip.label} ]</BounceChip>
             </Reveal>
           ))}
 
@@ -80,9 +83,9 @@ export default function LandingPage() {
             <ProjectGrid />
           </div>
 
-          <Reveal style={{ position: "absolute", left: 122, top: 3212, width: 1195 }}>
+          <FooterMotion style={{ position: "absolute", left: 122, top: 3212, width: 1195 }}>
             <PostcardFooter />
-          </Reveal>
+          </FooterMotion>
         </ScaledStage>
       </div>
 
@@ -99,20 +102,22 @@ export default function LandingPage() {
           </Reveal>
           <Reveal delay={0.06}>
             <ul className="mt-10 flex flex-wrap justify-center gap-3">
-              {PHILOSOPHY_CHIPS.map((chip) => (
-                <li key={chip.label} className="chip text-[15px]">
-                  [ {chip.label} ]
+              {PHILOSOPHY_CHIPS.map((chip, i) => (
+                <li key={chip.label}>
+                  <BounceChip className="text-[15px]" delay={i * 0.7}>
+                    [ {chip.label} ]
+                  </BounceChip>
                 </li>
               ))}
             </ul>
           </Reveal>
           <Reveal delay={0.1}>
-            <div className="relative mx-auto mt-12 h-[440px] w-[352px] max-w-full">
+            <StickyNote className="relative mx-auto mt-12 h-[440px] w-[352px] max-w-full">
               <Image src="/assets/landing/sticky-note-1.webp" alt="" fill sizes="352px" className="object-contain" />
               <p className="font-script absolute left-1/2 top-[147px] w-[211px] -translate-x-1/2 text-center text-[18px] leading-[28px] tracking-[0.9px] text-black/75">
                 {NOTE}
               </p>
-            </div>
+            </StickyNote>
           </Reveal>
         </section>
         <TornDivider flip />
@@ -127,9 +132,9 @@ export default function LandingPage() {
           <ProjectGrid />
         </section>
         <div className="bg-grid-dots px-5 py-16">
-          <Reveal>
+          <FooterMotion>
             <PostcardFooter />
-          </Reveal>
+          </FooterMotion>
         </div>
       </div>
     </main>

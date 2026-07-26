@@ -12,6 +12,11 @@ const LINKS = [
   { label: "Visitor Gallery", href: "/gallery", ready: false },
 ];
 
+/* Shared pill treatment: padding is cancelled with negative margins so the
+   highlight can appear on hover without shifting the text. */
+const PILL =
+  "relative inline-block rounded-full px-[10px] py-[5px] -mx-[10px] -my-[5px] transition-colors duration-200";
+
 export default function Nav() {
   const reduceMotion = useReducedMotion();
   return (
@@ -21,23 +26,27 @@ export default function Nav() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
+      {/* Full-bleed row, 60px from each edge (Figma frame 246:2522) — the logo
+          and the link cluster sit at opposite ends of the whole page. */}
       <nav
         aria-label="Primary"
-        className="mx-auto flex max-w-[1320px] items-center justify-between px-gutter py-[34px] text-[13px]"
+        className="flex w-full items-center justify-between px-gutter py-[34px] text-[13px] max-lg:px-5 max-lg:py-6"
       >
         <Link href="/" data-cursor="hover" className="font-medium tracking-tight">
           Aastha
         </Link>
-        <ul className="flex items-center gap-8">
+        <ul className="flex items-center gap-[36px] max-lg:gap-5">
           {LINKS.map(({ label, href, ready }) => (
             <li key={label}>
               {ready ? (
                 <NavLink href={href} label={label} />
               ) : (
+                /* Coming-soon pages read exactly like inactive links — the
+                   hover label is what communicates their state. */
                 <span
                   data-cursor="label"
                   data-cursor-text="Coming soon"
-                  className="cursor-default text-ink-muted/70"
+                  className={`${PILL} cursor-default text-ink-muted hover:bg-black/[0.04]`}
                   aria-disabled="true"
                 >
                   {label}
@@ -62,13 +71,17 @@ function NavLink({ href, label }: { href: string; label: string }) {
       onPointerMove={magnetic.onPointerMove}
       onPointerLeave={magnetic.onPointerLeave}
       style={{ x: magnetic.x, y: magnetic.y }}
-      className="group relative inline-block"
+      className="inline-block"
     >
-      <Link href={href} data-cursor="hover" className="relative inline-block">
+      <Link
+        href={href}
+        data-cursor="hover"
+        aria-current={active ? "page" : undefined}
+        className={`${PILL} hover:bg-black/[0.05] ${
+          active ? "text-black" : "text-ink-muted hover:text-black"
+        }`}
+      >
         {label}
-        {/* Underline wipes in from the left, out to the right. */}
-        <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 motion-reduce:transition-none" />
-        {active && <span className="absolute -bottom-1 left-0 h-px w-full bg-current" />}
       </Link>
     </motion.span>
   );

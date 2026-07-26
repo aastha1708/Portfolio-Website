@@ -17,8 +17,8 @@
   --font-serif: var(--font-ibm-plex-serif), Georgia, serif;
   /* Section headings, postcard, project years */
   --font-script: var(--font-homemade-apple), cursive;
-  /* Wordmark only — needs the licensed Jimmy Script webfont in /public/fonts */
-  --font-wordmark: "Jimmy Script", var(--font-homemade-apple), cursive;
+  /* Wordmark — Homemade Apple only (Jimmy Script retired) */
+  --font-wordmark: var(--font-homemade-apple), cursive;
 
   --spacing-gutter: 60px;
   --radius-card: 4px;
@@ -39,14 +39,8 @@
     font-weight: 500;
     font-display: swap;
   }
-  @font-face {
-    font-family: "Jimmy Script";
-    src: url("/fonts/JimmyScript.woff2") format("woff2");
-    font-weight: 400;
-    font-display: swap;
-  }
-
   html {
+    background-color: var(--color-paper);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import type { Project } from "@/lib/projects";
 
@@ -13,13 +14,18 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
   const { layout } = project;
 
   const card = (
+    <Link
+      href={`/work/${project.id}`}
+      className="block"
+      aria-label={`${project.title} — view case study`}
+      data-cursor="label"
+      data-cursor-text="View case study"
+    >
     <motion.article
       className="group relative flex flex-col gap-[10px] bg-[#f5f4f1] p-[24px] shadow-paper"
       style={absolute ? { width: layout.innerWidth } : undefined}
       whileHover={reduceMotion ? undefined : { y: -8, rotate: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 28 }}
-      data-cursor="label"
-      data-cursor-text="View case study"
     >
       {layout.tape && (
         <span
@@ -92,6 +98,7 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
         </div>
       </div>
     </motion.article>
+    </Link>
   );
 
   if (!absolute) return card;

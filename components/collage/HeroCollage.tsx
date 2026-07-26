@@ -3,7 +3,7 @@
 import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 import { useEffect } from "react";
 import CollageItem from "./CollageItem";
-import SplitText from "@/components/motion/SplitText";
+import ScriptReveal from "@/components/motion/ScriptReveal";
 import { HERO_ITEMS, HERO_GROUP } from "@/lib/collage-landing";
 
 export default function HeroCollage({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
@@ -41,12 +41,14 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
         ))}
       </div>
 
-      <div className="pointer-events-none absolute left-[438px] top-[300px] flex w-[564px] flex-col items-center justify-center gap-[16px]">
+      {/* z-10 keeps the name + subheading above the chips: in the design the
+          "[ UI/UX Designer ]" label tucks BEHIND the subheading, not over it. */}
+      <div className="pointer-events-none absolute left-[438px] top-[300px] z-10 flex w-[564px] flex-col items-center justify-center gap-[16px]">
         <Wordmark />
       </div>
 
       <motion.span
-        className="chip absolute left-[437px] top-[430px] -rotate-[4deg]"
+        className="chip absolute left-[437px] top-[430px] z-0 -rotate-[4deg]"
         initial={reduceMotion ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.75, duration: 0.5 }}
@@ -54,7 +56,7 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
         [ UI/UX Designer ]
       </motion.span>
       <motion.span
-        className="chip absolute left-[870px] top-[470px] rotate-[3deg]"
+        className="chip absolute left-[870px] top-[470px] z-0 rotate-[3deg]"
         initial={reduceMotion ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.85, duration: 0.5 }}
@@ -69,12 +71,15 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
   const reduceMotion = useReducedMotion();
   return (
     <>
+      {/* Homemade Apple is wider and taller than the old script, so the size
+          drops to keep the same visual footprint; whitespace-nowrap lets the
+          name centre itself over the 564px column. */}
       <h1
-        className={`font-wordmark w-full text-center text-black ${
-          mobile ? "text-[52px] leading-[54px]" : "text-[102px] leading-[96px]"
+        className={`font-wordmark w-full whitespace-nowrap text-center text-black ${
+          mobile ? "text-[40px] leading-[1.6]" : "text-[80px] leading-[1.6]"
         }`}
       >
-        <SplitText text="aastha singh" delay={0.2} />
+        <ScriptReveal text="aastha singh" delay={0.2} />
       </h1>
       <motion.div
         className="flex items-center justify-center gap-[12px]"

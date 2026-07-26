@@ -57,10 +57,14 @@ export default function FavouritesCarousel() {
                 </p>
               ) : (
                 category.items.map((item) => (
-                  <figure
+                  /* Hover: the cover straightens and lifts, like picking the
+                     book off the shelf — mirrors the project-card hover. */
+                  <motion.figure
                     key={item.title}
                     className="flex flex-col items-start justify-center"
-                    style={{ transform: `rotate(${item.rotate ?? 0}deg)` }}
+                    style={{ rotate: item.rotate ?? 0 }}
+                    whileHover={reduceMotion ? undefined : { rotate: 0, y: -8, scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
                     data-cursor="hover"
                   >
                     <div className="relative h-[293px] w-[217px]">
@@ -78,7 +82,7 @@ export default function FavouritesCarousel() {
                       <span className="text-[20px] font-medium tracking-[-0.2px] text-black">{item.title}</span>
                       <span className="text-[14px] uppercase tracking-[-0.14px] text-ink-muted">{item.author}</span>
                     </figcaption>
-                  </figure>
+                  </motion.figure>
                 ))
               )}
             </motion.div>

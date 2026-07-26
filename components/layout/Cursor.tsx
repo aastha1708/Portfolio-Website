@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 
 /**
- * Two-part cursor: a small dot that tracks the pointer almost exactly, and a
- * ring that trails slightly behind it. Deliberately restrained — the ring grows
- * from 28px to 44px on interactive elements rather than ballooning, and labels
- * are a compact pill beside the cursor instead of text stuffed into a big
- * circle. Big circles read as a template; a quiet dot reads as craft.
+ * A single solid circle (no stroke/ring). It rides the pointer with a hint of
+ * spring, grows over interactive elements, and on press gains a soft ring in
+ * a lighter shade of the same colour — a quiet glow, not an outline.
+ * mix-blend-difference keeps it legible on any surface.
  *
  * Opt in from markup:
  *   data-cursor="hover"
@@ -27,11 +26,8 @@ export default function Cursor() {
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
 
-  // Dot: near-instant. Ring: a touch of lag, which is what sells the weight.
-  const dotX = useSpring(x, { stiffness: 1400, damping: 70, mass: 0.25 });
-  const dotY = useSpring(y, { stiffness: 1400, damping: 70, mass: 0.25 });
-  const ringX = useSpring(x, { stiffness: 260, damping: 26, mass: 0.5 });
-  const ringY = useSpring(y, { stiffness: 260, damping: 26, mass: 0.5 });
+  const dotX = useSpring(x, { stiffness: 1000, damping: 60, mass: 0.3 });
+  const dotY = useSpring(y, { stiffness: 1000, damping: 60, mass: 0.3 });
 
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -87,35 +83,26 @@ export default function Cursor() {
 
   if (!enabled) return null;
 
-  const ringSize = label ? 8 : hovering ? 44 : 28;
+  const size = label ? 10 : hovering ? 36 : 16;
 
   return (
     <>
-      {/* Trailing ring */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[9998] rounded-full border border-white mix-blend-difference"
-        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
-        animate={{
-          width: ringSize,
-          height: ringSize,
-          opacity: visible && !label ? 0.7 : 0,
-          scale: pressed ? 0.85 : 1,
-        }}
-        transition={{ type: "spring", stiffness: 320, damping: 28 }}
-      />
-
-      {/* Leading dot */}
+      {/* The circle */}
       <motion.div
         aria-hidden
         className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full bg-white mix-blend-difference"
         style={{ x: dotX, y: dotY, translateX: "-50%", translateY: "-50%" }}
         animate={{
-          width: 6,
-          height: 6,
-          opacity: visible && !label ? (hovering ? 0 : 1) : 0,
+          width: size,
+          height: size,
+          opacity: visible ? 1 : 0,
+          scale: pressed ? 0.88 : 1,
+          /* Pressed: same colour, lighter shade, feathered outward — the glow. */
+          boxShadow: pressed
+            ? "0 0 0 6px rgba(255, 255, 255, 0.35), 0 0 14px 8px rgba(255, 255, 255, 0.18)"
+            : "0 0 0 0px rgba(255, 255, 255, 0), 0 0 0px 0px rgba(255, 255, 255, 0)",
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        transition={{ type: "spring", stiffness: 380, damping: 28 }}
       />
 
       {/* Label pill */}
@@ -130,7 +117,7 @@ export default function Cursor() {
             exit={{ opacity: 0, scale: 0.86 }}
             transition={{ type: "spring", stiffness: 420, damping: 30 }}
           >
-            <span className="-translate-x-1/2 -translate-y-1/2 block whitespace-nowrap rounded-full bg-black px-3 py-[7px] text-[11px] font-medium uppercase tracking-[0.04em] text-white shadow-sm">
+            <span className="block -translate-x-1/2 translate-y-[14px] whitespace-nowrap rounded-full bg-black px-3 py-[7px] text-[11px] font-medium uppercase tracking-[0.04em] text-white shadow-sm">
               {label}
             </span>
           </motion.div>
