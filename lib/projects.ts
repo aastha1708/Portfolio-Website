@@ -27,7 +27,7 @@ export const PROJECTS: Project[] = [
     title: "Kora",
     year: "2026",
     description:
-      "A career exploration app focused on self- discovery of users. A career guide that understands you. Won 3rd place in India's first AI-focused desginathon.",
+      "A career exploration app focused on self-discovery of users. A career guide that understands you. Won 3rd place in India's first AI-focused designathon.",
     tags: ["Designathon", "Developed"],
     image: "/assets/landing/kora-thumbnail.webp",
     layout: {

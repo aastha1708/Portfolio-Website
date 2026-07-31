@@ -3,7 +3,6 @@
 import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 import { useEffect } from "react";
 import CollageItem from "./CollageItem";
-import ScriptReveal from "@/components/motion/ScriptReveal";
 import { HERO_ITEMS, HERO_GROUP } from "@/lib/collage-landing";
 
 export default function HeroCollage({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
@@ -47,7 +46,7 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
         <Wordmark />
       </div>
 
-      {/* Figma frame 246:2558: bbox (437.7, 419) 177.5x72.5 for a 172.6x40
+      {/* Figma frame 246:2558: bbox (437.7, 419) 194.1x75.7 for a ~40px
           chip → unrotated top-left (440, 435), tilted 11° clockwise. */}
       <motion.span
         className="chip absolute left-[440px] top-[435px] z-0 rotate-[11deg]"
@@ -55,7 +54,7 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.75, duration: 0.5 }}
       >
-        [ UI/UX Designer ]
+        [ Product Designer ]
       </motion.span>
       <motion.span
         className="chip absolute left-[870px] top-[470px] z-0 rotate-[3deg]"
@@ -73,13 +72,19 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
   const reduceMotion = useReducedMotion();
   return (
     <>
-      <h1
-        className={`font-wordmark w-full text-center text-black ${
-          mobile ? "text-[52px] leading-[54px]" : "text-[102px] leading-[96px]"
+      {/* Canela Text Regular Italic (Figma 246:2530) replaced the script
+          wordmark. A single calm rise suits the serif better than the old
+          per-character draw-on — the elegance is in the letterforms now. */}
+      <motion.h1
+        className={`font-display w-full text-center text-black ${
+          mobile ? "text-[44px] leading-[52px] tracking-[-1.3px]" : "text-[72px] leading-[96px] tracking-[-2.16px]"
         }`}
+        initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
       >
-        <ScriptReveal text="aastha singh" delay={0.2} />
-      </h1>
+        aastha singh
+      </motion.h1>
       <motion.div
         className="flex items-center justify-center gap-[12px]"
         initial={reduceMotion ? false : { opacity: 0 }}
@@ -99,10 +104,12 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
-/** Purpose-built small-screen hero: a curated six rather than all eighteen. */
+/** Purpose-built small-screen hero: a curated six rather than all fifteen.
+    (The book and airpods left the desk in the July 2026 revision — the
+    seashell takes the book's old spot.) */
 const MOBILE_PICKS = [
   { id: "polaroid-beach", src: "/assets/landing/polaroid-beach.webp", w: 118, cls: "left-[1%] top-[4%] -rotate-6" },
-  { id: "book", src: "/assets/landing/kite-runner-book.webp", w: 134, cls: "left-[-5%] bottom-[8%] -rotate-12" },
+  { id: "seashell", src: "/assets/landing/seashell.webp", w: 110, cls: "left-[-4%] bottom-[8%] -rotate-12" },
   { id: "coffee", src: "/assets/landing/coffee.webp", w: 60, cls: "right-[7%] top-[9%] rotate-3" },
   { id: "camera", src: "/assets/landing/camera.webp", w: 142, cls: "right-[-7%] bottom-[12%] rotate-6" },
   { id: "orchid", src: "/assets/landing/orchid.webp", w: 92, cls: "left-[14%] top-[36%] rotate-12" },
@@ -131,7 +138,7 @@ function HeroMobile() {
           <Wordmark mobile />
         </div>
         <div className="relative z-10 mt-6 flex flex-wrap items-center justify-center gap-3">
-          <span className="chip text-[15px]">[ UI/UX Designer ]</span>
+          <span className="chip text-[15px]">[ Product Designer ]</span>
           <span className="chip text-[15px]">[ Delhi, India ]</span>
         </div>
       </div>

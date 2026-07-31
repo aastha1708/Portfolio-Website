@@ -41,11 +41,11 @@ export const LANDING_BANDS: Band[] = [
 ];
 
 /**
- * About page — per the file, the graph grid stops at the hero (Frame 51,
- * 0 → 960); communities and favourites sit on plain paper; dots start with
- * the footer (Frame 88 at 2137).
+ * About page (July 2026 revision) — the graph grid now runs the whole page:
+ * hero, communities and favourites all sit on it (Frames 51 + 61 in the
+ * file); dots start with the footer (Frame 88 at 1965).
  */
 export const ABOUT_BANDS: Band[] = [
-  { top: 0, height: 960, variant: "lines" },
-  { top: 2137, height: 560, variant: "dots" },
+  { top: 0, height: 1915, variant: "lines" },
+  { top: 1965, height: 560, variant: "dots" },
 ];

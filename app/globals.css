@@ -15,8 +15,17 @@
 
   --font-sans: "Neue Montreal", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-ibm-plex-serif), Georgia, serif;
-  /* Section headings, postcard, project years */
+  /* Postcard, project years, experience dates */
   --font-script: var(--font-homemade-apple), cursive;
+  /* Display type — hero names + section headings are now Canela Text
+     Regular Italic (July 2026 redesign). Licensed, so same deal as Neue
+     Montreal: local() first, self-hosted woff2 once dropped into
+     /public/fonts, and an IBM Plex Serif italic fallback that keeps the
+     proportions close for visitors in the meantime. */
+  --font-display: "Canela Text", var(--font-ibm-plex-serif), Georgia, serif;
+  /* Card-level headings — community cards, favourites labels, Kora
+     case-study headings. */
+  --font-card: "Cormorant Garamond", var(--font-ibm-plex-serif), Georgia, serif;
   /* Wordmark — Jimmy Script (falls back to Homemade Apple until the
      licensed woff2 is dropped into /public/fonts for visitors) */
   --font-wordmark: "Jimmy Script", var(--font-homemade-apple), cursive;
@@ -48,6 +57,29 @@
       local("Jimmy Script"),
       url("/fonts/JimmyScript.woff2") format("woff2");
     font-weight: 400;
+    font-display: swap;
+  }
+  /* Canela Text Regular Italic — the display voice of the redesign. */
+  @font-face {
+    font-family: "Canela Text";
+    src:
+      local("Canela Text"),
+      local("CanelaText-RegularItalic"),
+      url("/fonts/CanelaText-RegularItalic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  /* Cormorant Garamond Bold — free on Google Fonts; self-hosted to keep
+     builds hermetic (no network fetch at build time). Drop the woff2 into
+     /public/fonts; local() covers dev machines that have it installed. */
+  @font-face {
+    font-family: "Cormorant Garamond";
+    src:
+      local("Cormorant Garamond Bold"),
+      local("CormorantGaramond-Bold"),
+      url("/fonts/CormorantGaramond-Bold.woff2") format("woff2");
+    font-weight: 700;
     font-display: swap;
   }
 
@@ -110,6 +142,15 @@
 
   .font-script { font-family: var(--font-script); }
   .font-wordmark { font-family: var(--font-wordmark); }
+  /* Canela is only ever used in its italic cut. */
+  .font-display {
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+  .font-card {
+    font-family: var(--font-card);
+    font-weight: 700;
+  }
 
   .chip {
     display: inline-flex;

@@ -29,7 +29,7 @@ export default function CommunityCard({ community }: { community: Community }) {
                 <Image src={community.logo} alt="" fill sizes="58px" className="object-contain" />
               </span>
             )}
-            <h3 className="whitespace-nowrap font-serif text-[20px] font-medium leading-[22px] tracking-[-0.408px] text-black">
+            <h3 className="font-card whitespace-nowrap text-[20px] leading-[22px] tracking-[-0.408px] text-black">
               {community.title}
             </h3>
           </div>

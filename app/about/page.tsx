@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Nav from "@/components/layout/Nav";
 import ScaledStage from "@/components/layout/ScaledStage";
 import PostcardFooter from "@/components/layout/PostcardFooter";
@@ -5,10 +6,9 @@ import CollageItem from "@/components/collage/CollageItem";
 import CommunityCard from "@/components/about/CommunityCard";
 import FavouritesCarousel from "@/components/about/FavouritesCarousel";
 import { ABOUT_PHOTOS } from "@/lib/collage-about";
-import { COMMUNITIES } from "@/lib/about";
+import { COMMUNITIES, EXPERIENCE, type Experience } from "@/lib/about";
 import GridBackground, { ABOUT_BANDS } from "@/components/layout/GridBackground";
 import Reveal from "@/components/motion/Reveal";
-import ScriptReveal from "@/components/motion/ScriptReveal";
 import FooterMotion from "@/components/motion/FooterMotion";
 
 export const metadata = {
@@ -21,36 +21,63 @@ const BIO = [
   "I grew up around the world from India to Oman to Italy. I am currently an experience design professional at Them.",
   "I started off designing in my first semester of my BTech degree and have been love with it ever since.",
 ];
-const TAGS = ["Them · XDP", "IIIT-D · CS"];
+
+/** Experience row (Figma 330:393) — logo tile, serif title, quiet role line,
+    handwritten year. Replaced the old chips. */
+function ExperienceRow({ item }: { item: Experience }) {
+  return (
+    <div className="flex flex-col items-start overflow-clip rounded-[12px] bg-[#f0efea] py-[10px] pl-[12px] pr-[16px]">
+      <div className="flex w-full items-start justify-between gap-6 lg:w-[472px]">
+        <div className="flex min-w-0 flex-1 items-center gap-[10px]">
+          <span className="relative size-[42px] shrink-0 overflow-hidden rounded-[12px] bg-white">
+            <Image src={item.logo} alt="" fill sizes="42px" className="object-contain" />
+          </span>
+          <span className="flex min-w-0 flex-col justify-center gap-[4px]">
+            <span className="truncate font-serif text-[18px] font-medium tracking-[-0.408px] text-black">
+              {item.title}
+            </span>
+            <span className="text-[14px] text-ink-muted">{item.role}</span>
+          </span>
+        </div>
+        <span className="font-script shrink-0 whitespace-nowrap text-[18px] leading-[22px] tracking-[-0.408px] text-ink-muted">
+          {item.year}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function AboutPage() {
   return (
     <main>
       {/* ---------- Desktop ---------- */}
       <div className="max-lg:hidden">
-        <ScaledStage height={2697}>
+        <ScaledStage height={2525}>
           <GridBackground bands={ABOUT_BANDS} />
           <Nav />
 
-          {/* Hero */}
-          <div className="absolute left-[120px] top-[180px] flex flex-col items-start gap-[8px]">
-            <h1 className="font-wordmark text-[72px] text-black">
-              <ScriptReveal text="hi, I am aastha" delay={0.15} />
-            </h1>
-            <div className="flex flex-col gap-[32px] text-[22px] font-medium text-[#404040]">
-              <p className="w-[544px]">{BIO[0]}</p>
-              <p className="w-[399px]">{BIO[1]}</p>
+          {/* Hero (Figma 335:460) */}
+          <div className="absolute left-[121px] top-[120px] flex flex-col items-start gap-[8px]">
+            <Reveal>
+              <h1 className="font-display text-[56px] leading-[96px] tracking-[-1.68px] text-black">
+                hi, I am aastha
+              </h1>
+            </Reveal>
+            <div className="flex flex-col gap-[22px] text-[22px] leading-[26px] text-[#404040]">
+              <Reveal delay={0.05}>
+                <p className="w-[544px]">{BIO[0]}</p>
+              </Reveal>
+              <Reveal delay={0.1}>
+                <p className="w-[543px]">{BIO[1]}</p>
+              </Reveal>
             </div>
-          </div>
-
-          {/* Figma frame 272:3656: 16px labels in 40px-tall chips, 8px inner
-              padding, 28px apart — quieter than the landing-page chips. */}
-          <div className="absolute left-[121px] top-[480px] flex items-center gap-[28px]">
-            {TAGS.map((tag) => (
-              <span key={tag} className="chip px-[8px] text-[16px] leading-[24px]">
-                {tag}
-              </span>
-            ))}
+            <div className="mt-[34px] flex flex-col gap-[14px]">
+              {EXPERIENCE.map((item, i) => (
+                <Reveal key={item.title} delay={0.15 + i * 0.06}>
+                  <ExperienceRow item={item} />
+                </Reveal>
+              ))}
+            </div>
           </div>
 
           <div className="absolute inset-0">
@@ -59,8 +86,8 @@ export default function AboutPage() {
             ))}
           </div>
 
-          {/* Communities */}
-          <div className="absolute left-[119px] top-[994px] flex w-[1200px] flex-col items-start gap-[67px]">
+          {/* Communities (Figma 273:3767) */}
+          <div className="absolute left-[119px] top-[804px] flex w-[1200px] flex-col items-start gap-[67px]">
             <Reveal className="w-full">
               <h2 className="w-full text-[16px] uppercase text-ink-muted">my communities</h2>
             </Reveal>
@@ -73,12 +100,12 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Favourite things */}
-          <Reveal style={{ position: "absolute", left: 119, top: 1642, width: 1200 }}>
+          {/* Favourite things (Figma 273:3768) */}
+          <Reveal style={{ position: "absolute", left: 119, top: 1413, width: 1200 }}>
             <FavouritesCarousel />
           </Reveal>
 
-          <FooterMotion style={{ position: "absolute", left: 122, top: 2228, width: 1195 }}>
+          <FooterMotion style={{ position: "absolute", left: 122, top: 2056, width: 1195 }}>
             <PostcardFooter />
           </FooterMotion>
         </ScaledStage>
@@ -89,17 +116,15 @@ export default function AboutPage() {
         <div className="bg-grid-lines">
         <Nav />
         <section className="px-5 pb-12 pt-28">
-          <h1 className="font-wordmark text-[44px] leading-[52px] text-black">hi, I am aastha</h1>
-          <div className="mt-6 flex flex-col gap-6 text-[17px] font-medium leading-[26px] text-[#404040]">
+          <h1 className="font-display text-[38px] leading-[48px] tracking-[-1.1px] text-black">hi, I am aastha</h1>
+          <div className="mt-6 flex flex-col gap-6 text-[17px] leading-[26px] text-[#404040]">
             {BIO.map((line) => (
               <p key={line}>{line}</p>
             ))}
           </div>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            {TAGS.map((tag) => (
-              <span key={tag} className="chip text-[15px]">
-                {tag}
-              </span>
+          <div className="mt-8 flex flex-col gap-[14px]">
+            {EXPERIENCE.map((item) => (
+              <ExperienceRow key={item.title} item={item} />
             ))}
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3">

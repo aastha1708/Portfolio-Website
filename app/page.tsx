@@ -76,7 +76,7 @@ export default function LandingPage() {
           <Reveal style={{ position: "absolute", left: 409, top: 1869, width: 655 }}>
             <SectionHeading
               title="my projects"
-              subtitle="project that i designed with love— click on one to unfold the whole story"
+              subtitle="projects that i designed with love"
             />
           </Reveal>
           <div className="absolute" style={{ left: 58, top: 2034 }}>
@@ -125,7 +125,7 @@ export default function LandingPage() {
           <Reveal>
             <SectionHeading
               title="my projects"
-              subtitle="project that i designed with love— click on one to unfold the whole story"
+              subtitle="projects that i designed with love"
               className="px-5 pb-12"
             />
           </Reveal>
