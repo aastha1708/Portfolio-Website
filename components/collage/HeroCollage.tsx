@@ -47,8 +47,10 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
         <Wordmark />
       </div>
 
+      {/* Figma frame 246:2558: bbox (437.7, 419) 177.5x72.5 for a 172.6x40
+          chip → unrotated top-left (440, 435), tilted 11° clockwise. */}
       <motion.span
-        className="chip absolute left-[437px] top-[430px] z-0 -rotate-[4deg]"
+        className="chip absolute left-[440px] top-[435px] z-0 rotate-[11deg]"
         initial={reduceMotion ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.75, duration: 0.5 }}
@@ -71,12 +73,9 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
   const reduceMotion = useReducedMotion();
   return (
     <>
-      {/* Homemade Apple is wider and taller than the old script, so the size
-          drops to keep the same visual footprint; whitespace-nowrap lets the
-          name centre itself over the 564px column. */}
       <h1
-        className={`font-wordmark w-full whitespace-nowrap text-center text-black ${
-          mobile ? "text-[40px] leading-[1.6]" : "text-[80px] leading-[1.6]"
+        className={`font-wordmark w-full text-center text-black ${
+          mobile ? "text-[52px] leading-[54px]" : "text-[102px] leading-[96px]"
         }`}
       >
         <ScriptReveal text="aastha singh" delay={0.2} />

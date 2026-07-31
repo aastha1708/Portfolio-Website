@@ -34,7 +34,7 @@ export default function AboutPage() {
 
           {/* Hero */}
           <div className="absolute left-[120px] top-[180px] flex flex-col items-start gap-[8px]">
-            <h1 className="font-wordmark whitespace-nowrap text-[64px] leading-[1.6] text-black">
+            <h1 className="font-wordmark text-[72px] text-black">
               <ScriptReveal text="hi, I am aastha" delay={0.15} />
             </h1>
             <div className="flex flex-col gap-[32px] text-[22px] font-medium text-[#404040]">
