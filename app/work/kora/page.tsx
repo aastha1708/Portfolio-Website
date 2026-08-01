@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/layout/Nav";
 import PostcardFooter from "@/components/layout/PostcardFooter";
+import IphoneFrame from "@/components/work/IphoneFrame";
 import FooterMotion from "@/components/motion/FooterMotion";
 import Reveal from "@/components/motion/Reveal";
 import HighlightMark from "@/components/motion/HighlightMark";
@@ -12,8 +13,8 @@ import HighlightMark from "@/components/motion/HighlightMark";
  * responsive flow instead of the 1440 ScaledStage: case studies get read,
  * not composed.
  *
- * Run `node scripts/fetch-figma-assets.mjs` once to pull the /assets/kora
- * images from Figma.
+ * Screens come from design/assets-source/"Kora page" (raw captures) and are
+ * presented inside the CSS IphoneFrame mockup.
  */
 
 export const metadata = {
@@ -54,14 +55,6 @@ const RESEARCH_CARDS = [
   },
 ] as const;
 
-const MARKET = [
-  { label: "Youth population and demand", value: 35, color: "#bcd4f0" },
-  { label: "Digital adoption", value: 25, color: "#cfc4ef" },
-  { label: "Policy mandates", value: 18, color: "#f0e7b8" },
-  { label: "Rising household disposable income", value: 13, color: "#c6e5c0" },
-  { label: "AI-powered personalisation", value: 9, color: "#f3c9d9" },
-] as const;
-
 const FEATURES = [
   { title: "Discover", body: "Start at the surface. What do I enjoy?" },
   { title: "Explore", body: "The first dive. What careers are connected to my interests?" },
@@ -69,8 +62,8 @@ const FEATURES = [
   { title: "Collect", body: "Bring discoveries back up. What do I want to keep exploring?" },
 ] as const;
 
-const SCREENS_ROW_1 = ["kora-screen-1", "kora-screen-2", "kora-screen-3"] as const;
-const SCREENS_ROW_2 = ["kora-screen-4", "kora-screen-5", "kora-screen-6"] as const;
+const SCREENS_ROW_1 = ["screen1", "screen2", "screen3"] as const;
+const SCREENS_ROW_2 = ["screen4", "screen5", "screen6"] as const;
 
 /* ------------------------------------------------------------ components */
 
@@ -98,67 +91,16 @@ function ResearchCards() {
   );
 }
 
-/** The market donut, rebuilt as an accessible SVG instead of a flat export —
-    crisp at any DPI and readable by screen readers. */
-function MarketDonut() {
-  const C = 2 * Math.PI * 90; // circumference at r=90
-  let offset = 0;
-  return (
-    <div className="flex flex-wrap items-center justify-center gap-x-[72px] gap-y-10">
-      <svg
-        viewBox="0 0 240 240"
-        className="size-[300px] max-w-full"
-        role="img"
-        aria-label={`Market drivers: ${MARKET.map((m) => `${m.label} ${m.value}%`).join(", ")}`}
-      >
-        {MARKET.map((seg) => {
-          const dash = (seg.value / 100) * C;
-          const el = (
-            <circle
-              key={seg.label}
-              cx="120"
-              cy="120"
-              r="90"
-              fill="none"
-              stroke={seg.color}
-              strokeWidth="52"
-              strokeDasharray={`${dash - 3} ${C - dash + 3}`}
-              strokeDashoffset={-offset}
-              transform="rotate(-90 120 120)"
-            />
-          );
-          offset += dash;
-          return el;
-        })}
-      </svg>
-      <ul className="flex flex-col gap-[14px]">
-        {MARKET.map((seg) => (
-          <li key={seg.label} className="flex items-center gap-[12px]">
-            <span aria-hidden className="size-[14px] shrink-0 rounded-full" style={{ backgroundColor: seg.color }} />
-            <span className="text-[16px] text-black">
-              {seg.label} <span className="text-ink-muted">· {seg.value}%</span>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function PhoneRow({ screens, alts }: { screens: readonly string[]; alts: string[] }) {
   return (
-    <div className="flex flex-wrap items-center justify-center gap-[36px]">
+    <div className="flex flex-wrap items-start justify-center gap-[36px]">
       {screens.map((name, i) => (
         <Reveal key={name} delay={i * 0.07}>
-          <div className="relative aspect-[262/528] w-[240px] max-w-[70vw] md:w-[262px]">
-            <Image
-              src={`/assets/kora/${name}.webp`}
-              alt={alts[i]}
-              fill
-              sizes="262px"
-              className="object-contain"
-            />
-          </div>
+          <IphoneFrame
+            src={`/assets/kora/${name}.webp`}
+            alt={alts[i]}
+            className="w-[240px] max-w-[70vw] md:w-[262px]"
+          />
         </Reveal>
       ))}
     </div>
@@ -184,23 +126,33 @@ export default function KoraPage() {
             </Link>
           </Reveal>
 
-          {/* ---------------- Hero (Figma 335:553) ---------------- */}
+          {/* ---------------- Hero (Figma 335:553) ----------------
+              Composed live rather than a flat export: pastel ground, the
+              onboarding screen in the CSS iPhone mockup (cropped by the
+              card, as in the file), and Figma's blue annotation pins kept
+              as real text. */}
           <Reveal delay={0.05}>
             <div className="relative mt-10 overflow-hidden rounded-[24px] shadow-paper">
-              <div className="relative aspect-[1076/433] w-full bg-[#eceaf6]">
-                <Image
-                  src="/assets/kora/kora-hero.webp"
-                  alt="Kora onboarding chat flanked by annotated feature callouts"
-                  fill
-                  sizes="(max-width: 1128px) 100vw, 1076px"
-                  className="object-cover"
-                  priority
-                />
-                {/* Figma's blue annotation pins, kept live as text (335:757-760) */}
+              <div
+                className="relative aspect-[4/5] w-full sm:aspect-[1076/560] lg:aspect-[1076/433]"
+                style={{
+                  background:
+                    "linear-gradient(115deg, #ece8f5 0%, #f4ecf1 34%, #f6f1ea 68%, #e9eef0 100%)",
+                }}
+              >
+                <div className="absolute left-1/2 top-[36px] w-[240px] -translate-x-1/2 md:w-[280px]">
+                  <IphoneFrame
+                    src="/assets/kora/screen3.webp"
+                    alt="Kora's home chat greeting the student by name"
+                    sizes="280px"
+                    priority
+                  />
+                </div>
+                {/* Figma's blue annotation pins (345:757-760) */}
                 {HERO_NOTES.map((note) => (
                   <span
                     key={note.text}
-                    className="absolute hidden whitespace-nowrap rounded-[14px] bg-[#007aff] px-[12px] py-[10px] text-[16px] leading-[12px] text-white md:inline-block"
+                    className="absolute hidden whitespace-nowrap rounded-[14px] bg-[#007aff] px-[12px] py-[10px] text-[16px] leading-[12px] text-white shadow-[0_6px_18px_rgba(0,122,255,0.35)] md:inline-block"
                     style={{ left: `${note.left}%`, top: `${note.top}%` }}
                   >
                     {note.text}
@@ -212,12 +164,7 @@ export default function KoraPage() {
 
           <Reveal delay={0.1}>
             <div className="mt-[32px] flex flex-col gap-[12px]">
-              <div className="flex items-center gap-[10px]">
-                <h1 className="font-card text-[42px] leading-none tracking-[-0.408px] text-black">Kora</h1>
-                <span className="relative h-[47px] w-[37px]">
-                  <Image src="/assets/kora/kora-logo.webp" alt="" fill sizes="37px" className="object-contain" />
-                </span>
-              </div>
+              <h1 className="font-card text-[42px] leading-none tracking-[-0.408px] text-black">Kora</h1>
               <p className="max-w-[1076px] text-[24px] leading-[28px] text-ink-muted">
                 A career exploration app focused on self-discovery of users. A career guide that
                 understands you. Won 3rd place in India&rsquo;s first AI-focused designathon.
@@ -312,7 +259,15 @@ export default function KoraPage() {
                   students are largely untouched by any existing platform. This is where Kora wins.
                 </p>
               </div>
-              <MarketDonut />
+              <div className="relative aspect-[900/432] w-full max-w-[900px]">
+                <Image
+                  src="/assets/kora/market-analysis.webp"
+                  alt="Donut chart of market drivers: youth population and demand 35%, digital adoption 25%, policy mandates 18%, rising household disposable income 13%, AI-powered personalisation 9%"
+                  fill
+                  sizes="(max-width: 932px) 100vw, 900px"
+                  className="object-contain"
+                />
+              </div>
             </section>
           </Reveal>
 
@@ -337,14 +292,14 @@ export default function KoraPage() {
                 ))}
               </div>
               <Reveal delay={0.1}>
-                <div className="relative flex min-h-[364px] w-[400px] max-w-full items-center justify-center overflow-hidden rounded-[53px] bg-white md:w-[456px]">
-                  <div className="relative size-[310px]">
-                    <Image
-                      src="/assets/kora/kora-features-phone.webp"
-                      alt="Kora home screen with the four journey stages"
-                      fill
-                      sizes="310px"
-                      className="object-contain"
+                {/* The phone peeks up from the plate, cropped by it — the
+                    journey's end state (the career shelf) on display. */}
+                <div className="relative h-[364px] w-[400px] max-w-full overflow-hidden rounded-[53px] bg-white md:w-[456px]">
+                  <div className="absolute left-1/2 top-[42px] w-[240px] -translate-x-1/2">
+                    <IphoneFrame
+                      src="/assets/kora/screen6.webp"
+                      alt="The career shelf collecting saved discoveries"
+                      sizes="240px"
                     />
                   </div>
                 </div>

@@ -29,7 +29,7 @@ export type Experience = { logo: string; title: string; role: string; year: stri
 
 export const EXPERIENCE: Experience[] = [
   {
-    logo: "/assets/about/them-logo.webp",
+    logo: "/assets/about/themconsulting-logo-1.webp",
     title: "Them Consulting Ltd · Gurugram, India",
     role: "Experience Design Professional",
     year: "2026",
@@ -78,10 +78,10 @@ export const FAVOURITES: FavouriteCategory[] = [
     label: "Movies",
     kind: "portrait",
     items: [
-      { title: "The Medium", cover: "/assets/about/movie-the-medium.webp", rotate: TILT[0] },
-      { title: "The Pursuit of Happyness", cover: "/assets/about/movie-pursuit.webp", rotate: TILT[1] },
-      { title: "Jab We Met", cover: "/assets/about/movie-jab-we-met.webp", rotate: TILT[2] },
-      { title: "How to Lose a Guy in 10 Days", cover: "/assets/about/movie-htlagi10d.webp", rotate: TILT[3] },
+      { title: "The Medium", cover: "/assets/about/medium.webp", rotate: TILT[0] },
+      { title: "The Pursuit of Happyness", cover: "/assets/about/pursuitofhappieness.webp", rotate: TILT[1] },
+      { title: "Jab We Met", cover: "/assets/about/jabwemet.webp", rotate: TILT[2] },
+      { title: "How to Lose a Guy in 10 Days", cover: "/assets/about/htlagi10d.webp", rotate: TILT[3] },
     ],
   },
   {
@@ -89,10 +89,10 @@ export const FAVOURITES: FavouriteCategory[] = [
     label: "Shows",
     kind: "portrait",
     items: [
-      { title: "Modern Family", cover: "/assets/about/show-modern-family.webp", rotate: TILT[0] },
-      { title: "Interview with the Vampire", cover: "/assets/about/show-iwtv.webp", rotate: TILT[1] },
-      { title: "The First Frost", cover: "/assets/about/show-first-frost.webp", rotate: TILT[2] },
-      { title: "Brooklyn Nine Nine", cover: "/assets/about/show-b99.webp", rotate: TILT[3] },
+      { title: "Modern Family", cover: "/assets/about/modernfamily.webp", rotate: TILT[0] },
+      { title: "Interview with the Vampire", cover: "/assets/about/iwtv.webp", rotate: TILT[1] },
+      { title: "The First Frost", cover: "/assets/about/firstfrost.webp", rotate: TILT[2] },
+      { title: "Brooklyn Nine Nine", cover: "/assets/about/brooklyn99.webp", rotate: TILT[3] },
     ],
   },
   {
@@ -100,10 +100,10 @@ export const FAVOURITES: FavouriteCategory[] = [
     label: "Anime",
     kind: "portrait",
     items: [
-      { title: "Naruto", cover: "/assets/about/anime-naruto.webp", rotate: TILT[0] },
-      { title: "Fruits Basket", cover: "/assets/about/anime-fruits-basket.webp", rotate: TILT[1] },
-      { title: "Haikyuu", cover: "/assets/about/anime-haikyuu.webp", rotate: TILT[2] },
-      { title: "Spy x Family", cover: "/assets/about/anime-spy-x-family.webp", rotate: TILT[3] },
+      { title: "Naruto", cover: "/assets/about/naruto.webp", rotate: TILT[0] },
+      { title: "Fruits Basket", cover: "/assets/about/fruitsbasket.webp", rotate: TILT[1] },
+      { title: "Haikyuu", cover: "/assets/about/haikyuu.webp", rotate: TILT[2] },
+      { title: "Spy x Family", cover: "/assets/about/spyxfamily.webp", rotate: TILT[3] },
     ],
   },
   {
@@ -111,9 +111,9 @@ export const FAVOURITES: FavouriteCategory[] = [
     label: "Albums",
     kind: "wide",
     items: [
-      { title: "Sept 5th", author: "DVSN", cover: "/assets/about/album-sept-5th.webp" },
-      { title: "Fatal Love", author: "MONSTA X", cover: "/assets/about/album-fatal-love.webp" },
-      { title: "Mind of Mine", author: "Zayn Malik", cover: "/assets/about/album-mind-of-mine.webp" },
+      { title: "Sept 5th", author: "DVSN", cover: "/assets/about/sept5th.webp" },
+      { title: "Fatal Love", author: "MONSTA X", cover: "/assets/about/fatallove.webp" },
+      { title: "Mind of Mine", author: "Zayn Malik", cover: "/assets/about/mindofmine.webp" },
     ],
   },
 ];

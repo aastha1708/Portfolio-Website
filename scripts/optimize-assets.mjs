@@ -22,7 +22,7 @@ const run = promisify(execFile);
 
 const SOURCE = "design/assets-source";
 const OUT = "public/assets";
-const SECTIONS = { "Landing page": "landing", "About page": "about" };
+const SECTIONS = { "Landing page": "landing", "About page": "about", "Kora page": "kora" };
 
 const MAX_IMAGE_WIDTH = 1200;
 const MAX_VIDEO_WIDTH = 1320;
