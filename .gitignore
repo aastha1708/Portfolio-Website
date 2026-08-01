@@ -19,3 +19,8 @@ next-env.d.ts
 # design/assets-source IS tracked: it's the source of truth for the asset pipeline.
 design/inspirations/
 design/versions/
+
+# Agent skills live globally in ~/.claude/skills (keep repo lean)
+.claude/skills/
+# Machine-local Claude Code settings (hooks etc.)
+.claude/settings.local.json
