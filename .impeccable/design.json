@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-31T00:00:00.000Z",
+  "title": "Design System: Aastha Singh — Portfolio 2026",
+  "extensions": {
+    "colorMeta": {
+      "dusty-rose-tint": {
+        "role": "primary",
+        "displayName": "Dusty Rose Tint",
+        "canonical": "#ffd5e4",
+        "tonalRamp": ["#3d1420", "#5f1f33", "#822a47", "#a6455f", "#c76a80", "#e29aac", "#ffd5e4", "#ffeaf1"]
+      },
+      "raspberry-ink": {
+        "role": "primary",
+        "displayName": "Raspberry Ink",
+        "canonical": "#9e3950",
+        "tonalRamp": ["#2a0f16", "#451821", "#63232f", "#822e3f", "#9e3950", "#c25f75", "#dc94a3", "#f0cdd5"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f5f5f5",
+        "tonalRamp": ["#1a1a1a", "#333333", "#4d4d4d", "#666666", "#999999", "#cccccc", "#e6e6e6", "#f5f5f5"]
+      },
+      "card-surface": {
+        "role": "neutral",
+        "displayName": "Card Surface",
+        "canonical": "#f5f4f1",
+        "tonalRamp": ["#1b1b18", "#343430", "#4e4d47", "#67665e", "#9a988e", "#cbc9c1", "#e6e4dd", "#f5f4f1"]
+      },
+      "community-surface": {
+        "role": "neutral",
+        "displayName": "Community Surface",
+        "canonical": "#f0efea",
+        "tonalRamp": ["#1a1a16", "#33322d", "#4d4c44", "#66655b", "#99978a", "#c9c7bc", "#e2e0d8", "#f0efea"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#000000",
+        "tonalRamp": ["#000000", "#1a1a1a", "#333333", "#4d4d4d", "#666666", "#999999", "#cccccc", "#f0f0f0"]
+      }
+    },
+    "typographyMeta": {
+      "wordmark": { "displayName": "Wordmark", "purpose": "The signature handwritten name lettering (Jimmy Script). One per view, revealed on load." },
+      "display": { "displayName": "Display", "purpose": "Section headings and page heroes in Canela Text Italic." },
+      "title": { "displayName": "Title", "purpose": "Project card titles and case-study H1s (IBM Plex Serif)." },
+      "card": { "displayName": "Card", "purpose": "Community/favourites/Kora headings (Cormorant Garamond Bold)." },
+      "body": { "displayName": "Body", "purpose": "Descriptions, paragraphs, and UI text (Neue Montreal)." },
+      "script": { "displayName": "Script", "purpose": "Years, dates, and the postcard's handwritten quote (Homemade Apple)." },
+      "label": { "displayName": "Label", "purpose": "Uppercase kickers, subtitles, and the footer credit line." }
+    },
+    "shadows": [
+      {
+        "name": "paper-lift",
+        "value": "0 11px 24px 0 rgb(181 181 181 / 0.12), 0 43px 43px 0 rgb(181 181 181 / 0.10), 0 98px 59px 0 rgb(181 181 181 / 0.06), 0 174px 69px 0 rgb(181 181 181 / 0.02)",
+        "purpose": "The .shadow-paper signature — a four-layer soft warm-gray lift that gives cards and the footer their resting weight as sheets of paper on a desk."
+      }
+    ],
+    "motion": [
+      { "name": "ease-out-signature", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default ease-out for entrances (nav, reveals) and media zoom." },
+      { "name": "spring-lift", "value": "spring(stiffness: 300, damping: 28)", "purpose": "Hover lift for project (y:-8) and community (y:-6) cards." },
+      { "name": "duration-media", "value": "600ms", "purpose": "Card media zoom-to-1.04 on hover." },
+      { "name": "duration-nav", "value": "200ms", "purpose": "Nav link colour/background transitions." }
+    ],
+    "breakpoints": [
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Tag/skill chip — the only consistently coloured element on the page.",
+      "html": "<span class=\"ds-chip\">Designathon</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; justify-content: center; padding: 8px 12px; background: #ffd5e4; color: #9e3950; border-radius: 4px; font-family: 'Neue Montreal', Inter, ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.035px; text-transform: capitalize; }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Rounded-full pill link; hover background appears without shifting text via cancelled padding.",
+      "html": "<a class=\"ds-nav-link\" href=\"#\">About</a>",
+      "css": ".ds-nav-link { position: relative; display: inline-block; padding: 5px 10px; margin: -5px -10px; border-radius: 9999px; color: #666666; font-family: 'Neue Montreal', Inter, ui-sans-serif, system-ui, sans-serif; font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s, background-color 0.2s; } .ds-nav-link:hover { color: #000000; background: rgba(0,0,0,0.05); } .ds-nav-link:focus-visible { outline: 2px solid #9e3950; outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card-project",
+      "description": "Paper sheet for one project — sharp corners, resting paper-lift shadow, springs up on hover.",
+      "html": "<article class=\"ds-project-card\"><div class=\"ds-project-media\"></div><div class=\"ds-project-meta\"><div class=\"ds-project-row\"><h3 class=\"ds-project-title\">Kora</h3><span class=\"ds-project-year\">2026</span></div><p class=\"ds-project-desc\">A career-exploration app that understands you.</p><span class=\"ds-chip\">Developed</span></div></article>",
+      "css": ".ds-project-card { display: flex; flex-direction: column; gap: 24px; width: 320px; padding: 24px; background: #f5f4f1; box-shadow: 0 11px 24px 0 rgb(181 181 181 / 0.12), 0 43px 43px 0 rgb(181 181 181 / 0.10), 0 98px 59px 0 rgb(181 181 181 / 0.06); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); } .ds-project-card:hover { transform: translateY(-8px); } .ds-project-media { height: 160px; width: 100%; background: linear-gradient(135deg, #e9e7e1, #d9d6cd); } .ds-project-meta { display: flex; flex-direction: column; gap: 12px; } .ds-project-row { display: flex; align-items: center; justify-content: space-between; } .ds-project-title { margin: 0; font-family: var(--font-ibm-plex-serif, Georgia, serif); font-size: 28px; font-weight: 500; color: #000; } .ds-project-year { font-family: var(--font-homemade-apple, cursive); font-size: 18px; color: #666; } .ds-project-desc { margin: 0; font-family: 'Neue Montreal', Inter, sans-serif; font-size: 16px; line-height: 20px; color: #666; }"
+    },
+    {
+      "name": "Community Card",
+      "kind": "card",
+      "refersTo": "card-community",
+      "description": "Softer 12px-radius About card; springs up on hover, no resting shadow.",
+      "html": "<article class=\"ds-community-card\"><h3 class=\"ds-community-title\">Coordinator at GirlUp</h3><p class=\"ds-community-body\">Where I learned to grow.</p></article>",
+      "css": ".ds-community-card { display: flex; flex-direction: column; gap: 12px; width: 377px; padding: 24px; background: #f0efea; border-radius: 12px; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); } .ds-community-card:hover { transform: translateY(-6px); } .ds-community-title { margin: 0; font-family: 'Cormorant Garamond', var(--font-ibm-plex-serif, Georgia, serif); font-size: 22px; font-weight: 700; color: #000; } .ds-community-body { margin: 0; font-family: 'Neue Montreal', Inter, sans-serif; font-size: 16px; line-height: 20px; color: #666; }"
+    },
+    {
+      "name": "Section Heading",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "Italic display-serif title over an uppercase muted kicker.",
+      "html": "<div class=\"ds-section-heading\"><h2 class=\"ds-section-title\">my projects</h2><p class=\"ds-section-kicker\">Selected work</p></div>",
+      "css": ".ds-section-heading { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; } .ds-section-title { margin: 0; font-family: 'Canela Text', var(--font-ibm-plex-serif, Georgia, serif); font-style: italic; font-size: 42px; line-height: 42px; letter-spacing: -1.5px; color: #000; } .ds-section-kicker { margin: 0; font-family: 'Neue Montreal', Inter, sans-serif; font-size: 16px; text-transform: uppercase; color: #666; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Analog Interface",
+    "overview": "This is a portfolio built on a deliberate tension: warm physical materials — paper, ink, film, tape, Polaroids, postcards — meeting the precision of engineered digital interaction. The surface reads like a designer's desk seen from above, scattered by hand across a graph-paper notebook page, but nothing is sloppy: every object sits at an intentional angle, every hover resolves on a tuned spring, and a custom cursor ties the whole thing into one perceivable system. The hand-made texture is real and the engineering underneath it is exact; the friction between those two is the point, and it is the proof of craft. The system is playful and alive rather than quiet, but personality is rationed against a calm, near-monochrome ground so it never tips into clutter. Colour is scarce and warm; type does most of the expressive work. Depth is physical: surfaces rest flat and lift toward the viewer only when touched, like paper peeling off a desk.",
+    "keyCharacteristics": [
+      "Graph-paper notebook ground; objects hand-placed at small rotations (−8° to +8°).",
+      "Scarce, warm accent colour (a single dusty pink pair) over a paper-and-ink neutral base.",
+      "Expressive type: italic display serif + handwritten script, on a clean neutral sans.",
+      "Physical depth — flat at rest, paper-lift on hover, never a hard-edged shadow.",
+      "One authored interaction language; a custom cursor unifies every micro-interaction."
+    ],
+    "rules": [
+      { "name": "The Scarce Accent Rule", "body": "Only one accent colour exists — the Dusty Rose Tint / Raspberry Ink pair — and it appears only where interaction lives (chips and focus). Warmth beyond that comes from real photographs, never from more UI colour.", "section": "colors" },
+      { "name": "The Italic-Only Rule", "body": "Canela Text is only ever used in its italic cut. Its italic is the display voice; an upright Canela would read as a different, wrong typeface here.", "section": "typography" },
+      { "name": "The Fallback-Honest Rule", "body": "Branded fonts are self-hosted only via local() + a /public/fonts woff2. Until those are added, each degrades to a defined fallback whose proportions hold layout. Never assume the branded cut is present.", "section": "typography" },
+      { "name": "The Paper-Lift Rule", "body": "Depth is motion, not decoration. Cards translate up on a spring (stiffness 300, damping 28) on hover; the static shadow-paper gives them resting weight. Never simulate depth with a hard border or dark shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do ration accent colour to interaction only — Dusty Rose Tint / Raspberry Ink on chips and focus; get warmth elsewhere from real photographs.",
+      "Do convey depth through the paper-lift: shadow-paper at rest, a spring translate (stiffness 300 / damping 28) on hover.",
+      "Do keep collage geometry as data in lib/ (left/top/width/height/rotate from Figma); never hard-code positions inside components.",
+      "Do use cubic-bezier(0.22, 1, 0.36, 1) as the default ease-out for entrances and media, and reserve springs for hover lifts.",
+      "Do drive interactive affordances through data-cursor attributes so every micro-interaction joins one cursor system.",
+      "Do honor prefers-reduced-motion: swap page-turns/zooms for opacity, disable idle sway, keep keyboard focus reachable, and hold body text at WCAG AA over the grid.",
+      "Do use Canela Text only in its italic cut."
+    ],
+    "donts": [
+      "Don't use hard-edged, tight, or pure-black drop shadows — depth is always the diffuse warm-gray paper lift.",
+      "Don't add a second accent hue or colour a surface 'to liven it up'; add a photographic object instead.",
+      "Don't fall back to the anti-references: minimal corporate template, generic cursive 'cozy portfolio' font as the primary voice, spiral-binder motif, or a plain screenshot grid for work.",
+      "Don't hand-edit public/assets (generated) or assume branded fonts are present without their /public/fonts woff2.",
+      "Don't let decorative objects become filler — every collage object must be specific to Aastha and earn its place."
+    ]
+  }
+}
