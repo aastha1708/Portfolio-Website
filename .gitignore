@@ -24,3 +24,6 @@ design/versions/
 .claude/skills/
 # Machine-local Claude Code settings (hooks etc.)
 .claude/settings.local.json
+
+# Impeccable critique snapshots (generated per run, backlog only)
+.impeccable/critique/

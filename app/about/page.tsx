@@ -19,7 +19,7 @@ export const metadata = {
 
 const BIO = [
   "I grew up around the world from India to Oman to Italy. I am currently an experience design professional at Them.",
-  "I started off designing in my first semester of my BTech degree and have been love with it ever since.",
+  "I started off designing in my first semester of my BTech degree and have been in love with it ever since.",
 ];
 
 /** Experience row (Figma 330:393) — logo tile, serif title, quiet role line,

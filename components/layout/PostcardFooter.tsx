@@ -2,8 +2,8 @@ import Image from "next/image";
 
 const LINKS = [
   { label: "aasthapcharag@gmail.com", href: "mailto:aasthapcharag@gmail.com", arrow: false },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", arrow: true },
-  { label: "Resume", href: "/resume.pdf", arrow: true },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/aasthasingh1708", arrow: true },
+  { label: "Resume", href: "https://flowcv.com/resume/4rqffng202tj", arrow: true },
 ];
 
 /** Shared postcard footer — identical on the landing and about pages. */

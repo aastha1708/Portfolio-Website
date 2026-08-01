@@ -29,7 +29,9 @@ const META = [
   { label: "My role", items: ["UX Researcher", "UX Designer"] },
   { label: "Deliverables", items: ["Prototype Refinement", "Usability Testing", "Research"] },
   { label: "Team", items: ["Sahil Deshpande"] },
-  { label: "Skills", items: ["2024"] },
+  // DRAFT skills — grounded in the documented work (PRAW scrape, AI sentiment
+  // analysis, prototyping, market sizing). Aastha to confirm/replace.
+  { label: "Skills", items: ["Figma", "AI Prototyping", "User Research", "Market Analysis"] },
 ] as const;
 
 /** Annotation chips over the hero render — percentages of the 1076x433 frame. */
@@ -55,6 +57,24 @@ const RESEARCH_CARDS = [
   },
 ] as const;
 
+/** DRAFT reflections — grounded in the documented Kora work; Aastha to review
+    and rewrite in her own voice. Fixes the earlier bug where this section
+    re-rendered the research cards. */
+const REFLECTIONS = [
+  {
+    title: "AI accelerates, judgment decides",
+    body: "AI could generate screens fast, but the real work was judging whether each one actually moved a student deeper in the journey. The taste and direction were the job, not the generation.",
+  },
+  {
+    title: "Research where people are already honest",
+    body: "The sharpest signal came from where students already vent — real Reddit threads — not a survey we designed. Meeting people in their own space beat asking them to come to ours.",
+  },
+  {
+    title: "Go deep for a few, not shallow for everyone",
+    body: "Trying to solve for every student at once flattened the design. Prioritising the explorers let us solve one journey with real depth instead of a generic tool for all.",
+  },
+] as const;
+
 const FEATURES = [
   { title: "Discover", body: "Start at the surface. What do I enjoy?" },
   { title: "Explore", body: "The first dive. What careers are connected to my interests?" },
@@ -76,10 +96,10 @@ function SectionHeader({ kicker, title }: { kicker: string; title: string }) {
   );
 }
 
-function ResearchCards() {
+function InsightCards({ cards }: { cards: readonly { title: string; body: string }[] }) {
   return (
     <div className="grid gap-[24px] md:grid-cols-3">
-      {RESEARCH_CARDS.map((card, i) => (
+      {cards.map((card, i) => (
         <Reveal key={card.title} delay={i * 0.06}>
           <div className="flex h-full min-h-[195px] flex-col gap-[12px] rounded-[14px] bg-[#f0efea] px-[16px] py-[24px]">
             <h3 className="text-[22px] font-medium leading-[28px] text-black">{card.title}</h3>
@@ -224,7 +244,7 @@ export default function KoraPage() {
                 title="Where are students the most honest? Reddit."
               />
             </Reveal>
-            <ResearchCards />
+            <InsightCards cards={RESEARCH_CARDS} />
           </section>
 
           {/* ---------------- Target group (Figma 356:924) ---------------- */}
@@ -349,7 +369,7 @@ export default function KoraPage() {
             <Reveal>
               <SectionHeader kicker="Reflections" title="What I've learned" />
             </Reveal>
-            <ResearchCards />
+            <InsightCards cards={REFLECTIONS} />
           </section>
         </article>
       </div>
