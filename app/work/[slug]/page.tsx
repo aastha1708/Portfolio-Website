@@ -35,7 +35,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       <Nav />
 
       <article className="mx-auto max-w-[880px] px-6 pb-32 pt-[160px] max-lg:pt-[120px]">
-        <Reveal>
+        <Reveal immediate>
           <Link
             href="/"
             data-cursor="hover"
@@ -45,7 +45,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </Link>
         </Reveal>
 
-        <Reveal delay={0.05}>
+        <Reveal immediate delay={0.05}>
           <div className="mt-10 flex flex-wrap items-baseline justify-between gap-4">
             <h1 className="font-serif text-[56px] font-medium leading-[1.05] text-black max-lg:text-[36px]">
               {project.title}
@@ -54,7 +54,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </div>
         </Reveal>
 
-        <Reveal delay={0.1}>
+        <Reveal immediate delay={0.1}>
           <p className="mt-6 max-w-[560px] text-[18px] leading-[28px] text-ink-muted">{project.description}</p>
           <ul className="mt-6 flex flex-wrap items-center gap-[8px]">
             {project.tags.map((tag) => (
@@ -68,7 +68,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </ul>
         </Reveal>
 
-        <Reveal delay={0.15}>
+        <Reveal immediate delay={0.15}>
           <div className="relative mt-14 bg-[#f5f4f1] p-[24px] shadow-paper">
             <span
               aria-hidden
@@ -89,7 +89,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </div>
         </Reveal>
 
-        <Reveal delay={0.2}>
+        <Reveal immediate delay={0.2}>
           <div className="mt-20 flex flex-col items-center gap-6 text-center">
             <span className="chip text-[16px]">[ full case study — coming soon ]</span>
             <p className="max-w-[420px] text-[16px] leading-[24px] text-ink-muted">

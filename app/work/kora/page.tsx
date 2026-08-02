@@ -136,7 +136,7 @@ export default function KoraPage() {
         <Nav />
 
         <article className="mx-auto max-w-[1080px] px-6 pb-[120px] pt-[120px]">
-          <Reveal>
+          <Reveal immediate>
             <Link
               href="/"
               data-cursor="hover"
@@ -151,7 +151,7 @@ export default function KoraPage() {
               onboarding screen in the CSS iPhone mockup (cropped by the
               card, as in the file), and Figma's blue annotation pins kept
               as real text. */}
-          <Reveal delay={0.05}>
+          <Reveal immediate delay={0.05}>
             <div className="relative mt-10 overflow-hidden rounded-[24px] shadow-paper">
               <div
                 className="relative aspect-[4/5] w-full sm:aspect-[1076/560] lg:aspect-[1076/433]"
@@ -182,7 +182,7 @@ export default function KoraPage() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.1}>
+          <Reveal immediate delay={0.1}>
             <div className="mt-[32px] flex flex-col gap-[12px]">
               <h1 className="font-card text-[42px] leading-none tracking-[-0.408px] text-black">Kora</h1>
               <p className="max-w-[1076px] text-[24px] leading-[28px] text-ink-muted">
@@ -203,7 +203,7 @@ export default function KoraPage() {
           </Reveal>
 
           {/* ---------------- Meta card (Figma 345:782) ---------------- */}
-          <Reveal delay={0.15}>
+          <Reveal immediate delay={0.15}>
             <dl className="mt-[32px] grid grid-cols-2 gap-x-[48px] gap-y-[24px] rounded-[20px] bg-[#f0efea] p-[16px] shadow-paper md:grid-cols-[218px_2fr_1.5fr_auto] md:gap-x-[112px] md:p-[16px]">
               {META.map((col) => (
                 <div key={col.label} className="flex flex-col gap-[10px]">

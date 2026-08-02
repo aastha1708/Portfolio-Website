@@ -58,22 +58,22 @@ export default function AboutPage() {
 
           {/* Hero (Figma 335:460) */}
           <div className="absolute left-[121px] top-[120px] flex flex-col items-start gap-[8px]">
-            <Reveal>
+            <Reveal immediate>
               <h1 className="font-display text-[56px] leading-[96px] tracking-[-1.68px] text-black">
                 hi, I am aastha
               </h1>
             </Reveal>
             <div className="flex flex-col gap-[22px] text-[22px] leading-[26px] text-[#404040]">
-              <Reveal delay={0.05}>
+              <Reveal immediate delay={0.05}>
                 <p className="w-[544px]">{BIO[0]}</p>
               </Reveal>
-              <Reveal delay={0.1}>
+              <Reveal immediate delay={0.1}>
                 <p className="w-[543px]">{BIO[1]}</p>
               </Reveal>
             </div>
             <div className="mt-[34px] flex flex-col gap-[14px]">
               {EXPERIENCE.map((item, i) => (
-                <Reveal key={item.title} delay={0.15 + i * 0.06}>
+                <Reveal immediate key={item.title} delay={0.15 + i * 0.06}>
                   <ExperienceRow item={item} />
                 </Reveal>
               ))}
