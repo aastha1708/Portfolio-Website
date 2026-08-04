@@ -27,3 +27,4 @@ design/versions/
 
 # Impeccable critique snapshots (generated per run, backlog only)
 .impeccable/critique/
+.next-sandbox/

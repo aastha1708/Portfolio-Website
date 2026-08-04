@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+
+/** Current stage scale, for children that translate pointer deltas into
+ *  canvas px (e.g. draggable collage stickers). 1 outside a ScaledStage. */
+const StageScaleContext = createContext(1);
+export const useStageScale = () => useContext(StageScaleContext);
 
 /**
  * The Figma canvas is a fixed 1440 x H composition with hand-placed objects.
@@ -49,7 +54,7 @@ export default function ScaledStage({
           }}
           className="relative"
         >
-          {children}
+          <StageScaleContext.Provider value={scale}>{children}</StageScaleContext.Provider>
         </div>
       </div>
     </div>

@@ -1,33 +1,27 @@
-import Image from "next/image";
 import Nav from "@/components/layout/Nav";
 import ScaledStage from "@/components/layout/ScaledStage";
-import TornDivider from "@/components/layout/TornDivider";
 import SectionHeading from "@/components/layout/SectionHeading";
 import PostcardFooter from "@/components/layout/PostcardFooter";
 import ProjectGrid from "@/components/work/ProjectGrid";
 import HeroCollage from "@/components/collage/HeroCollage";
 import GridBackground, { LANDING_BANDS } from "@/components/layout/GridBackground";
 import Reveal from "@/components/motion/Reveal";
-import BounceChip from "@/components/motion/BounceChip";
-import HighlightMark from "@/components/motion/HighlightMark";
-import StickyNote from "@/components/motion/StickyNote";
+import PopIn from "@/components/motion/PopIn";
+import PlusReveal from "@/components/motion/PlusReveal";
+import DotGridMouse from "@/components/motion/DotGridMouse";
 import FooterMotion from "@/components/motion/FooterMotion";
 
-const PHILOSOPHY_CHIPS = [
-  { label: "Craft Obsessed", left: 211, top: 1265 },
-  { label: "Builds With AI", left: 1057, top: 1340 },
-  { label: "Edge Case Hunter", left: 100, top: 1564 },
-  { label: "Third Culture Kid", left: 1097, top: 1571 },
-];
-
-const PHILOSOPHY = (
-  <>
-    I care about craft, how clearly things communicate, handle edge cases and build trust. I build with AI,
-    prototyping ideas and exploring the <HighlightMark>edge of design and technology.</HighlightMark>
-  </>
-);
-
 const NOTE = "I turn ambiguity into clear product design direction and ship with cross-functional teams at speed.";
+
+/* Dashed plus boxes + their spirograph reveals. Card offsets measured from
+   the "Finalest version" canvas (boxes 445:.. → cards Frame 200/205/206/207).
+   Spin durations are deliberately co-prime-ish so open boxes never sync. */
+const PLUS_BOXES = [
+  { left: 102, top: 1026, shape: "/assets/landing/new-ver/how-to-become-a-content-creator-(36)-1.webp", spin: 26, offset: { dx: 106, dy: -53 } },
+  { left: 1250, top: 1071, shape: "/assets/landing/new-ver/new.webp", spin: 34, offset: { dx: -170, dy: -99 } },
+  { left: 1199, top: 1469, shape: "/assets/landing/new-ver/new2.webp", spin: 22, offset: { dx: -168, dy: 8 } },
+  { left: 192, top: 1469, shape: "/assets/landing/new-ver/new3.webp", spin: 30, offset: { dx: 107, dy: -39 } },
+];
 
 export default function LandingPage() {
   return (
@@ -39,50 +33,44 @@ export default function LandingPage() {
           <Nav />
           <HeroCollage />
 
-          <div className="absolute inset-x-0" style={{ top: 960 }}>
-            <TornDivider />
-          </div>
-
-          {/* Philosophy */}
-          <Reveal style={{ position: "absolute", left: 291, top: 1100, width: 869 }}>
-            <p className="text-center text-[32px] font-medium leading-[47px] tracking-[0.08px] text-black">
-              {PHILOSOPHY}
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.08} style={{ position: "absolute", left: 535, top: 1241, width: 352, height: 440 }}>
-            <StickyNote className="relative size-full">
-              <Image src="/assets/landing/sticky-note-1.webp" alt="" fill sizes="352px" className="object-contain" />
-              <p
-                className="font-script absolute -translate-x-1/2 text-center text-[18px] leading-[28px] tracking-[0.9px] text-black/75"
-                style={{ left: 175.5, top: 147, width: 211 }}
-              >
+          {/* Note (Figma 414:2271) — the one-liner sits alone on ruled paper,
+              flanked by the plus-box doodles. It settles in like a card being
+              laid down; the boxes pop in staggered after it. */}
+          <PopIn y={26} scale={0.97} rotate={-1.2} style={{ position: "absolute", left: 341, top: 1145, width: 787 }}>
+            <div className="flex h-[240px] items-center justify-center border border-dashed border-black/20 bg-[#efede5] px-[92px]">
+              <p className="font-script text-center text-[22px] leading-[48px] tracking-[0.5px] text-black/80">
                 {NOTE}
               </p>
-            </StickyNote>
-          </Reveal>
+            </div>
+          </PopIn>
 
-          {PHILOSOPHY_CHIPS.map((chip, i) => (
-            <Reveal key={chip.label} delay={0.1 + i * 0.06} y={12} style={{ position: "absolute", left: chip.left, top: chip.top }}>
-              <BounceChip delay={i * 0.7}>[ {chip.label} ]</BounceChip>
-            </Reveal>
+          {PLUS_BOXES.map((box, i) => (
+            <PopIn
+              key={`${box.left}-${box.top}`}
+              delay={0.15 + i * 0.08}
+              y={12}
+              scale={0.55}
+              style={{ position: "absolute", left: box.left, top: box.top }}
+            >
+              <PlusReveal shape={box.shape} spinDuration={box.spin} offset={box.offset} />
+            </PopIn>
           ))}
 
-          <div className="absolute inset-x-0" style={{ top: 1747 }}>
-            <TornDivider flip />
-          </div>
-
           {/* Work */}
-          <Reveal style={{ position: "absolute", left: 409, top: 1869, width: 655 }}>
+          <div id="projects" data-section="projects" className="absolute" style={{ top: 1704 }} />
+          <Reveal style={{ position: "absolute", left: 409, top: 1814, width: 655 }}>
             <SectionHeading
               title="my projects"
               subtitle="projects that i designed with love"
             />
           </Reveal>
-          <div className="absolute" style={{ left: 58, top: 2034 }}>
+          <div className="absolute" style={{ left: 58, top: 1944 }}>
             <ProjectGrid />
           </div>
 
+          {/* Footer dot field — canvas twin of .bg-grid-dots that leans
+              toward the cursor. */}
+          <DotGridMouse fullBleed className="absolute" style={{ top: 3039, height: 618 }} />
           <FooterMotion style={{ position: "absolute", left: 122, top: 3212, width: 1195 }}>
             <PostcardFooter />
           </FooterMotion>
@@ -95,33 +83,22 @@ export default function LandingPage() {
           <Nav />
           <HeroCollage variant="mobile" />
         </div>
-        <TornDivider />
         <section className="bg-grid-rules px-5 py-16">
-          <Reveal>
-            <p className="text-center text-[22px] font-medium leading-[34px] text-black">{PHILOSOPHY}</p>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <ul className="mt-10 flex flex-wrap justify-center gap-3">
-              {PHILOSOPHY_CHIPS.map((chip, i) => (
-                <li key={chip.label}>
-                  <BounceChip className="text-[15px]" delay={i * 0.7}>
-                    [ {chip.label} ]
-                  </BounceChip>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <StickyNote className="relative mx-auto mt-12 h-[440px] w-[352px] max-w-full">
-              <Image src="/assets/landing/sticky-note-1.webp" alt="" fill sizes="352px" className="object-contain" />
-              <p className="font-script absolute left-1/2 top-[147px] w-[211px] -translate-x-1/2 text-center text-[18px] leading-[28px] tracking-[0.9px] text-black/75">
-                {NOTE}
-              </p>
-            </StickyNote>
-          </Reveal>
+          <PopIn y={22} scale={0.97} rotate={-1}>
+            <div className="mx-auto flex max-w-[560px] items-center justify-center border border-dashed border-black/20 bg-[#efede5] px-8 py-10">
+              <p className="font-script text-center text-[18px] leading-[36px] text-black/80">{NOTE}</p>
+            </div>
+          </PopIn>
+          <div className="mt-10 flex flex-wrap items-start justify-center gap-6">
+            {PLUS_BOXES.map((box, i) => (
+              <PopIn key={box.shape} delay={0.1 + i * 0.08} y={10} scale={0.55}>
+                {/* Compact offset: the card floats above the box on small screens. */}
+                <PlusReveal shape={box.shape} spinDuration={box.spin} offset={{ dx: -36, dy: -145 }} />
+              </PopIn>
+            ))}
+          </div>
         </section>
-        <TornDivider flip />
-        <section className="bg-grid-lines py-16">
+        <section data-section="projects" className="bg-grid-lines py-16">
           <Reveal>
             <SectionHeading
               title="my projects"

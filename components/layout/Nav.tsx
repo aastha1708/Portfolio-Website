@@ -3,22 +3,60 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { usePathname } from "next/navigation";
-import { useMagnetic } from "@/components/motion/useMagnetic";
+import { useState } from "react";
 
-const LINKS = [
+/**
+ * Morphic navbar (adapted from kokonutui/morphic-navbar).
+ *
+ * The link cluster is one continuous pill. The lifted item — hovered, or the
+ * active route when the pointer is elsewhere — pops out as its own rounded
+ * segment, and its neighbours' corners morph to wrap around the gap. Restyled
+ * from kokonut's black glass to the portfolio's paper palette: the cluster is
+ * a faint ink wash, the lifted segment is a white paper chip.
+ */
+
+type NavItem = {
+  label: string;
+  href: string;
+  ready: boolean;
+  /** Landing-page section id — scrolls instead of navigating when already home. */
+  anchor?: string;
+};
+
+const LINKS: NavItem[] = [
   { label: "About", href: "/about", ready: true },
-  { label: "Work", href: "/work", ready: false },
+  { label: "Work", href: "/#projects", ready: true, anchor: "projects" },
   { label: "Playground", href: "/playground", ready: false },
   { label: "Visitor Gallery", href: "/gallery", ready: false },
 ];
 
-/* Shared pill treatment: padding is cancelled with negative margins so the
-   highlight can appear on hover without shifting the text. */
-const PILL =
-  "relative inline-block rounded-full px-[10px] py-[5px] -mx-[10px] -my-[5px] transition-colors duration-200";
+/* Light-mode take on the kokonut cluster: the fused blocks are a soft ink
+   wash instead of solid black, and the lifted segment is a white paper pill
+   carried by its shadow. Same morph, palette that belongs to this site. */
+const SEGMENT =
+  "flex items-center justify-center whitespace-nowrap bg-black/[0.05] py-[7px] px-[16px] text-[13px] text-black/60 transition-all duration-300 max-lg:px-[10px] max-lg:text-[12px]";
 
 export default function Nav() {
   const reduceMotion = useReducedMotion();
+  const pathname = usePathname();
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  const activeLabel = LINKS.find((l) => l.ready && !l.anchor && pathname.startsWith(l.href))?.label ?? null;
+  const lifted = hovered ?? activeLabel;
+
+  const scrollToAnchor = (anchor: string) => (e: React.MouseEvent) => {
+    if (pathname !== "/") return; // let the /#anchor navigation happen
+    e.preventDefault();
+    // Desktop and mobile render separate sections — scroll whichever is live.
+    const targets = document.querySelectorAll<HTMLElement>(`[data-section="${anchor}"]`);
+    for (const el of targets) {
+      if (el.offsetParent !== null || el.getClientRects().length) {
+        el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+        return;
+      }
+    }
+  };
+
   return (
     <motion.header
       className="absolute inset-x-0 top-0 z-50"
@@ -26,63 +64,66 @@ export default function Nav() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Full-bleed row, 60px from each edge (Figma frame 246:2522) — the logo
+      {/* Full-bleed row, 60px from each edge (Figma frame 394:1269) — the logo
           and the link cluster sit at opposite ends of the whole page. */}
       <nav
         aria-label="Primary"
-        className="flex w-full items-center justify-between px-gutter py-[34px] text-[13px] max-lg:px-5 max-lg:py-6"
+        className="flex w-full items-center justify-between px-gutter py-[34px] max-lg:px-5 max-lg:py-6"
       >
-        <Link href="/" data-cursor="hover" className="font-medium tracking-tight">
+        <Link href="/" data-cursor="hover" className="text-[13px] font-medium tracking-tight">
           Aastha
         </Link>
-        <ul className="flex items-center gap-[36px] max-lg:gap-5">
-          {LINKS.map(({ label, href, ready }) => (
-            <li key={label}>
-              {ready ? (
-                <NavLink href={href} label={label} />
-              ) : (
-                /* Coming-soon pages read exactly like inactive links — the
-                   hover label is what communicates their state. */
-                <span
-                  data-cursor="label"
-                  data-cursor-text="Coming soon"
-                  className={`${PILL} cursor-default text-ink-muted hover:bg-black/[0.04]`}
-                  aria-disabled="true"
-                >
-                  {label}
-                </span>
-              )}
-            </li>
-          ))}
+
+        <ul
+          className="flex items-stretch overflow-hidden rounded-xl"
+          onPointerLeave={() => setHovered(null)}
+        >
+          {LINKS.map((item, i) => {
+            const isLifted = lifted === item.label;
+            const prev = i > 0 ? LINKS[i - 1] : null;
+            const next = i < LINKS.length - 1 ? LINKS[i + 1] : null;
+            /* The kokonut morph: every segment is a solid ink block; the
+               lifted one detaches as its own rounded pill (the mx margin opens
+               a gap of page colour), and its neighbours' corners round toward
+               the gap so the cluster appears to split and re-fuse. */
+            const shape = isLifted
+              ? "mx-2 rounded-xl !bg-white font-semibold !text-black shadow-[0_1px_6px_rgba(15,23,42,0.12)]"
+              : [
+                  (i === 0 || lifted === prev?.label) && "rounded-l-xl",
+                  (i === LINKS.length - 1 || lifted === next?.label) && "rounded-r-xl",
+                ]
+                  .filter(Boolean)
+                  .join(" ");
+
+            return (
+              <li key={item.label} className="flex" onPointerEnter={() => setHovered(item.label)}>
+                {item.ready ? (
+                  <Link
+                    href={item.href}
+                    data-cursor="hover"
+                    aria-current={activeLabel === item.label ? "page" : undefined}
+                    onClick={item.anchor ? scrollToAnchor(item.anchor) : undefined}
+                    className={`${SEGMENT} ${shape}`}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  /* Coming-soon pages morph like real links — the hover cursor
+                     label is what communicates their state. */
+                  <span
+                    data-cursor="label"
+                    data-cursor-text="Coming soon"
+                    aria-disabled="true"
+                    className={`${SEGMENT} ${shape} cursor-default`}
+                  >
+                    {item.label}
+                  </span>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </motion.header>
-  );
-}
-
-function NavLink({ href, label }: { href: string; label: string }) {
-  const pathname = usePathname();
-  const active = pathname === href;
-  const magnetic = useMagnetic(0.25);
-
-  return (
-    <motion.span
-      ref={magnetic.ref as never}
-      onPointerMove={magnetic.onPointerMove}
-      onPointerLeave={magnetic.onPointerLeave}
-      style={{ x: magnetic.x, y: magnetic.y }}
-      className="inline-block"
-    >
-      <Link
-        href={href}
-        data-cursor="hover"
-        aria-current={active ? "page" : undefined}
-        className={`${PILL} hover:bg-black/[0.05] ${
-          active ? "text-black" : "text-ink-muted hover:text-black"
-        }`}
-      >
-        {label}
-      </Link>
-    </motion.span>
   );
 }

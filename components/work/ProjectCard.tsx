@@ -22,28 +22,15 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
       data-cursor-text="View case study"
     >
     <motion.article
-      className="group relative flex flex-col gap-[10px] bg-[#f5f4f1] p-[24px] shadow-paper"
+      className="group relative flex flex-col gap-[10px] rounded-[20px] bg-[#f5f4f1] p-[24px] shadow-paper"
       style={absolute ? { width: layout.innerWidth } : undefined}
-      whileHover={reduceMotion ? undefined : { y: -8, rotate: 0 }}
+      whileHover={reduceMotion ? undefined : { y: -8 }}
       transition={{ type: "spring", stiffness: 300, damping: 28 }}
     >
-      {layout.tape && (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 h-[55.408px] w-[114px] overflow-hidden transition-transform duration-300 group-hover:-translate-y-[3px]"
-          style={{
-            top: layout.tape.top,
-            transform: `translateX(calc(-50% + ${layout.tape.dx}px)) rotate(${layout.tape.rotate}deg)`,
-          }}
-        >
-          <Image src="/assets/landing/tape-1.webp" alt="" fill sizes="114px" className="object-cover" />
-        </span>
-      )}
-
       <div className="flex w-full flex-col gap-[24px]">
         {/* Image quietly pushes in on hover — the card is the target, the
             zoom just confirms it's live. */}
-        <div className="group/media relative h-[282px] w-full overflow-hidden">
+        <div className="group/media relative h-[282px] w-full overflow-hidden rounded-[16px]">
           {project.video ? (
             <>
               {/* Looping video, with a still poster for reduced-motion users. */}
@@ -80,7 +67,8 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
         <div className="flex w-full flex-col gap-[18px]">
           <div className="flex w-full flex-col gap-[12px]">
             <div className="flex w-full items-center justify-between whitespace-nowrap leading-[22px] tracking-[-0.408px]">
-              <h3 className="font-serif text-[28px] font-medium text-black">{project.title}</h3>
+              {/* Canela Text Medium (Figma 414:2710) — matches the display face. */}
+              <h3 className="font-display text-[26px] font-medium text-black">{project.title}</h3>
               <span className="font-script text-[18px] text-ink-muted">{project.year}</span>
             </div>
             <p className="w-full text-[16px] leading-[20px] text-ink-muted">{project.description}</p>
@@ -104,11 +92,8 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
   if (!absolute) return card;
 
   return (
-    <div
-      className="absolute flex items-center justify-center"
-      style={{ left: layout.left, top: layout.top, width: layout.width, height: layout.height }}
-    >
-      <div style={{ transform: `rotate(${layout.rotate}deg)` }}>{card}</div>
+    <div className="absolute" style={{ left: layout.left, top: layout.top, width: layout.width }}>
+      {card}
     </div>
   );
 }

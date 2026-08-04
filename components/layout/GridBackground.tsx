@@ -26,18 +26,20 @@ export default function GridBackground({ bands }: { bands: Band[] }) {
 }
 
 /**
- * Landing page — one band per background frame in the Figma file:
- *   "Line grid/ section 1"        0 → 960   (hero, full graph grid)
- *   "Horizontal line/ section 2"  1105 → 1705 (philosophy, rules only —
+ * Landing page — one band per background frame in Figma FINAL_VERSION
+ * (394:1126):
+ *   "Line grid/ section 1"        0 → 960    (hero, full graph grid)
+ *   "Horizontal line/ section 2"  1025 → 1625 (note + plus boxes, rules only —
  *      note the deliberate plain-paper gaps around it)
- *   "Line grid/ section 3"        1760 → 3080 (projects)
- *   "Dotted bg/ section 4"        3039 → end  (footer dot field)
+ *   "Line grid/ section 3"        1704 → 3024 (projects)
+ *
+ * The footer dot field (3039 → end) is no longer a CSS band: DotGridMouse
+ * draws the identical field on canvas so the dots can follow the cursor.
  */
 export const LANDING_BANDS: Band[] = [
   { top: 0, height: 960, variant: "lines" },
-  { top: 1105, height: 600, variant: "rules" },
-  { top: 1760, height: 1320, variant: "lines" },
-  { top: 3039, height: 618, variant: "dots" },
+  { top: 1025, height: 600, variant: "rules" },
+  { top: 1704, height: 1320, variant: "lines" },
 ];
 
 /**

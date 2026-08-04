@@ -25,12 +25,21 @@ export const metadata: Metadata = {
     "Designing, tinkering, drinking coffee. Product and UX design portfolio of Aastha Singh, Delhi, India.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+  sheet,
+}: {
+  children: React.ReactNode;
+  /** Parallel slot for intercepted /work routes — the case-study bottom
+   *  sheet renders here, over the still-mounted page (see app/@sheet). */
+  sheet: React.ReactNode;
+}) {
   return (
     <html lang="en" className={`${ibmPlexSerif.variable} ${homemadeApple.variable}`}>
-      <body className="min-h-screen bg-[#f5f5f5] antialiased">
+      <body className="min-h-screen bg-paper antialiased">
         <Cursor />
         {children}
+        {sheet}
       </body>
     </html>
   );

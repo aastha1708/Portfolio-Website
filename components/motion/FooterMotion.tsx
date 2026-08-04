@@ -31,10 +31,16 @@ export default function FooterMotion({
     <motion.div
       className={className}
       style={style}
-      initial={{ opacity: 0, y: 56, rotate: 0 }}
-      whileInView={{ opacity: 1, y: 0, rotate }}
+      /* Rises further, over-rotated and slightly small, then spring-settles
+         into its resting tilt — a postcard tossed onto the desk rather than
+         a block fading in. */
+      initial={{ opacity: 0, y: 84, rotate: rotate - 2.4, scale: 0.975 }}
+      whileInView={{ opacity: 1, y: 0, rotate, scale: 1 }}
       viewport={{ once: true, amount: 0.3 }}
-      transition={{ type: "spring", stiffness: 70, damping: 14, mass: 0.9 }}
+      transition={{
+        opacity: { duration: 0.4 },
+        default: { type: "spring", stiffness: 90, damping: 13, mass: 0.9 },
+      }}
     >
       {children}
     </motion.div>

@@ -8,16 +8,15 @@ export type Project = {
   image: string;
   /** Optional looping video that replaces the still. */
   video?: string;
-  /** Desktop scatter geometry, straight from Figma (frame 246:2575, 1324x983). */
+  /** Desktop scatter geometry, straight from Figma FINAL_VERSION frame
+   *  414:2699 (1324x983). The Aug 2026 revision straightened the cards
+   *  (no rotation) and dropped the tape strips for a cleaner rounded look. */
   layout: {
     left: number;
     top: number;
     width: number;
     height: number;
-    rotate: number;
     innerWidth: number;
-    /** Tape strip offset relative to card centre. */
-    tape: { dx: number; top: number; rotate: number } | null;
   };
 };
 
@@ -30,12 +29,7 @@ export const PROJECTS: Project[] = [
       "A career exploration app focused on self-discovery of users. A career guide that understands you. Won 3rd place in India's first AI-focused designathon.",
     tags: ["Designathon", "Developed"],
     image: "/assets/landing/kora-thumbnail.webp",
-    layout: {
-      left: 0.27, top: 0.24, width: 713.739, height: 479.086, rotate: -0.66,
-      /* Tape centres measured from Figma nodes 246:2594/2626/2641/2609 —
-         roughly a third above the card edge, two thirds stuck onto it. */
-      innerWidth: 708.389, tape: { dx: 2, top: -18, rotate: -5.09 },
-    },
+    layout: { left: 0.27, top: 8.36, width: 713.739, height: 479.086, innerWidth: 713.739 },
   },
   {
     id: "digital-gold",
@@ -46,10 +40,7 @@ export const PROJECTS: Project[] = [
     tags: ["Redesign"],
     image: "/assets/landing/digital-gold-thumbnail-poster.webp",
     video: "/assets/landing/digital-gold-thumbnail.mp4",
-    layout: {
-      left: 752, top: 0, width: 572.145, height: 455.876, rotate: 1,
-      innerWidth: 564.446, tape: { dx: 18.7, top: -24.3, rotate: 6.92 },
-    },
+    layout: { left: 759.787, top: 0, width: 572.145, height: 455.876, innerWidth: 572.145 },
   },
   {
     id: "credit-card-onboarding",
@@ -60,10 +51,7 @@ export const PROJECTS: Project[] = [
     tags: ["Internship", "Shipped"],
     image: "/assets/landing/cc-onboarding-thumbnail-poster.webp",
     video: "/assets/landing/cc-onboarding-thumbnail.mp4",
-    layout: {
-      left: 0, top: 525, width: 635.619, height: 458.547, rotate: 1.15,
-      innerWidth: 626.817, tape: { dx: -1.7, top: -33.3, rotate: 5.92 },
-    },
+    layout: { left: 8.928, top: 525, width: 635.619, height: 458.547, innerWidth: 635.619 },
   },
   {
     id: "sahayak",
@@ -73,9 +61,6 @@ export const PROJECTS: Project[] = [
       "An accessible smartphone user interface for elderly and low-literacy users using voice modality, AI support and intuitive UI for essential tasks",
     tags: ["Side Project"],
     image: "/assets/landing/sahayak-thumbnail.webp",
-    layout: {
-      left: 669, top: 506, width: 655.191, height: 478.415, rotate: -0.66,
-      innerWidth: 601.837 + 48, tape: { dx: 7.3, top: -30.3, rotate: -5.09 },
-    },
+    layout: { left: 669, top: 513.446, width: 655.191, height: 478.415, innerWidth: 655.191 },
   },
 ];

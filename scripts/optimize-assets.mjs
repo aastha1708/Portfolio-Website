@@ -72,21 +72,29 @@ try {
   console.warn("! ffmpeg not found — skipping video conversion\n");
 }
 
-for (const [sourceDir, outDir] of Object.entries(SECTIONS)) {
-  const from = path.join(SOURCE, sourceDir);
-  const to = path.join(OUT, outDir);
+async function processDir(from, to) {
   await mkdir(to, { recursive: true });
 
   let files;
   try {
-    files = await readdir(from);
+    files = await readdir(from, { withFileTypes: true });
   } catch {
     console.warn(`! missing ${from} — skipped`);
-    continue;
+    return;
   }
 
-  for (const file of files.sort()) {
+  for (const entry of files.sort((a, b) => a.name.localeCompare(b.name))) {
+    const file = entry.name;
     const input = path.join(from, file);
+
+    // Recurse into subfolders (e.g. "Landing page/New_ver" -> landing/new-ver).
+    // "Old_ver" archives are skipped: their outputs already live at the section root.
+    if (entry.isDirectory()) {
+      if (/^old[-_ ]?ver/i.test(file)) continue;
+      await processDir(input, path.join(to, webName(file)));
+      continue;
+    }
+
     const ext = path.extname(file).toLowerCase();
     if (![".png", ".jpg", ".jpeg", ".mp4"].includes(ext)) continue;
 
@@ -104,6 +112,10 @@ for (const [sourceDir, outDir] of Object.entries(SECTIONS)) {
       console.log(`${webName(file)}.webp`);
     }
   }
+}
+
+for (const [sourceDir, outDir] of Object.entries(SECTIONS)) {
+  await processDir(path.join(SOURCE, sourceDir), path.join(OUT, outDir));
 }
 
 const mb = (n) => (n / 1048576).toFixed(1);

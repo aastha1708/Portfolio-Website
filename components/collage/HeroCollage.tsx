@@ -1,16 +1,30 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
-import { useEffect } from "react";
+import { MotionConfig, motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import CollageItem from "./CollageItem";
-import { HERO_ITEMS, HERO_GROUP } from "@/lib/collage-landing";
+import { HERO_ITEMS, HERO_GROUP, HERO_CENTER } from "@/lib/collage-landing";
+import { useStageScale } from "@/components/layout/ScaledStage";
+
+/** The deal-out plays once per visit — returning from a case study should
+ *  feel instant, not make the visitor sit through the intro again. */
+const DEALT_KEY = "hero-dealt";
 
 export default function HeroCollage({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
   const reduceMotion = useReducedMotion();
+  const scale = useStageScale();
+  const deskRef = useRef<HTMLDivElement>(null);
   const nx = useMotionValue(0);
   const ny = useMotionValue(0);
   const sx = useSpring(nx, { stiffness: 50, damping: 20, mass: 0.6 });
   const sy = useSpring(ny, { stiffness: 50, damping: 20, mass: 0.6 });
+
+  // Read once on the client; the server renders the pre-deal state either way.
+  const [dealt] = useState(() => typeof window !== "undefined" && sessionStorage.getItem(DEALT_KEY) === "1");
+
+  useEffect(() => {
+    sessionStorage.setItem(DEALT_KEY, "1");
+  }, []);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -26,30 +40,43 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
 
   return (
     <section aria-label="Introduction">
-      <div
-        className="absolute"
-        style={{
-          left: HERO_GROUP.left,
-          top: HERO_GROUP.top,
-          width: HERO_GROUP.width,
-          height: HERO_GROUP.height,
-        }}
-      >
-        {HERO_ITEMS.map((item, i) => (
-          <CollageItem key={item.id} item={item} index={i} pointer={{ nx: sx, ny: sy }} />
-        ))}
-      </div>
+      {/* The stage is CSS-scaled to the viewport, so pointer deltas must be
+          divided back into canvas px for dragging to track the cursor 1:1. */}
+      <MotionConfig transformPagePoint={(p) => ({ x: p.x / scale, y: p.y / scale })}>
+        <div
+          ref={deskRef}
+          className="absolute"
+          style={{
+            left: HERO_GROUP.left,
+            top: HERO_GROUP.top,
+            width: HERO_GROUP.width,
+            height: HERO_GROUP.height,
+          }}
+        >
+          {HERO_ITEMS.map((item, i) => (
+            <CollageItem
+              key={item.id}
+              item={item}
+              index={i}
+              pointer={{ nx: sx, ny: sy }}
+              dealFrom={HERO_CENTER}
+              dealt={dealt}
+              drag
+              dragConstraints={deskRef}
+            />
+          ))}
+        </div>
+      </MotionConfig>
 
       {/* z-10 keeps the name + subheading above the chips: in the design the
-          "[ UI/UX Designer ]" label tucks BEHIND the subheading, not over it. */}
-      <div className="pointer-events-none absolute left-[438px] top-[300px] z-10 flex w-[564px] flex-col items-center justify-center gap-[16px]">
+          "[ Product Designer ]" label tucks BEHIND the subheading, not over it. */}
+      <div className="pointer-events-none absolute left-[442px] top-[338px] z-10 flex w-[564px] flex-col items-center justify-center gap-[16px]">
         <Wordmark />
       </div>
 
-      {/* Figma frame 246:2558: bbox (437.7, 419) 194.1x75.7 for a ~40px
-          chip → unrotated top-left (440, 435), tilted 11° clockwise. */}
+      {/* Figma frames 394:1286/1296: chips tucked under the wordmark. */}
       <motion.span
-        className="chip absolute left-[440px] top-[435px] z-0 rotate-[11deg]"
+        className="chip absolute left-[444px] top-[474px] z-0 rotate-[11deg]"
         initial={reduceMotion ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.75, duration: 0.5 }}
@@ -57,7 +84,7 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
         [ Product Designer ]
       </motion.span>
       <motion.span
-        className="chip absolute left-[870px] top-[470px] z-0 rotate-[3deg]"
+        className="chip absolute left-[874px] top-[483px] z-0 rotate-[3deg]"
         initial={reduceMotion ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.85, duration: 0.5 }}
@@ -72,9 +99,8 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
   const reduceMotion = useReducedMotion();
   return (
     <>
-      {/* Canela Text Regular Italic (Figma 246:2530) replaced the script
-          wordmark. A single calm rise suits the serif better than the old
-          per-character draw-on — the elegance is in the letterforms now. */}
+      {/* Canela Text Regular Italic (Figma 414:2269). A single calm rise
+          suits the serif — the elegance is in the letterforms. */}
       <motion.h1
         className={`font-display w-full text-center text-black ${
           mobile ? "text-[44px] leading-[52px] tracking-[-1.3px]" : "text-[72px] leading-[96px] tracking-[-2.16px]"
@@ -104,16 +130,15 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
-/** Purpose-built small-screen hero: a curated six rather than all fifteen.
-    (The book and airpods left the desk in the July 2026 revision — the
-    seashell takes the book's old spot.) */
+/** Purpose-built small-screen hero: a curated six from the FINAL_VERSION
+    keepsakes rather than all of them. */
 const MOBILE_PICKS = [
-  { id: "polaroid-beach", src: "/assets/landing/polaroid-beach.webp", w: 118, cls: "left-[1%] top-[4%] -rotate-6" },
-  { id: "seashell", src: "/assets/landing/seashell.webp", w: 110, cls: "left-[-4%] bottom-[8%] -rotate-12" },
-  { id: "coffee", src: "/assets/landing/coffee.webp", w: 60, cls: "right-[7%] top-[9%] rotate-3" },
-  { id: "camera", src: "/assets/landing/camera.webp", w: 142, cls: "right-[-7%] bottom-[12%] rotate-6" },
-  { id: "orchid", src: "/assets/landing/orchid.webp", w: 92, cls: "left-[14%] top-[36%] rotate-12" },
-  { id: "daisy", src: "/assets/landing/daisy.webp", w: 68, cls: "right-[16%] top-[42%] -rotate-6" },
+  { id: "polaroid-beach", src: "/assets/landing/new-ver/56-2.webp", w: 112, cls: "right-[2%] top-[4%] rotate-3" },
+  { id: "heart", src: "/assets/landing/new-ver/56-3.webp", w: 86, cls: "left-[-2%] top-[8%] -rotate-6" },
+  { id: "cat", src: "/assets/landing/new-ver/56-1.webp", w: 104, cls: "left-[-4%] bottom-[10%] -rotate-3" },
+  { id: "headphones", src: "/assets/landing/new-ver/55-4.webp", w: 128, cls: "right-[-6%] bottom-[8%] rotate-6" },
+  { id: "latte", src: "/assets/landing/new-ver/55-5.webp", w: 74, cls: "right-[14%] top-[40%] rotate-6" },
+  { id: "flower-pink", src: "/assets/landing/new-ver/55-2.webp", w: 72, cls: "left-[12%] top-[38%] rotate-12" },
 ];
 
 function HeroMobile() {
