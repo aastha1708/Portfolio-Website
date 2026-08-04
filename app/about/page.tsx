@@ -8,6 +8,8 @@ import FavouritesCarousel from "@/components/about/FavouritesCarousel";
 import { ABOUT_PHOTOS } from "@/lib/collage-about";
 import { COMMUNITIES, EXPERIENCE, type Experience } from "@/lib/about";
 import GridBackground, { ABOUT_BANDS } from "@/components/layout/GridBackground";
+import FooterField from "@/components/layout/FooterField";
+import DotGridMouse from "@/components/motion/DotGridMouse";
 import Reveal from "@/components/motion/Reveal";
 import FooterMotion from "@/components/motion/FooterMotion";
 
@@ -105,6 +107,9 @@ export default function AboutPage() {
             <FavouritesCarousel />
           </Reveal>
 
+          {/* Footer dot field — canvas twin of .bg-grid-dots that leans
+              toward the cursor, same as the landing page. */}
+          <DotGridMouse fullBleed className="absolute" style={{ top: 1965, height: 560 }} />
           <FooterMotion style={{ position: "absolute", left: 122, top: 2056, width: 1195 }}>
             <PostcardFooter />
           </FooterMotion>
@@ -153,11 +158,7 @@ export default function AboutPage() {
         </section>
         </div>
 
-        <div className="bg-grid-dots px-5 pb-16 pt-8">
-          <FooterMotion>
-            <PostcardFooter />
-          </FooterMotion>
-        </div>
+        <FooterField />
       </div>
     </main>
   );

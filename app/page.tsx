@@ -5,6 +5,7 @@ import PostcardFooter from "@/components/layout/PostcardFooter";
 import ProjectGrid from "@/components/work/ProjectGrid";
 import HeroCollage from "@/components/collage/HeroCollage";
 import GridBackground, { LANDING_BANDS } from "@/components/layout/GridBackground";
+import FooterField from "@/components/layout/FooterField";
 import Reveal from "@/components/motion/Reveal";
 import PopIn from "@/components/motion/PopIn";
 import PlusReveal from "@/components/motion/PlusReveal";
@@ -108,11 +109,7 @@ export default function LandingPage() {
           </Reveal>
           <ProjectGrid />
         </section>
-        <div className="bg-grid-dots px-5 py-16">
-          <FooterMotion>
-            <PostcardFooter />
-          </FooterMotion>
-        </div>
+        <FooterField />
       </div>
     </main>
   );

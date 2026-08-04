@@ -100,7 +100,7 @@ export default function Nav() {
                 {item.ready ? (
                   <Link
                     href={item.href}
-                    data-cursor="hover"
+                    data-cursor="snap"
                     aria-current={activeLabel === item.label ? "page" : undefined}
                     onClick={item.anchor ? scrollToAnchor(item.anchor) : undefined}
                     className={`${SEGMENT} ${shape}`}

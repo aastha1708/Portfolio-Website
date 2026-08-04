@@ -67,8 +67,9 @@ export default function ProjectCard({ project, absolute = true }: { project: Pro
         <div className="flex w-full flex-col gap-[18px]">
           <div className="flex w-full flex-col gap-[12px]">
             <div className="flex w-full items-center justify-between whitespace-nowrap leading-[22px] tracking-[-0.408px]">
-              {/* Canela Text Medium (Figma 414:2710) — matches the display face. */}
-              <h3 className="font-display text-[26px] font-medium text-black">{project.title}</h3>
+              {/* Canela Text Medium (Figma 414:2710) — the roman cut. The
+                  italic is the hero's voice; card titles are upright. */}
+              <h3 className="font-display-roman text-[26px] font-medium text-black">{project.title}</h3>
               <span className="font-script text-[18px] text-ink-muted">{project.year}</span>
             </div>
             <p className="w-full text-[16px] leading-[20px] text-ink-muted">{project.description}</p>

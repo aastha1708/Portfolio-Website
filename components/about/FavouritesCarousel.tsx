@@ -50,24 +50,31 @@ export default function FavouritesCarousel() {
               animate={{ opacity: 1 }}
               exit={reduceMotion ? undefined : { opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className={`flex w-full justify-center max-lg:flex-wrap ${
-                category.kind === "wide" ? "items-center gap-[48px]" : "items-start gap-[12px]"
+              className={`flex w-full items-start justify-center max-lg:flex-wrap ${
+                category.kind === "wide" ? "gap-[48px]" : "gap-[24px]"
               }`}
             >
               {category.items.map((item) => (
                 /* Hover: the cover straightens and lifts, like picking it
-                   off the shelf — mirrors the project-card hover. */
+                   off the shelf — mirrors the project-card hover.
+                   The figure is pinned to the cover's width: left free, a
+                   long title (“How to Lose a Guy in 10 Days”) stretches its
+                   own flex item wider than the artwork and knocks the whole
+                   shelf out of rhythm. Books only looked right because every
+                   title happened to be short. */
                 <motion.figure
                   key={item.title}
-                  className="flex flex-col items-start justify-center"
+                  className={`flex shrink-0 flex-col items-start ${
+                    category.kind === "wide" ? "w-[311px]" : "w-[217px]"
+                  }`}
                   style={{ rotate: item.rotate ?? 0 }}
                   whileHover={reduceMotion ? undefined : { rotate: 0, y: -8, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 260, damping: 20 }}
                   data-cursor="hover"
                 >
                   <div
-                    className={`relative ${
-                      category.kind === "wide" ? "h-[216px] w-[311px]" : "h-[293px] w-[217px]"
+                    className={`relative w-full ${
+                      category.kind === "wide" ? "h-[216px]" : "h-[293px]"
                     }`}
                   >
                     {item.cover && (
@@ -80,14 +87,17 @@ export default function FavouritesCarousel() {
                       />
                     )}
                   </div>
-                  <figcaption
-                    className={`flex flex-col gap-[4px] pt-3 ${
-                      category.kind === "wide" ? "px-[32px]" : ""
-                    }`}
-                  >
-                    <span className="text-[20px] font-medium tracking-[-0.2px] text-black">{item.title}</span>
+                  {/* Fixed caption height so a two-line title doesn't shove
+                      its neighbours' baselines around, and so the shelf keeps
+                      the same height as you step between categories. */}
+                  <figcaption className="flex h-[62px] w-full flex-col gap-[4px] pt-3">
+                    <span className="text-[20px] font-medium leading-[24px] tracking-[-0.2px] text-black">
+                      {item.title}
+                    </span>
                     {item.author && (
-                      <span className="text-[14px] uppercase tracking-[-0.14px] text-ink-muted">{item.author}</span>
+                      <span className="text-[14px] uppercase leading-[16px] tracking-[-0.14px] text-ink-muted">
+                        {item.author}
+                      </span>
                     )}
                   </figcaption>
                 </motion.figure>

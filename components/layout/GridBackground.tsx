@@ -43,11 +43,10 @@ export const LANDING_BANDS: Band[] = [
 ];
 
 /**
- * About page (July 2026 revision) — the graph grid now runs the whole page:
+ * About page (July 2026 revision) — the graph grid runs the whole page:
  * hero, communities and favourites all sit on it (Frames 51 + 61 in the
- * file); dots start with the footer (Frame 88 at 1965).
+ * file). The footer's dot field (from 1965) is no longer a CSS band here
+ * either: DotGridMouse draws it so the dots follow the cursor, exactly as on
+ * the landing page.
  */
-export const ABOUT_BANDS: Band[] = [
-  { top: 0, height: 1915, variant: "lines" },
-  { top: 1965, height: 560, variant: "dots" },
-];
+export const ABOUT_BANDS: Band[] = [{ top: 0, height: 1915, variant: "lines" }];

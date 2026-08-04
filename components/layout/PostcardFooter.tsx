@@ -34,7 +34,7 @@ export default function PostcardFooter() {
             <li key={label} className="flex items-center border-b-[1.5px] border-solid border-[#888]">
               <a
                 href={href}
-                data-cursor="hover"
+                data-cursor="snap"
                 className="flex items-center text-[14px] font-medium leading-[30px] text-black transition-opacity hover:opacity-60"
                 {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer noopener" } : {})}
               >

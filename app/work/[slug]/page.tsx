@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Nav from "@/components/layout/Nav";
 import CaseStudyBody from "@/components/work/CaseStudyBody";
 import { PROJECTS } from "@/lib/projects";
 
@@ -29,10 +28,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const project = PROJECTS.find((p) => p.id === slug);
   if (!project) notFound();
 
-  return (
-    <main className="relative min-h-screen bg-grid-lines">
-      <Nav />
-      <CaseStudyBody project={project} />
-    </main>
-  );
+  /* CaseStudyBody brings its own shell (nav, contents column, footer) so the
+     standalone route and the intercepted sheet render identically. */
+  return <CaseStudyBody project={project} />;
 }

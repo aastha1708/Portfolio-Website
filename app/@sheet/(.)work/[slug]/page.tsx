@@ -18,7 +18,7 @@ export default async function InterceptedCaseStudy({ params }: { params: Promise
 
   return (
     <ProjectSheet>
-      {slug === "kora" ? <KoraPage /> : <CaseStudyBody project={project} inSheet />}
+      {slug === "kora" ? <KoraPage /> : <CaseStudyBody project={project} />}
     </ProjectSheet>
   );
 }
