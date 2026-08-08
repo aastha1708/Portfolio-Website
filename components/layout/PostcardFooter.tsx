@@ -9,7 +9,7 @@ const LINKS = [
 /** Shared postcard footer — identical on the landing and about pages. */
 export default function PostcardFooter() {
   return (
-    <footer className="relative flex w-full gap-[56px] border border-solid border-[#ddd] bg-[#f5f4f1] px-[40px] py-[32px] shadow-paper max-lg:flex-col max-lg:gap-8">
+    <footer className="relative flex w-full gap-[56px] border border-solid border-hairline bg-plate px-[40px] py-[32px] shadow-paper max-lg:flex-col max-lg:gap-8">
       <div className="flex shrink-0 flex-col gap-[32px] border-dashed border-[#999] py-[28px] lg:w-[657.576px] lg:border-r max-lg:border-b max-lg:pb-8">
         <p className="font-script text-[32px] leading-[56px] text-black lg:w-[603.8px] max-lg:text-[24px] max-lg:leading-[40px]">
           like art, their perception of you is an interpretation.

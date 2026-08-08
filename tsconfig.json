@@ -35,7 +35,15 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     ".next-sandbox/types/**/*.ts",
-    ".next-sandbox/dev/types/**/*.ts"
+    ".next-sandbox/dev/types/**/*.ts",
+    "/tmp/nextsb/.next/types/**/*.ts",
+    "/tmp/nextsb/.next/dev/types/**/*.ts",
+    "/tmp/nextsb2/.next/types/**/*.ts",
+    "/tmp/nextsb2/.next/dev/types/**/*.ts",
+    "/tmp/nextsb3/.next/types/**/*.ts",
+    "/tmp/nextsb3/.next/dev/types/**/*.ts",
+    "/tmp/nsb4/.next/types/**/*.ts",
+    "/tmp/nsb4/.next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

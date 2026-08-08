@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { usePathname } from "next/navigation";
@@ -33,8 +34,10 @@ const LINKS: NavItem[] = [
 /* Light-mode take on the kokonut cluster: the fused blocks are a soft ink
    wash instead of solid black, and the lifted segment is a white paper pill
    carried by its shadow. Same morph, palette that belongs to this site. */
+/* px-[14px] gives the 28px gap between labels that the Figma row specifies,
+   since the gap there is measured text-edge to text-edge. */
 const SEGMENT =
-  "flex items-center justify-center whitespace-nowrap bg-black/[0.05] py-[7px] px-[16px] text-[13px] text-black/60 transition-all duration-300 max-lg:px-[10px] max-lg:text-[12px]";
+  "flex items-center justify-center whitespace-nowrap bg-black/[0.05] py-[9px] px-[14px] text-[16px] text-ink-muted transition-all duration-300 max-lg:px-[10px] max-lg:text-[13px]";
 
 export default function Nav() {
   const reduceMotion = useReducedMotion();
@@ -70,12 +73,26 @@ export default function Nav() {
         aria-label="Primary"
         className="flex w-full items-center justify-between px-gutter py-[34px] max-lg:px-5 max-lg:py-6"
       >
-        <Link href="/" data-cursor="hover" className="text-[13px] font-medium tracking-tight">
-          Aastha
+        <Link
+          href="/"
+          data-cursor="hover"
+          aria-label="Aastha Singh — home"
+          className="block size-[48px] shrink-0 overflow-hidden rounded-[4px] max-lg:size-[40px]"
+        >
+          <Image
+            src="/assets/landing/final/aastha-logo.webp"
+            alt=""
+            width={96}
+            height={96}
+            priority
+            className="size-full object-cover"
+          />
         </Link>
 
+        {/* -mr matches the segment's own padding, so the cluster's text edge —
+            not its hover pill — lines up with the 60px page gutter. */}
         <ul
-          className="flex items-stretch overflow-hidden rounded-xl"
+          className="-mr-[14px] flex items-stretch overflow-hidden rounded-xl max-lg:-mr-[10px]"
           onPointerLeave={() => setHovered(null)}
         >
           {LINKS.map((item, i) => {

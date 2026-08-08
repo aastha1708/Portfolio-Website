@@ -1,26 +1,32 @@
 /**
- * Hero collage — geometry from Figma frame 394:1126 "FINAL_VERSION"
- * (August 2026 revision).
+ * Hero collage — geometry from Figma frame 538:4602 "Landing page"
+ * (page "Final version", August 2026 revision).
  *
- * The redesign swapped the logo-heavy desk for pure keepsakes: pressed
- * flowers, a film camera, the beach polaroid, headphones, a latte, Milo the
- * cat. No links — every sticker is now a loose object the visitor can pick
- * up and drag around the desk (see CollageItem's drag support).
+ * The keepsakes survived the redesign but shrank by roughly a third, and the
+ * postmark and yellow flower were dropped: eight objects, not ten. Smaller
+ * stickers leave the heading room to be the loudest thing on the page, which
+ * it wasn't before.
  *
  * ARRAY ORDER IS PAINT ORDER (bottom → top), taken 1:1 from the Figma layer
  * stack. DOM order does the layering, so no z-index juggling.
  *
- * Each `box` is the object's visual footprint on the 1440 canvas.
+ * `box` is each object's UNROTATED footprint, derived from its Figma centre
+ * (absoluteBoundingBox mid-point) rather than its x/y, because Figma reports
+ * the rotated origin and CSS rotates about the centre — using x/y directly
+ * would drift the tilted objects by up to ~30px.
+ *
+ * `rotate` is CSS-positive (clockwise) = negated Figma rotation.
+ *
  * Moving an object = editing one line here.
  */
 
 import type { CollageItem } from "./collage";
 
-export const HERO_GROUP = { left: 0, top: 0, width: 1440, height: 960 } as const;
+export const HERO_GROUP = { left: 0, top: 0, width: 1440, height: 939 } as const;
 
-/** Deal-out origin: the wordmark's optical centre. Stickers open up from
- *  here to their resting spots when the hero first comes into view. */
-export const HERO_CENTER = { x: 720, y: 430 } as const;
+/** Deal-out origin: the centre of the heading block (Figma 538:4721). The
+ *  stickers open up from behind the type to their resting spots. */
+export const HERO_CENTER = { x: 720, y: 420 } as const;
 
 export const HERO_ITEMS: CollageItem[] = [
   /* ---- bottom of the stack ---- */
@@ -28,7 +34,7 @@ export const HERO_ITEMS: CollageItem[] = [
     id: "camera",
     src: "/assets/landing/new-ver/55-1.webp",
     alt: "Film camera",
-    box: { left: 1204, top: 215, width: 174, height: 153 },
+    box: { left: 1151, top: 236, width: 116, height: 102 },
     cursor: "say cheese",
     depth: 1,
   },
@@ -36,7 +42,8 @@ export const HERO_ITEMS: CollageItem[] = [
     id: "flower-pink",
     src: "/assets/landing/new-ver/55-2.webp",
     alt: "",
-    box: { left: 58, top: 101, width: 121, height: 107 },
+    box: { left: 102.8, top: 153.1, width: 91.8, height: 80.8 },
+    rotate: -2.7,
     cursor: "pressed & kept",
     idle: true,
     depth: 1.3,
@@ -45,7 +52,7 @@ export const HERO_ITEMS: CollageItem[] = [
     id: "cloud",
     src: "/assets/landing/new-ver/55-3.webp",
     alt: "",
-    box: { left: 362, top: 236, width: 106, height: 85 },
+    box: { left: 345, top: 175, width: 81, height: 65 },
     cursor: "head in the clouds",
     idle: true,
     depth: 1.2,
@@ -54,7 +61,8 @@ export const HERO_ITEMS: CollageItem[] = [
     id: "headphones",
     src: "/assets/landing/new-ver/55-4.webp",
     alt: "Headphones",
-    box: { left: 1002, top: 597, width: 223.616, height: 219.886 },
+    box: { left: 1059.5, top: 584.5, width: 131.3, height: 126.4 },
+    rotate: 21.3,
     cursor: "on loop",
     depth: 0.8,
   },
@@ -62,7 +70,7 @@ export const HERO_ITEMS: CollageItem[] = [
     id: "latte",
     src: "/assets/landing/new-ver/55-5.webp",
     alt: "Latte with heart art",
-    box: { left: 1174, top: 446, width: 139.442, height: 135.722 },
+    box: { left: 1222, top: 445, width: 111, height: 108 },
     cursor: "my fuel",
     depth: 1.2,
   },
@@ -70,7 +78,7 @@ export const HERO_ITEMS: CollageItem[] = [
     id: "cat",
     src: "/assets/landing/new-ver/56-1.webp",
     alt: "Milo the cat",
-    box: { left: 182, top: 660, width: 163, height: 171 },
+    box: { left: 239, top: 610, width: 115, height: 120 },
     cursor: "milo",
     depth: 0.9,
   },
@@ -78,34 +86,19 @@ export const HERO_ITEMS: CollageItem[] = [
     id: "polaroid-beach",
     src: "/assets/landing/new-ver/56-2.webp",
     alt: "Polaroid photo taken at the beach",
-    box: { left: 905, top: 140.206, width: 193.573, height: 199.835 },
+    box: { left: 941.2, top: 140.8, width: 87.4, height: 91.5 },
+    rotate: -11.4,
     cursor: "long time no sea",
     depth: 0.7,
   },
+  /* ---- top of the stack ---- */
   {
     id: "heart",
     src: "/assets/landing/new-ver/56-3.webp",
     alt: "",
-    box: { left: 106, top: 362.967, width: 133.081, height: 137.128 },
+    box: { left: 157.5, top: 436.1, width: 76.3, height: 79.9 },
+    rotate: -10.1,
     cursor: "made with love",
     depth: 1.1,
-  },
-  {
-    id: "postmark",
-    src: "/assets/landing/new-ver/56-4.webp",
-    alt: "",
-    box: { left: 239, top: 471, width: 161, height: 86 },
-    cursor: "sent with love",
-    depth: 0.6,
-  },
-  /* ---- top of the stack ---- */
-  {
-    id: "flower-yellow",
-    src: "/assets/landing/new-ver/how-to-become-a-content-creator-(6).webp",
-    alt: "",
-    box: { left: 1250, top: 672.534, width: 125.034, height: 130.128 },
-    cursor: "picked fresh",
-    idle: true,
-    depth: 1.4,
   },
 ];

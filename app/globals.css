@@ -9,23 +9,31 @@
   --color-ink-muted: #666666;
   --color-chip-bg: #ffd5e4;
   --color-chip-text: #9e3950;
-  /* Ruling is deliberately faint — it should read as paper texture, not as a
-     layer competing with the content. Aug 2026: halved again (the lines were
-     fighting the collage on large screens). */
-  --color-grid-line: rgb(228 228 228 / 0.5);
+  /* Ruling: the Figma colour (#ddd) at half strength. Full strength was
+     correct on the canvas but reads heavy on a lit screen across 3000px of
+     page — the grid is paper texture, not a layer competing with the work. */
+  --color-grid-line: rgb(221 221 221 / 0.5);
   --color-grid-dot: #cfcfcf;
   --grid-size: 60px;
+  /* Warm paper plate — the ground under project cards and the How-I-Work
+     panel, and its hairline border. */
+  --color-plate: #f5f4f1;
+  --color-hairline: #dddddd;
 
-  --font-sans: "Neue Montreal", "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* --- Type ---------------------------------------------------------------
+     August 2026: the whole system moved off licensed faces that never made it
+     to /public/fonts. Neue Montreal -> DM Sans (Google, variable, self-hosted
+     by next/font), Canela Text -> PP Editorial Old, plus Amoresa for the two
+     calligraphic drop caps. Homemade Apple stays for dates. */
+  --font-sans: var(--font-dm-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-ibm-plex-serif), Georgia, serif;
   /* Postcard, project years, experience dates */
   --font-script: var(--font-homemade-apple), cursive;
-  /* Display type — hero names + section headings are now Canela Text
-     Regular Italic (July 2026 redesign). Licensed, so same deal as Neue
-     Montreal: local() first, self-hosted woff2 once dropped into
-     /public/fonts, and an IBM Plex Serif italic fallback that keeps the
-     proportions close for visitors in the meantime. */
-  --font-display: "Canela Text", var(--font-ibm-plex-serif), Georgia, serif;
+  /* Display type — hero heading, project titles, section pull-quotes. */
+  --font-display: "PP Editorial Old", var(--font-ibm-plex-serif), Georgia, serif;
+  /* Swash — the single ornamental capital that opens a display line
+     ("P" in Product, "F" in Feel free). Never set a whole word in it. */
+  --font-swash: "Amoresa", "PP Editorial Old", cursive;
   /* Card-level headings — community cards, favourites labels, Kora
      case-study headings. */
   --font-card: "Cormorant Garamond", var(--font-ibm-plex-serif), Georgia, serif;
@@ -38,18 +46,41 @@
 }
 
 @layer base {
-  /* Neue Montreal — drop licensed woff2 files into /public/fonts to activate.
-     Until then the stack falls through to Inter/system sans. */
+  /* PP Editorial Old — the display voice. Self-hosted woff2 (converted from
+     the licensed OTFs in /public/fonts), so there is no network dependency
+     and no FOUT beyond the one swap. */
   @font-face {
-    font-family: "Neue Montreal";
-    src: url("/fonts/NeueMontreal-Regular.woff2") format("woff2");
+    font-family: "PP Editorial Old";
+    src: url("/fonts/PPEditorialOld-Regular.woff2") format("woff2");
     font-weight: 400;
+    font-style: normal;
     font-display: swap;
   }
   @font-face {
-    font-family: "Neue Montreal";
-    src: url("/fonts/NeueMontreal-Medium.woff2") format("woff2");
-    font-weight: 500;
+    font-family: "PP Editorial Old";
+    src: url("/fonts/PPEditorialOld-Italic.woff2") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  /* The ultralight cut is a separate family in the vendor files, so it gets
+     its own name rather than a weight on the family above. */
+  @font-face {
+    font-family: "PP Editorial Old Ultralight";
+    src: url("/fonts/PPEditorialOld-Ultralight.woff2") format("woff2");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Amoresa — ornamental capitals only. Subset kept whole because it is used
+     for exactly two glyphs; at 70KB that is cheaper to reason about than a
+     build-time subsetting step, and it is loaded lazily by `unicode-range`
+     never firing until a swash renders. */
+  @font-face {
+    font-family: "Amoresa";
+    src: url("/fonts/Amoresa-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
     font-display: swap;
   }
   /* local() first: uses the copy installed on this machine (what Figma uses),
@@ -60,31 +91,6 @@
       local("Jimmy Script"),
       url("/fonts/JimmyScript.woff2") format("woff2");
     font-weight: 400;
-    font-display: swap;
-  }
-  /* Canela Text Regular Italic — the display voice of the redesign. */
-  @font-face {
-    font-family: "Canela Text";
-    src:
-      local("Canela Text"),
-      local("CanelaText-RegularItalic"),
-      url("/fonts/CanelaText-RegularItalic.woff2") format("woff2");
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-  }
-  /* Canela Text Medium (upright) — the project-card titles and other card
-     display type. Same face, roman cut: italics belong to the hero voice
-     only, so titles in the work grid must not inherit it. */
-  @font-face {
-    font-family: "Canela Text";
-    src:
-      local("Canela Text Medium"),
-      local("CanelaText-Medium"),
-      local("Canela Text"),
-      url("/fonts/CanelaText-Medium.woff2") format("woff2");
-    font-weight: 400 600;
-    font-style: normal;
     font-display: swap;
   }
   /* Cormorant Garamond Bold — free on Google Fonts; self-hosted to keep
@@ -199,15 +205,29 @@
 
   .font-script { font-family: var(--font-script); }
   .font-wordmark { font-family: var(--font-wordmark); }
-  /* Canela is only ever used in its italic cut. */
+  /* Display, upright — the default cut in the Aug 2026 design: hero heading,
+     project titles, the How-I-Work pull line. */
   .font-display {
+    font-family: var(--font-display);
+    font-style: normal;
+  }
+  /* Italic cut — kept for the pages that still lead with it (about, Kora). */
+  .font-display-italic {
     font-family: var(--font-display);
     font-style: italic;
   }
-  /* Same face, upright — work-grid titles (Figma 414:2710 is Canela Text
-     Medium, not the italic cut). */
+  /* Historic alias: `.font-display-roman` meant "upright display" when the
+     default was italic. Same thing as `.font-display` now — kept so existing
+     markup doesn't have to churn. */
   .font-display-roman {
     font-family: var(--font-display);
+    font-style: normal;
+  }
+  /* One ornamental capital opening a display line. Set at the same size as
+     the line it belongs to — Amoresa's swash needs positive tracking after it
+     so the following letter doesn't collide with the tail. */
+  .font-swash {
+    font-family: var(--font-swash);
     font-style: normal;
   }
   .font-card {

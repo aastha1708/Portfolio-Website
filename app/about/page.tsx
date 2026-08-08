@@ -61,7 +61,7 @@ export default function AboutPage() {
           {/* Hero (Figma 335:460) */}
           <div className="absolute left-[121px] top-[120px] flex flex-col items-start gap-[8px]">
             <Reveal immediate>
-              <h1 className="font-display text-[56px] leading-[96px] tracking-[-1.68px] text-black">
+              <h1 className="font-display-italic text-[56px] leading-[96px] tracking-[-1.68px] text-black">
                 hi, I am aastha
               </h1>
             </Reveal>
@@ -121,7 +121,7 @@ export default function AboutPage() {
         <div className="bg-grid-lines">
         <Nav />
         <section className="px-5 pb-12 pt-28">
-          <h1 className="font-display text-[38px] leading-[48px] tracking-[-1.1px] text-black">hi, I am aastha</h1>
+          <h1 className="font-display-italic text-[38px] leading-[48px] tracking-[-1.1px] text-black">hi, I am aastha</h1>
           <div className="mt-6 flex flex-col gap-6 text-[17px] leading-[26px] text-[#404040]">
             {BIO.map((line) => (
               <p key={line}>{line}</p>

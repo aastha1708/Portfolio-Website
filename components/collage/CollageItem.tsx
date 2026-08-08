@@ -58,10 +58,14 @@ export default function CollageItem({
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // Deeper objects travel further, which separates the collage into planes.
+  /* Deeper objects travel further, which separates the collage into planes.
+     Aug 2026: the travel was halved (9/6 -> 5/3.4). At the old amplitude the
+     whole desk swam with the pointer, which pulled attention off the heading
+     and made the stickers feel weightless; the parallax should be something
+     you notice on the second look, not the first. */
   const fallback = useMotionValueFallback();
-  const px = useTransform(pointer?.nx ?? fallback, [-1, 1], [depth * 9, -depth * 9]);
-  const py = useTransform(pointer?.ny ?? fallback, [-1, 1], [depth * 6, -depth * 6]);
+  const px = useTransform(pointer?.nx ?? fallback, [-1, 1], [depth * 5, -depth * 5]);
+  const py = useTransform(pointer?.ny ?? fallback, [-1, 1], [depth * 3.4, -depth * 3.4]);
 
   const interactive = Boolean(item.cursor || item.href);
 

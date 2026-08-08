@@ -11,6 +11,16 @@
  *   node scripts/optimize-assets.mjs
  *
  * Requires ffmpeg on PATH for the video step (images work without it).
+ *
+ * ---------------------------------------------------------------------------
+ * August 2026: the source tree grew a version layer, so exports from previous
+ * rounds of the design can stay on disk and be reused rather than re-exported.
+ *
+ *   assets-source/Archives/<Page>/…       -> public/assets/<section>/…
+ *   assets-source/Final version/<Page>/…  -> public/assets/<section>/final/…
+ *
+ * Archived output paths are deliberately unchanged, so every component still
+ * pointing at e.g. /assets/landing/new-ver/55-1.webp keeps resolving.
  */
 import sharp from "sharp";
 import { execFile } from "node:child_process";
@@ -23,6 +33,9 @@ const run = promisify(execFile);
 const SOURCE = "design/assets-source";
 const OUT = "public/assets";
 const SECTIONS = { "Landing page": "landing", "About page": "about", "Kora page": "kora" };
+/** Version folder -> path suffix under the section. "" keeps archived exports
+ *  at the paths components already reference. */
+const VERSIONS = { Archives: "", "Final version": "final" };
 
 const MAX_IMAGE_WIDTH = 1200;
 const MAX_VIDEO_WIDTH = 1320;
@@ -73,15 +86,15 @@ try {
 }
 
 async function processDir(from, to) {
-  await mkdir(to, { recursive: true });
-
   let files;
   try {
     files = await readdir(from, { withFileTypes: true });
   } catch {
-    console.warn(`! missing ${from} — skipped`);
+    // A version simply may not have exports for a page yet — not an error.
     return;
   }
+
+  await mkdir(to, { recursive: true });
 
   for (const entry of files.sort((a, b) => a.name.localeCompare(b.name))) {
     const file = entry.name;
@@ -114,8 +127,13 @@ async function processDir(from, to) {
   }
 }
 
-for (const [sourceDir, outDir] of Object.entries(SECTIONS)) {
-  await processDir(path.join(SOURCE, sourceDir), path.join(OUT, outDir));
+for (const [versionDir, suffix] of Object.entries(VERSIONS)) {
+  for (const [pageDir, section] of Object.entries(SECTIONS)) {
+    await processDir(
+      path.join(SOURCE, versionDir, pageDir),
+      path.join(OUT, section, suffix)
+    );
+  }
 }
 
 const mb = (n) => (n / 1048576).toFixed(1);

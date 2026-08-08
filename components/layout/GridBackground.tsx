@@ -26,21 +26,20 @@ export default function GridBackground({ bands }: { bands: Band[] }) {
 }
 
 /**
- * Landing page — one band per background frame in Figma FINAL_VERSION
- * (394:1126):
- *   "Line grid/ section 1"        0 → 960    (hero, full graph grid)
- *   "Horizontal line/ section 2"  1025 → 1625 (note + plus boxes, rules only —
- *      note the deliberate plain-paper gaps around it)
- *   "Line grid/ section 3"        1704 → 3024 (projects)
+ * Landing page — Figma "Final version" frame 538:4602. The August 2026 design
+ * dropped the horizontal-rules band that used to sit behind the philosophy
+ * note, so the graph grid now runs unbroken from the top of the hero to the
+ * bottom of the work section:
+ *   "Line grid/ section 1"  0 → 1764
+ *   "Line grid/ section 3"  1704 → 3024   (the two overlap by 60 in the file)
  *
- * The footer dot field (3039 → end) is no longer a CSS band: DotGridMouse
- * draws the identical field on canvas so the dots can follow the cursor.
+ * Rendered as one band rather than two, because two overlapping translucent
+ * bands would double the ruling's alpha across the seam.
+ *
+ * The footer dot field (2970 → end) is not a CSS band: DotGridMouse draws the
+ * identical field on canvas so the dots can follow the cursor.
  */
-export const LANDING_BANDS: Band[] = [
-  { top: 0, height: 960, variant: "lines" },
-  { top: 1025, height: 600, variant: "rules" },
-  { top: 1704, height: 1320, variant: "lines" },
-];
+export const LANDING_BANDS: Band[] = [{ top: 0, height: 3024, variant: "lines" }];
 
 /**
  * About page (July 2026 revision) — the graph grid runs the whole page:

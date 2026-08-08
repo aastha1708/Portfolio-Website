@@ -17,8 +17,11 @@ import {
  *
  * A single solid disc riding the pointer under mix-blend-difference, so it
  * inverts whatever it passes over instead of picking a colour that has to
- * work on both the paper ground and the dark plates. Aug 2026 gave it three
- * more behaviours, in order of how often you'll see them:
+ * work on both the paper ground and the dark plates. Deliberately one shape:
+ * the trailing outline ring it used to carry was removed because two elements
+ * chasing the pointer read as lag rather than as craft.
+ *
+ * Two behaviours, in order of how often you'll see them:
  *
  *  1. Squash & stretch. The disc reads its own velocity and elongates along
  *     the direction of travel, easing back to a circle when it settles. It's
@@ -29,9 +32,6 @@ import {
  *     into a rounded rectangle locked to the target and the hover state
  *     becomes physical rather than decorative. Motion of the disc is damped
  *     while snapped, so it sits still on the target instead of jittering.
- *  3. Aperture. A second, slower ring trails the disc — the x-ray's lens.
- *     It lags far enough to be legible as a trail, never far enough to look
- *     like a bug.
  *
  * Opt in from markup:
  *   data-cursor="hover"                                   grow
@@ -65,12 +65,9 @@ export default function Cursor() {
   const tx = useMotionValue(-100);
   const ty = useMotionValue(-100);
 
-  /* Two followers at different weights: the disc is nearly on the pointer,
-     the aperture lags behind it. */
+  /* One follower, sitting nearly on the pointer. */
   const dotX = useSpring(tx, { stiffness: 1000, damping: 60, mass: 0.3 });
   const dotY = useSpring(ty, { stiffness: 1000, damping: 60, mass: 0.3 });
-  const ringX = useSpring(x, { stiffness: 170, damping: 22, mass: 0.6 });
-  const ringY = useSpring(y, { stiffness: 170, damping: 22, mass: 0.6 });
 
   /* --- squash & stretch ------------------------------------------------
      Speed drives how far from round the disc gets; direction drives which
@@ -215,20 +212,6 @@ export default function Cursor() {
 
   return (
     <>
-      {/* Aperture — the trailing lens. Hidden while snapped or captioned, so
-          those states stay one clean shape. */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full border border-white mix-blend-difference"
-        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
-        animate={{
-          width: hovering ? 54 : 40,
-          height: hovering ? 54 : 40,
-          opacity: visible && !label && !snap ? (hovering ? 0.5 : 0.28) : 0,
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      />
-
       {/* The disc. Snapped it becomes the target's own outline; free it keeps
           its velocity shape. */}
       <motion.div
