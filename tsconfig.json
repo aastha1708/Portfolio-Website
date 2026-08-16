@@ -59,7 +59,19 @@
     "/tmp/nsbB/.next/types/**/*.ts",
     "/tmp/nsbB/.next/dev/types/**/*.ts",
     "/tmp/nsbC/.next/types/**/*.ts",
-    "/tmp/nsbC/.next/dev/types/**/*.ts"
+    "/tmp/nsbC/.next/dev/types/**/*.ts",
+    "/tmp/nsbK/.next/types/**/*.ts",
+    "/tmp/nsbK/.next/dev/types/**/*.ts",
+    "/tmp/nsbL/.next/types/**/*.ts",
+    "/tmp/nsbL/.next/dev/types/**/*.ts",
+    "/tmp/nsbM/.next/types/**/*.ts",
+    "/tmp/nsbM/.next/dev/types/**/*.ts",
+    "/tmp/nsbN/.next/types/**/*.ts",
+    "/tmp/nsbN/.next/dev/types/**/*.ts",
+    "/tmp/nsbP/.next/types/**/*.ts",
+    "/tmp/nsbP/.next/dev/types/**/*.ts",
+    "/tmp/nsbQ/.next/types/**/*.ts",
+    "/tmp/nsbQ/.next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

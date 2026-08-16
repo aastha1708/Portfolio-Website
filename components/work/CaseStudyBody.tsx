@@ -1,5 +1,7 @@
 import Image from "next/image";
 import CaseStudyShell from "@/components/work/CaseStudyShell";
+import { Chip } from "@/components/work/Chip";
+import SwashText from "@/components/layout/SwashText";
 import Reveal from "@/components/motion/Reveal";
 import type { Project } from "@/lib/projects";
 
@@ -15,24 +17,19 @@ import type { Project } from "@/lib/projects";
  */
 export default function CaseStudyBody({ project }: { project: Project }) {
   return (
-    <CaseStudyShell>
+    <CaseStudyShell slug={project.id}>
       <section className="scroll-mt-[120px]">
         <Reveal immediate delay={0.1}>
-          <div className="mt-10 flex flex-col gap-[12px]">
-            <h1 className="font-card text-[42px] leading-none tracking-[-0.408px] text-black">
-              {project.title}
+          <div className="flex flex-col gap-[12px]">
+            <h1 className="font-display text-[42px] leading-[42px] tracking-[-0.408px] text-black">
+              <SwashText text={project.title} swashTracking="4px" />
             </h1>
-            <p className="max-w-[1076px] text-[24px] leading-[28px] text-ink-muted">
+            <p className="max-w-[982px] text-[24px] leading-[28px] text-ink-muted">
               {project.description}
             </p>
-            <ul className="mt-[8px] flex flex-wrap items-center gap-[8px]">
+            <ul className="mt-[8px] flex flex-wrap items-center gap-[6px]">
               {project.tags.map((tag) => (
-                <li
-                  key={tag}
-                  className="rounded-[4px] bg-chip-bg px-[8px] py-[6px] text-[16px] font-medium capitalize tracking-[0.04px] text-chip-text"
-                >
-                  {tag}
-                </li>
+                <Chip key={tag}>{tag}</Chip>
               ))}
             </ul>
           </div>
@@ -55,7 +52,7 @@ export default function CaseStudyBody({ project }: { project: Project }) {
         </Reveal>
 
         <Reveal immediate delay={0.2}>
-          <dl className="mt-[32px] grid grid-cols-2 gap-x-[48px] gap-y-[24px] rounded-[20px] bg-[#f0efea] p-[16px] shadow-paper md:grid-cols-4 md:gap-x-[64px] md:p-[24px]">
+          <dl className="mt-[32px] grid grid-cols-2 gap-x-[48px] gap-y-[24px] rounded-[20px] bg-plate p-[16px] shadow-paper md:grid-cols-4 md:gap-x-[64px] md:p-[24px]">
             <div className="flex flex-col gap-[10px]">
               <dt className="text-[16px] uppercase text-ink-muted">My role</dt>
               <dd className="text-[18px] tracking-[-0.54px] text-black">Product Designer</dd>
@@ -81,8 +78,10 @@ export default function CaseStudyBody({ project }: { project: Project }) {
       </section>
 
       <Reveal delay={0.1}>
-        <section className="mt-[100px] flex flex-col items-center gap-[20px] rounded-[20px] bg-[#f0efea] px-[16px] py-[80px] text-center">
-          <span className="chip text-[16px]">[ full case study — coming soon ]</span>
+        <section className="mt-[100px] flex flex-col items-center gap-[20px] rounded-[20px] bg-plate px-[16px] py-[80px] text-center">
+          <span className="flex h-[28px] items-center rounded-full border border-hairline bg-paper px-[12px] text-[12px] font-medium uppercase tracking-[0.06em] text-[#777]">
+            full case study — coming soon
+          </span>
           <p className="max-w-[520px] text-[20px] leading-[30px] text-ink-muted">
             The whole story &mdash; research, explorations, dead ends and the shipped thing &mdash;
             is being written up with the care it deserves.

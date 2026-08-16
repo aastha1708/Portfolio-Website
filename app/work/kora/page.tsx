@@ -3,9 +3,15 @@ import CaseStudyShell from "@/components/work/CaseStudyShell";
 import KoraBanner from "@/components/work/KoraBanner";
 import FeatureScroller, { type Feature } from "@/components/work/FeatureScroller";
 import IphoneFrame from "@/components/work/IphoneFrame";
+import { Chip, AwardChip } from "@/components/work/Chip";
+import ArrowUpRight from "@/components/layout/ArrowUpRight";
+import SwashText from "@/components/layout/SwashText";
 import Reveal from "@/components/motion/Reveal";
 import HighlightMark from "@/components/motion/HighlightMark";
 import type { TocItem } from "@/components/work/CaseStudyToc";
+
+/** The shipped prototype. */
+const LIVE_URL = "https://kora-inky-ten.vercel.app/";
 
 /**
  * Kora — the first full case study (Figma frame 459:3408, Aug 2026 revision).
@@ -36,13 +42,16 @@ const TOC: TocItem[] = [
   { id: "reflections", label: "Reflections" },
 ];
 
-/** Figma 459:3647 — updated roles/deliverables in the Aug revision. */
+/** Figma 572:603. */
 const META = [
   { label: "My role", items: ["Product Designer", "Developer"] },
-  { label: "Deliverables", items: ["Prototype", "AI Maxing", "Rough Solution"] },
+  { label: "Deliverables", items: ["Prototype", "Use of AI tools", "An idea/solution"] },
   { label: "Team", items: ["Sahil Deshpande"] },
   { label: "Skills", items: ["AI Prototyping", "UI/UX"] },
 ] as const;
+
+/** Figma 517:4260 — outlined pills; the award one carries the laurels. */
+const TAGS = ["AI-focused", "Career discovery"] as const;
 
 const RESEARCH_CARDS = [
   {
@@ -112,8 +121,8 @@ const SCREENS_ROW_2 = ["screen4", "screen5", "screen6"] as const;
 function SectionHeader({ kicker, title }: { kicker: string; title: string }) {
   return (
     <div className="flex flex-col gap-[14px]">
-      <p className="text-[16px] uppercase text-ink-muted">{kicker}</p>
-      <h2 className="font-card text-[32px] leading-[1.1] tracking-[-0.408px] text-black">{title}</h2>
+      <p className="text-[16px] font-medium uppercase text-ink-muted">{kicker}</p>
+      <h2 className="font-display text-[32px] leading-[1.15] tracking-[-0.408px] text-black">{title}</h2>
     </div>
   );
 }
@@ -123,7 +132,7 @@ function InsightCards({ cards }: { cards: readonly { title: string; body: string
     <div className="grid gap-[24px] md:grid-cols-3">
       {cards.map((card, i) => (
         <Reveal key={card.title} delay={i * 0.06}>
-          <div className="flex h-full min-h-[195px] flex-col gap-[12px] rounded-[14px] bg-[#f0efea] px-[16px] py-[24px]">
+          <div className="flex h-full min-h-[195px] flex-col gap-[12px] rounded-[14px] bg-plate px-[16px] py-[24px]">
             <h3 className="text-[22px] font-medium leading-[28px] text-black">{card.title}</h3>
             <p className="text-[18px] leading-[24px] text-ink-muted">{card.body}</p>
           </div>
@@ -153,28 +162,43 @@ function PhoneRow({ screens, alts }: { screens: readonly string[]; alts: string[
 
 export default function KoraPage() {
   return (
-    <CaseStudyShell toc={TOC}>
+    <CaseStudyShell slug="kora" toc={TOC}>
       {/* ---------------- Overview (Figma 459:3629) ---------------- */}
       <section id="overview" className="scroll-mt-[120px] outline-none">
         <Reveal immediate delay={0.1}>
-          <div className="mt-10 flex flex-col gap-[12px]">
-            <h1 className="font-card text-[42px] leading-none tracking-[-0.408px] text-black">Kora</h1>
-            <p className="max-w-[1076px] text-[24px] leading-[28px] text-ink-muted">
-              A career exploration app focused on self-discovery of users. A career guide that
-              understands you. Won 3rd place in India&rsquo;s first AI-focused designathon.
-            </p>
-            {/* Award ribbon (Figma 469:4151) — a real award gets a real badge,
-                not another tag chip. */}
-            <span className="relative mt-[8px] block h-[32px] w-[252px] max-w-full">
-              <Image
-                src="/assets/kora/3rdplace.webp"
-                alt="3rd place in Pro Creator Designathon"
-                fill
-                sizes="252px"
-                className="object-contain object-left"
-                priority
-              />
-            </span>
+          <div className="flex flex-col gap-[12px]">
+            <div className="flex items-start justify-between gap-[32px]">
+              <div className="flex min-w-0 flex-col gap-[8px]">
+                <h1 className="font-display text-[42px] leading-[42px] tracking-[-0.408px] text-black">
+                  <SwashText text="Kora" swashTracking="4px" />
+                </h1>
+                <p className="max-w-[982px] text-[24px] leading-[28px] text-ink-muted">
+                  A career guide that understands you.
+                </p>
+              </div>
+
+              {/* The prototype is live, so the case study links to it from the
+                  masthead rather than burying it at the end — a hiring manager
+                  who only reads the first screen should still be able to open
+                  the thing. */}
+              <a
+                href={LIVE_URL}
+                target="_blank"
+                rel="noreferrer noopener"
+                data-cursor="hover"
+                className="group/visit inline-flex h-[30px] shrink-0 items-center gap-[4px] whitespace-nowrap border-b-[1.5px] border-[#888] text-[14px] font-medium text-black transition-colors hover:border-black"
+              >
+                Visit Kora
+                <ArrowUpRight className="size-[20px] transition-transform duration-300 group-hover/visit:translate-x-[2px] group-hover/visit:-translate-y-[2px]" />
+              </a>
+            </div>
+
+            <ul className="flex flex-wrap items-center gap-[6px]">
+              <AwardChip>3rd place</AwardChip>
+              {TAGS.map((tag) => (
+                <Chip key={tag}>{tag}</Chip>
+              ))}
+            </ul>
           </div>
         </Reveal>
 
@@ -186,7 +210,7 @@ export default function KoraPage() {
 
         {/* ---------------- Meta card (Figma 459:3646) ---------------- */}
         <Reveal immediate delay={0.2}>
-          <dl className="mt-[32px] grid grid-cols-2 gap-x-[48px] gap-y-[24px] rounded-[20px] bg-[#f0efea] p-[16px] shadow-paper md:grid-cols-4 md:gap-x-[64px] md:p-[24px]">
+          <dl className="mt-[32px] grid grid-cols-2 gap-x-[48px] gap-y-[24px] rounded-[20px] bg-plate p-[16px] shadow-paper md:grid-cols-4 md:gap-x-[64px] md:p-[24px]">
             {META.map((col) => (
               <div key={col.label} className="flex flex-col gap-[10px]">
                 <dt className="text-[16px] uppercase text-ink-muted">{col.label}</dt>
@@ -253,7 +277,7 @@ export default function KoraPage() {
       {/* ---------------- Market (Figma 459:3720) ---------------- */}
       <section id="market" className="mt-[100px] scroll-mt-[120px] outline-none">
         <Reveal>
-          <div className="flex flex-col items-center gap-[40px] rounded-[20px] bg-[#f0efea] px-[16px] pb-[48px] pt-[36px]">
+          <div className="flex flex-col items-center gap-[40px] rounded-[20px] bg-plate px-[16px] pb-[48px] pt-[36px]">
             <div className="flex flex-col items-center gap-[8px] text-center">
               <h2 className="text-[28px] font-medium leading-[28px] text-black">
                 What&rsquo;s driving the market?
@@ -279,11 +303,14 @@ export default function KoraPage() {
       {/* ---------------- Features (Figma 459:3725) ----------------
           The four steps are a journey, so they're told as one: the panel
           pins and the story advances as you scroll. */}
-      <section id="features" className="mt-[100px] flex scroll-mt-[120px] flex-col gap-[24px] outline-none">
-        <Reveal>
-          <SectionHeader kicker="Features" title="Turning career discovery into a deep-dive journey" />
-        </Reveal>
-        <FeatureScroller features={FEATURES} />
+      <section id="features" className="mt-[100px] scroll-mt-[120px] outline-none">
+        {/* The heading lives inside the scroller so it pins with the cards —
+            see FeatureScroller. */}
+        <FeatureScroller
+          features={FEATURES}
+          kicker="Features"
+          title="Turning career discovery into a deep-dive journey"
+        />
       </section>
 
       {/* ---------------- Solution (Figma 459:3745) ---------------- */}

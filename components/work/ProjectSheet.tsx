@@ -172,6 +172,11 @@ export default function ProjectSheet({ children }: { children: React.ReactNode }
                 ? { type: "tween", duration: 0.06, ease: "linear" } /* 1:1 gesture tracking */
                 : { type: "spring", stiffness: 300, damping: 32 } /* entrance + settle-back */
         }
+        /* back(), not push("/") — the landing page is still mounted behind the
+           sheet with its scroll position intact, so stepping back reveals the
+           projects section exactly where the visitor left it. Pushing would
+           remount it at the top. This relies on the sheet never adding history
+           entries of its own: see the `replace` on NextProject. */
         onAnimationComplete={() => {
           if (closingRef.current) router.back();
         }}

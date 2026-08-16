@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ArrowUpRight from "@/components/layout/ArrowUpRight";
 
 const LINKS = [
   { label: "aasthapcharag@gmail.com", href: "mailto:aasthapcharag@gmail.com", arrow: false },
@@ -39,18 +40,7 @@ export default function PostcardFooter() {
                 {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer noopener" } : {})}
               >
                 {label}
-                {arrow && (
-                  <svg
-                    aria-hidden
-                    viewBox="0 0 20 20"
-                    className="ml-1 size-[20px] rotate-[46.02deg]"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M10 16V4M10 4l-5 5M10 4l5 5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
+                {arrow && <ArrowUpRight className="ml-1 size-[20px]" />}
               </a>
             </li>
           ))}
