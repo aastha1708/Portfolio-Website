@@ -43,7 +43,23 @@
     "/tmp/nextsb3/.next/types/**/*.ts",
     "/tmp/nextsb3/.next/dev/types/**/*.ts",
     "/tmp/nsb4/.next/types/**/*.ts",
-    "/tmp/nsb4/.next/dev/types/**/*.ts"
+    "/tmp/nsb4/.next/dev/types/**/*.ts",
+    "/tmp/nsb5/.next/types/**/*.ts",
+    "/tmp/nsb5/.next/dev/types/**/*.ts",
+    "/tmp/nsb6/.next/types/**/*.ts",
+    "/tmp/nsb6/.next/dev/types/**/*.ts",
+    "/tmp/nsb7/.next/types/**/*.ts",
+    "/tmp/nsb7/.next/dev/types/**/*.ts",
+    "/tmp/nsb8/.next/types/**/*.ts",
+    "/tmp/nsb8/.next/dev/types/**/*.ts",
+    "/tmp/nsb9/.next/types/**/*.ts",
+    "/tmp/nsb9/.next/dev/types/**/*.ts",
+    "/tmp/nsbA/.next/types/**/*.ts",
+    "/tmp/nsbA/.next/dev/types/**/*.ts",
+    "/tmp/nsbB/.next/types/**/*.ts",
+    "/tmp/nsbB/.next/dev/types/**/*.ts",
+    "/tmp/nsbC/.next/types/**/*.ts",
+    "/tmp/nsbC/.next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -42,10 +42,14 @@ export default function GridBackground({ bands }: { bands: Band[] }) {
 export const LANDING_BANDS: Band[] = [{ top: 0, height: 3024, variant: "lines" }];
 
 /**
- * About page (July 2026 revision) — the graph grid runs the whole page:
- * hero, communities and favourites all sit on it (Frames 51 + 61 in the
- * file). The footer's dot field (from 1965) is no longer a CSS band here
- * either: DotGridMouse draws it so the dots follow the cursor, exactly as on
- * the landing page.
+ * About page — Figma "Final version" frame 546:4978. One graph band behind
+ * the window/bio block and the favourites shelf. The footer's dot field (from
+ * 1356) is not a CSS band: DotGridMouse draws it so the dots follow the cursor.
+ *
+ * The band stops at 1410 rather than the frame's 1764, because from 1356 the
+ * dot field takes over and two textures stacked read as a grey wash — the
+ * landing page overlaps them by 54px for exactly one row of dots' worth of
+ * cross-fade, and this matches it. The Figma frame can afford the full 1764
+ * because its footer plate is opaque on the canvas.
  */
-export const ABOUT_BANDS: Band[] = [{ top: 0, height: 1915, variant: "lines" }];
+export const ABOUT_BANDS: Band[] = [{ top: 0, height: 1410, variant: "lines" }];

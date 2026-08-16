@@ -1,63 +1,74 @@
-import type { Community } from "@/components/about/CommunityCard";
-
-export const COMMUNITIES: Community[] = [
-  {
-    title: "Coordinator at GirlUp",
-    body: "From managing socials to coordinating this UN-founded club for the empowerment of women and marginalised groups. It's where I learned to grow.",
-    photo: "/assets/about/girlup.webp",
-    logo: "/assets/about/girlup-logo.webp",
-    logoSize: 58,
-  },
-  {
-    title: "Design Lead at Sports Council",
-    body: "Design lead for my college sports council, turning Canva into a real tool for jerseys, social posts and event identity.",
-    photo: "/assets/about/sports-council.webp",
-    logo: "/assets/about/sports-council-logo.webp",
-    logoSize: 27,
-  },
-  {
-    title: "Volleyball & Football team",
-    body: "All work and no play makes for dull design. Playing midfield for my college team is the best kind of break.",
-    photo: "/assets/about/football-team.webp",
-    logo: "/assets/about/football-logo.webp",
-    logoSize: 28,
-  },
-];
-
-/** Experience rows under the bio (Figma 330:432) — replaced the old chips. */
-export type Experience = { logo: string; title: string; role: string; year: string };
-
-export const EXPERIENCE: Experience[] = [
-  {
-    logo: "/assets/about/themconsulting-logo-1.webp",
-    title: "Them Consulting Ltd · Gurugram, India",
-    role: "Experience Design Professional",
-    year: "2026",
-  },
-  {
-    logo: "/assets/about/iiitd-logo.webp",
-    title: "IIIT-D · Delhi, India",
-    role: "Computer Science",
-    year: "2022 - 2026",
-  },
-];
-
 /**
- * "some of my favourite things" — a category carousel: Books → Movies →
- * Shows → Anime → Albums. All five categories are designed now (Figma frames
- * 273:3768, 327:138, 327:175, 330:305, 327:212).
+ * About page content — Figma frame 546:4978 ("Final version" / "About page").
  *
- * The four portrait rotations repeat across categories on purpose — the
- * shelf keeps its shape while its contents change.
+ * The August 2026 design cut the communities cards, the experience rows and
+ * the polaroid collage: the page is now the window + bio block, the favourites
+ * shelf, and the footer. Their data has gone with them.
  */
+
+/** ---------------------------------------------------------------------
+ *  The macOS photo window (Figma 561:340). Order is filmstrip order; the
+ *  first is what the window opens on.
+ *
+ *  Intrinsic dimensions are recorded because the viewer shows every photo at
+ *  its true aspect ratio — portrait stays portrait, nothing is cropped to a
+ *  common frame — so the layout has to know each shape up front rather than
+ *  discovering it after load.
+ *  ------------------------------------------------------------------- */
+export type WindowPhoto = { src: string; alt: string; width: number; height: number };
+
+export const WINDOW_PHOTOS: WindowPhoto[] = [
+  { src: "/assets/about/final/window-1.webp", width: 1200, height: 1600, alt: "Me at the water's edge at sunset, arms thrown up in the surf" },
+  { src: "/assets/about/final/window-2.webp", width: 840, height: 975, alt: "Me as a kid in a denim pinafore, on a balcony full of plants" },
+  { src: "/assets/about/final/window-3.webp", width: 1200, height: 1600, alt: "A misty monsoon morning, bare trees along a wet road" },
+  { src: "/assets/about/final/window-4.webp", width: 1200, height: 1600, alt: "Me mid-slurp over a bowl of ramen" },
+  { src: "/assets/about/final/window-5.webp", width: 900, height: 1600, alt: "The Eiffel Tower lit up at night" },
+  { src: "/assets/about/final/window-6.webp", width: 852, height: 604, alt: "A meme about explaining that UX isn't graphic design" },
+];
+
+/** The viewer's photo area (Figma 561:353). Photos are fitted inside this box,
+ *  never cropped to it, so the box is a bound rather than a frame. */
+export const PHOTO_AREA = { width: 338, height: 297 } as const;
+
+/** ---------------------------------------------------------------------
+ *  Bio (Figma 561:352). Rendered through <BionicText>, so this stays a
+ *  single plain string — the weight split is computed, not authored.
+ *  ------------------------------------------------------------------- */
+export const ABOUT_BIO =
+  "Raised around the world, I love sunset, beaches and books. I am a designer, problem solver, and a people person at heart. I have completed my graduation from IIIT-D and am currently working as an experience design professional at Them. I enjoy understanding people, their needs, challenges, and quirks, and turning those insights into intuitive, inclusive, and visually delightful designs. I believe good design should feel like second nature, effortless, user-friendly, and just right.";
+
+/** The three placement lines under the bio (Figma 565:429). The emoji render
+ *  as Apple artwork via <Emoji> so they look the same on every platform. */
+export const ABOUT_PLACES = [
+  { emoji: "🏡", label: "Home", text: "Delhi, India" },
+  { emoji: "🏢", label: "Work", text: "Them Pvt. Ltd, Gurugram" },
+  { emoji: "🏫", label: "College", text: "Indraprastha Institute of Information Technology, Delhi" },
+];
+
+/** ---------------------------------------------------------------------
+ *  "some of my favourite things" — a category carousel: Books → Movies →
+ *  Shows → Anime → Albums.
+ *
+ *  August 2026 shrank the shelf (Figma 565:393): covers went 217x293 →
+ *  165x223, album sleeves 311x216 → 236x164. The four portrait tilts repeat
+ *  across categories on purpose — the shelf keeps its shape while its
+ *  contents change.
+ *  ------------------------------------------------------------------- */
 export type FavouriteItem = { title: string; author?: string; cover?: string; rotate?: number };
 export type FavouriteCategory = {
   id: string;
   label: string;
-  /** portrait = 217x293 covers; wide = 311x216 album sleeves. */
+  /** portrait = book/film covers; wide = album sleeves. */
   kind: "portrait" | "wide";
   items: FavouriteItem[];
 };
+
+/** Cover geometry, straight from the frame. CSS-positive (clockwise) = the
+ *  negated Figma rotations. */
+export const COVER = {
+  portrait: { width: 165, height: 223, gap: 56 },
+  wide: { width: 236, height: 164, gap: 48 },
+} as const;
 
 const TILT = [3.31, -2.33, 0.47, -5.28];
 

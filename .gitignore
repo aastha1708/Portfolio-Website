@@ -28,3 +28,9 @@ design/versions/
 # Impeccable critique snapshots (generated per run, backlog only)
 .impeccable/critique/
 .next-sandbox/
+
+# Apple emoji artwork — extracted from the local macOS system font by
+# scripts/extract-apple-emoji.py. Licensed to the machine, not redistributable,
+# so it is generated at setup rather than committed. Emoji.tsx falls back to
+# native characters when it's absent.
+public/emoji/
