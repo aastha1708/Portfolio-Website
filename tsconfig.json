@@ -71,7 +71,9 @@
     "/tmp/nsbP/.next/types/**/*.ts",
     "/tmp/nsbP/.next/dev/types/**/*.ts",
     "/tmp/nsbQ/.next/types/**/*.ts",
-    "/tmp/nsbQ/.next/dev/types/**/*.ts"
+    "/tmp/nsbQ/.next/dev/types/**/*.ts",
+    "/tmp/nsbR/.next/types/**/*.ts",
+    "/tmp/nsbR/.next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
