@@ -1,0 +1,20 @@
+/* [next]/internal/font/google/ibm_plex_serif_d991f0bd.module.css [app-client] (css) */
+@font-face {
+  font-family: IBM Plex Serif Fallback;
+  src: local(Times New Roman);
+  ascent-override: 88.04%;
+  descent-override: 23.62%;
+  line-gap-override: 0.0%;
+  size-adjust: 116.43%;
+}
+
+.ibm_plex_serif_d991f0bd-module__Gbjp-a__className {
+  font-family: IBM Plex Serif, IBM Plex Serif Fallback;
+  font-style: normal;
+}
+
+.ibm_plex_serif_d991f0bd-module__Gbjp-a__variable {
+  --font-ibm-plex-serif: "IBM Plex Serif", "IBM Plex Serif Fallback";
+}
+
+/*# sourceMappingURL=%5Bnext%5D_internal_font_google_ibm_plex_serif_d991f0bd_module_css_1igg3k2._.single.css.map*/

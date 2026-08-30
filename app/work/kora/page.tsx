@@ -4,6 +4,8 @@ import KoraBanner from "@/components/work/KoraBanner";
 import FeatureScroller, { type Feature } from "@/components/work/FeatureScroller";
 import IphoneFrame from "@/components/work/IphoneFrame";
 import { Chip, AwardChip } from "@/components/work/Chip";
+import SectionHeader from "@/components/work/SectionHeader";
+import InsightCards from "@/components/work/InsightCards";
 import ArrowUpRight from "@/components/layout/ArrowUpRight";
 import SwashText from "@/components/layout/SwashText";
 import Reveal from "@/components/motion/Reveal";
@@ -118,30 +120,6 @@ const SCREENS_ROW_2 = ["screen4", "screen5", "screen6"] as const;
 
 /* ------------------------------------------------------------ components */
 
-function SectionHeader({ kicker, title }: { kicker: string; title: string }) {
-  return (
-    <div className="flex flex-col gap-[14px]">
-      <p className="text-[16px] font-medium uppercase text-ink-muted">{kicker}</p>
-      <h2 className="font-display text-[32px] leading-[1.15] tracking-[-0.408px] text-black">{title}</h2>
-    </div>
-  );
-}
-
-function InsightCards({ cards }: { cards: readonly { title: string; body: string }[] }) {
-  return (
-    <div className="grid gap-[24px] md:grid-cols-3">
-      {cards.map((card, i) => (
-        <Reveal key={card.title} delay={i * 0.06}>
-          <div className="flex h-full min-h-[195px] flex-col gap-[12px] rounded-[14px] bg-plate px-[16px] py-[24px]">
-            <h3 className="text-[22px] font-medium leading-[28px] text-black">{card.title}</h3>
-            <p className="text-[18px] leading-[24px] text-ink-muted">{card.body}</p>
-          </div>
-        </Reveal>
-      ))}
-    </div>
-  );
-}
-
 function PhoneRow({ screens, alts }: { screens: readonly string[]; alts: string[] }) {
   return (
     <div className="flex flex-wrap items-start justify-center gap-[36px]">
@@ -251,7 +229,7 @@ export default function KoraPage() {
             title="Where are students the most honest? Reddit."
           />
         </Reveal>
-        <InsightCards cards={RESEARCH_CARDS} />
+        <InsightCards cards={RESEARCH_CARDS} padding="px-[16px] py-[24px]" />
       </section>
 
       {/* ---------------- Target group (Figma 459:3713) ---------------- */}
@@ -355,7 +333,7 @@ export default function KoraPage() {
         <Reveal>
           <SectionHeader kicker="Reflections" title="What I've learned" />
         </Reveal>
-        <InsightCards cards={REFLECTIONS} />
+        <InsightCards cards={REFLECTIONS} padding="px-[16px] py-[24px]" />
       </section>
     </CaseStudyShell>
   );

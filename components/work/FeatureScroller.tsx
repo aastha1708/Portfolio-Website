@@ -4,12 +4,40 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { scrollParent } from "@/lib/scroll";
+import SectionHeader from "@/components/work/SectionHeader";
 
 export type Feature = {
   title: string;
   body: string;
   image: string;
   alt: string;
+};
+
+/**
+ * How the artwork wants to be presented.
+ *
+ * `screen` — a UI capture on a transparent/white ground (Kora). It gets a deep
+ * white plate and generous padding, because a screenshot needs air around it
+ * to read as a screen rather than as a texture.
+ * `photo` — a photograph of the thing happening in the world (DyslexiAR's AR
+ * captures). It fills its frame edge to edge: padding a photo inside a white
+ * box shrinks the subject and adds a border that means nothing.
+ */
+export type FeatureMedia = "screen" | "photo";
+
+const PANEL: Record<FeatureMedia, { frame: string; image: string; align: string }> = {
+  screen: {
+    frame: "h-[364px] w-[456px] rounded-[53px] bg-white",
+    image: "object-contain px-[70px] py-[31px]",
+    align: "items-center",
+  },
+  photo: {
+    /* 513x224 in Figma 641:861 — a landscape still, top-aligned with the
+       first card rather than floating in the middle of the list. */
+    frame: "aspect-[513/224] w-[513px] rounded-[20px] bg-plate",
+    image: "object-cover",
+    align: "items-start",
+  },
 };
 
 /**
@@ -42,11 +70,14 @@ export default function FeatureScroller({
   features,
   kicker,
   title,
+  media = "screen",
 }: {
   features: Feature[];
   kicker: string;
   title: string;
+  media?: FeatureMedia;
 }) {
+  const panel = PANEL[media];
   const reduceMotion = useReducedMotion();
   const stepsRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
@@ -72,12 +103,7 @@ export default function FeatureScroller({
     return () => io.disconnect();
   }, [reduceMotion]);
 
-  const Header = (
-    <div className="flex flex-col gap-[14px]">
-      <p className="text-[16px] font-medium uppercase text-ink-muted">{kicker}</p>
-      <h2 className="font-display text-[32px] leading-[1.15] tracking-[-0.408px] text-black">{title}</h2>
-    </div>
-  );
+  const Header = <SectionHeader kicker={kicker} title={title} />;
 
   if (reduceMotion) {
     return (
@@ -89,8 +115,18 @@ export default function FeatureScroller({
               <h3 className="text-[18px] font-medium text-black">{f.title}</h3>
               <p className="text-[14px] text-ink-muted">{f.body}</p>
             </div>
-            <div className="relative size-[220px] shrink-0 overflow-hidden rounded-[24px] bg-white">
-              <Image src={f.image} alt={f.alt} fill sizes="220px" className="object-contain p-3" />
+            <div
+              className={`relative shrink-0 overflow-hidden rounded-[24px] ${
+                media === "photo" ? "aspect-[513/224] w-[300px] bg-plate" : "size-[220px] bg-white"
+              }`}
+            >
+              <Image
+                src={f.image}
+                alt={f.alt}
+                fill
+                sizes="300px"
+                className={media === "photo" ? "object-cover" : "object-contain p-3"}
+              />
             </div>
           </div>
         ))}
@@ -106,7 +142,7 @@ export default function FeatureScroller({
       <div className="sticky top-[88px] flex flex-col gap-[24px]">
         {Header}
 
-        <div className="flex flex-wrap items-center justify-between gap-[36px]">
+        <div className={`flex flex-wrap justify-between gap-[36px] ${panel.align}`}>
           <ol className="flex w-full max-w-[529px] flex-col gap-[16px]">
             {features.map((f, i) => {
               const on = i === index;
@@ -138,7 +174,7 @@ export default function FeatureScroller({
             })}
           </ol>
 
-          <div className="relative hidden h-[364px] w-[456px] max-w-full shrink-0 overflow-hidden rounded-[53px] bg-white lg:block">
+          <div className={`relative hidden max-w-full shrink-0 overflow-hidden lg:block ${panel.frame}`}>
             <AnimatePresence initial={false}>
               <motion.div
                 key={features[index].title}
@@ -152,8 +188,8 @@ export default function FeatureScroller({
                   src={features[index].image}
                   alt={features[index].alt}
                   fill
-                  sizes="456px"
-                  className="object-contain px-[70px] py-[31px]"
+                  sizes="513px"
+                  className={panel.image}
                 />
               </motion.div>
             </AnimatePresence>

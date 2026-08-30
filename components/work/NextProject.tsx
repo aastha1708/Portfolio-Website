@@ -12,7 +12,10 @@ import { scrollParent } from "@/lib/scroll";
  * page just to open the next case study is three actions where one will do.
  * Moving sideways through the work is the thing a reader actually wants next.
  *
- * Wraps around, so the rail never shows a dead end on the last project.
+ * Wraps around, so the rail never shows a dead end on the last project, and
+ * skips projects whose case study isn't written yet — the whole point of the
+ * pill is to hand the reader more work to read, and a coming-soon panel is the
+ * one destination that fails at that.
  *
  * The label stays generic ("Next project") to keep the pill a fixed size in a
  * narrow rail; the destination rides on the accessible name.
@@ -24,8 +27,9 @@ import { scrollParent } from "@/lib/scroll";
  * already says what it does it just parks a black slab over the rail.
  */
 export default function NextProject({ current }: { current: string }) {
-  const index = PROJECTS.findIndex((p) => p.id === current);
-  const next = PROJECTS[(index + 1) % PROJECTS.length];
+  const readable = PROJECTS.filter((p) => !p.comingSoon);
+  const index = readable.findIndex((p) => p.id === current);
+  const next = readable[(index + 1) % readable.length];
   if (!next || next.id === current) return null;
 
   /* A case study can be read to the middle before you jump. Reset the scroller

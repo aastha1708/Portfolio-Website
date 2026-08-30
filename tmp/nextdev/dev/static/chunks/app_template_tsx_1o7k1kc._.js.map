@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///sessions/rcw-016x4yax1dpdvaacb6zkelvf/mnt/UI%20UX%20Design%20Portfolio%202026/app/template.tsx"],"sourcesContent":["\"use client\";\n\nimport { motion, useReducedMotion } from \"motion/react\";\n\n/** Cross-route fade. Short and subtle — page transitions that make you wait\n *  are worse than no transition at all. */\nexport default function Template({ children }: { children: React.ReactNode }) {\n  const reduceMotion = useReducedMotion();\n  if (reduceMotion) return <>{children}</>;\n\n  return (\n    <motion.div\n      initial={{ opacity: 0 }}\n      animate={{ opacity: 1 }}\n      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}\n    >\n      {children}\n    </motion.div>\n  );\n}\n"],"names":["Template","children","reduceMotion","div","initial","opacity","animate","transition","duration","ease"],"mappings":";;;;;AAEA;AAAA;;;AAFA;;AAMe,SAASA,SAAS,EAAEC,QAAQ,EAAiC;;IAC1E,MAAMC,eAAe,IAAA,gOAAgB;IACrC,IAAIA,cAAc,qBAAO;kBAAGD;;IAE5B,qBACE,6LAAC,2KAAM,CAACE,GAAG;QACTC,SAAS;YAAEC,SAAS;QAAE;QACtBC,SAAS;YAAED,SAAS;QAAE;QACtBE,YAAY;YAAEC,UAAU;YAAMC,MAAM;gBAAC;gBAAM;gBAAG;gBAAM;aAAE;QAAC;kBAEtDR;;;;;;AAGP;GAbwBD;;QACD,gOAAgB;;;KADfA"}}]
+}

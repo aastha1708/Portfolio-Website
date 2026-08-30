@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 13, "column": 0}, "map": {"version":3,"sources":["file:///sessions/rcw-016x4yax1dpdvaacb6zkelvf/mnt/UI%20UX%20Design%20Portfolio%202026/app/icon.png.mjs%20%28structured%20image%20object%29"],"sourcesContent":["import src from \"IMAGE\";\nexport default { src, width: 192, height: 192 }\n"],"names":["src","width","height"],"mappings":";;;;AAAA;;uCACe;IAAEA,KAAAA,gIAAG;IAAEC,OAAO;IAAKC,QAAQ;AAAI"}},
+    {"offset": {"line": 31, "column": 0}, "map": {"version":3,"sources":["file:///sessions/rcw-016x4yax1dpdvaacb6zkelvf/mnt/UI%20UX%20Design%20Portfolio%202026/app/apple-icon.png.mjs%20%28structured%20image%20object%29"],"sourcesContent":["import src from \"IMAGE\";\nexport default { src, width: 180, height: 180 }\n"],"names":["src","width","height"],"mappings":";;;;AAAA;;uCACe;IAAEA,KAAAA,yIAAG;IAAEC,OAAO;IAAKC,QAAQ;AAAI"}},
+    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":["file:///sessions/rcw-016x4yax1dpdvaacb6zkelvf/mnt/UI%20UX%20Design%20Portfolio%202026/app/%40sheet/default.tsx"],"sourcesContent":["/** The @sheet parallel slot is empty except when a /work route is\n *  intercepted from the landing page. */\nexport default function Default() {\n  return null;\n}\n"],"names":["Default"],"mappings":"AAAA;uCACuC;;;;AACxB,SAASA;IACtB,OAAO;AACT"}}]
+}

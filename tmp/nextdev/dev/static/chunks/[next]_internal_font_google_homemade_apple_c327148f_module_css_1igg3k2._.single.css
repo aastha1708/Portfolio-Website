@@ -1,0 +1,21 @@
+/* [next]/internal/font/google/homemade_apple_c327148f.module.css [app-client] (css) */
+@font-face {
+  font-family: Homemade Apple Fallback;
+  src: local(Arial);
+  ascent-override: 104.33%;
+  descent-override: 68.09%;
+  line-gap-override: 1.42%;
+  size-adjust: 124.21%;
+}
+
+.homemade_apple_c327148f-module__wKJAuq__className {
+  font-family: Homemade Apple, Homemade Apple Fallback;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.homemade_apple_c327148f-module__wKJAuq__variable {
+  --font-homemade-apple: "Homemade Apple", "Homemade Apple Fallback";
+}
+
+/*# sourceMappingURL=%5Bnext%5D_internal_font_google_homemade_apple_c327148f_module_css_1igg3k2._.single.css.map*/

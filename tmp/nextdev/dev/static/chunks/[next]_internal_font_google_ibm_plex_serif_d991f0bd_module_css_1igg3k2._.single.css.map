@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[next]/internal/font/google/ibm_plex_serif_d991f0bd.module.css"],"sourcesContent":["@font-face {\n    font-family: 'IBM Plex Serif Fallback';\n    src: local(\"Times New Roman\");\n    ascent-override: 88.04%;\ndescent-override: 23.62%;\nline-gap-override: 0.00%;\nsize-adjust: 116.43%;\n\n}\n.className {\n    font-family: 'IBM Plex Serif', 'IBM Plex Serif Fallback';\n    font-style: normal;\n\n}\n.variable {\n    --font-ibm-plex-serif: 'IBM Plex Serif', 'IBM Plex Serif Fallback';\n}\n"],"names":[],"mappings":"AAAA;;;;;;;;;AASA;;;;;AAKA","ignoreList":[0]}}]
+}

@@ -1,10 +1,10 @@
 import Nav from "@/components/layout/Nav";
 import ScaledStage from "@/components/layout/ScaledStage";
-import SectionLabel from "@/components/layout/SectionLabel";
 import PostcardFooter from "@/components/layout/PostcardFooter";
 import HowIWork from "@/components/layout/HowIWork";
 import ProjectGrid from "@/components/work/ProjectGrid";
 import HeroCollage from "@/components/collage/HeroCollage";
+import SwashText from "@/components/layout/SwashText";
 import GridBackground, { LANDING_BANDS } from "@/components/layout/GridBackground";
 import FooterField from "@/components/layout/FooterField";
 import Reveal from "@/components/motion/Reveal";
@@ -34,10 +34,10 @@ export default function LandingPage() {
 
           {/* Work — Figma 569:571 at (137, 1764). */}
           <div id="projects" data-section="projects" className="absolute" style={{ top: 1764 }} />
-          <Reveal style={{ position: "absolute", left: 392, top: 1764, width: 655 }}>
-            <SectionLabel>projects that i designed with love &lt;3</SectionLabel>
+          <Reveal style={{ position: "absolute", left: 137, top: 1764, width: 1165.88 }}>
+            <ProjectsHeading />
           </Reveal>
-          <div className="absolute" style={{ left: 140, top: 1817 }}>
+          <div className="absolute" style={{ left: 140, top: 1856 }}>
             <ProjectGrid />
           </div>
 
@@ -61,12 +61,34 @@ export default function LandingPage() {
         </section>
         <section data-section="projects" className="bg-grid-lines pb-16">
           <Reveal className="px-5 pb-10">
-            <SectionLabel>projects that i designed with love &lt;3</SectionLabel>
+            <ProjectsHeading mobile />
           </Reveal>
           <ProjectGrid />
         </section>
         <FooterField />
       </div>
     </main>
+  );
+}
+
+/**
+ * "My projects" — Figma 629:96. PP Editorial Old 38/44 with the ornamental
+ * Amoresa "M", centred over the grid.
+ *
+ * This replaces the old lowercase SectionLabel here on purpose: the projects
+ * are the reason the page exists, and a display line earns them a beat of
+ * attention that a 16px marker doesn't. "how I work" keeps its SectionLabel,
+ * so the two sections now read as headline and footnote rather than as two
+ * equal markers.
+ */
+function ProjectsHeading({ mobile = false }: { mobile?: boolean }) {
+  return (
+    <h2
+      className={`font-display text-center text-black ${
+        mobile ? "text-[28px] leading-[34px]" : "text-[38px] leading-[44px]"
+      }`}
+    >
+      <SwashText text="My projects" swashTracking={mobile ? "4px" : "5px"} />
+    </h2>
   );
 }

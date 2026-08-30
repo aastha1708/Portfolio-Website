@@ -5,12 +5,16 @@ import { PROJECTS } from "@/lib/projects";
 /**
  * Standalone case-study page — one per project, at its final URL, so deep
  * links and refreshes work even though in-site navigation presents the same
- * content as a bottom sheet (see app/@sheet). Kora has its own full page at
- * app/work/kora, which wins over this dynamic segment.
+ * content as a bottom sheet (see app/@sheet). Written-up case studies have
+ * their own full pages (app/work/kora, app/work/dyslexiar), which win over
+ * this dynamic segment; this route serves the ones still to be written.
  */
 
+/** Only the projects this route actually owns — the rest have real pages. */
+const WRITTEN_UP = new Set(["kora", "dyslexiar"]);
+
 export function generateStaticParams() {
-  return PROJECTS.map((p) => ({ slug: p.id }));
+  return PROJECTS.filter((p) => !WRITTEN_UP.has(p.id)).map((p) => ({ slug: p.id }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

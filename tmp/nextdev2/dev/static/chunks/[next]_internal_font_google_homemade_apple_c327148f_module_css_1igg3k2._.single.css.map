@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[next]/internal/font/google/homemade_apple_c327148f.module.css"],"sourcesContent":["@font-face {\n    font-family: 'Homemade Apple Fallback';\n    src: local(\"Arial\");\n    ascent-override: 104.33%;\ndescent-override: 68.09%;\nline-gap-override: 1.42%;\nsize-adjust: 124.21%;\n\n}\n.className {\n    font-family: 'Homemade Apple', 'Homemade Apple Fallback';\n    font-weight: 400;\nfont-style: normal;\n\n}\n.variable {\n    --font-homemade-apple: 'Homemade Apple', 'Homemade Apple Fallback';\n}\n"],"names":[],"mappings":"AAAA;;;;;;;;;AASA;;;;;;AAMA","ignoreList":[0]}}]
+}

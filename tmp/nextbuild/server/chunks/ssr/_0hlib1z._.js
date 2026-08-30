@@ -1,0 +1,3 @@
+module.exports=[71029,(a,b,c)=>{"use strict";c._=function(a){return a&&a.__esModule?a:{default:a}}},70036,a=>{"use strict";var b=a.i(7997);a.s(["default",0,function({className:a="size-[20px]"}){return(0,b.jsx)("svg",{"aria-hidden":!0,viewBox:"0 0 20 20",className:`rotate-[46.02deg] ${a}`,fill:"none",stroke:"currentColor",strokeWidth:"1.5",children:(0,b.jsx)("path",{d:"M10 16V4M10 4l-5 5M10 4l5 5",strokeLinecap:"round",strokeLinejoin:"round"})})}])},45166,a=>{a.n(a.i(63901))}];
+
+//# sourceMappingURL=_0hlib1z._.js.map

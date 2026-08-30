@@ -1,6 +1,7 @@
 import CylinderCarousel from "@/components/motion/CylinderCarousel";
 import SectionLabel from "@/components/layout/SectionLabel";
 import SwashText from "@/components/layout/SwashText";
+import ArrowUpRight from "@/components/layout/ArrowUpRight";
 import Reveal from "@/components/motion/Reveal";
 
 /**
@@ -17,7 +18,32 @@ import Reveal from "@/components/motion/Reveal";
 export const HOW_I_WORK_COPY =
   "I turn ambiguity into clear product design direction and ship with cross-functional teams at speed. I design accessible, user-centered, experiences that balance empathy and creativity to deliver meaningful and impactful solutions.";
 
-export const HOW_I_WORK_PULL = "Feel free to connect for cool projects";
+export const HOW_I_WORK_PULL = "Feel free to connect for cool projects.";
+
+export const CONTACT_EMAIL = "aasthapcharag@gmail.com";
+
+/**
+ * The section's one call to action — Figma 629:98.
+ *
+ * Deliberately the same interaction as "Visit Kora" on the case study: the
+ * underline darkens, the arrow steps up and to the right, and the cursor grows
+ * rather than snapping to the box. Both are "the one outbound action on this
+ * screen", so they should feel like the same control — the footer's snap-and-
+ * fill treatment belongs to its list of links, where the snap is what tells
+ * you which of the three you're on.
+ */
+function ContactCta() {
+  return (
+    <a
+      href={`mailto:${CONTACT_EMAIL}`}
+      data-cursor="hover"
+      className="group/contact inline-flex h-[30px] shrink-0 items-center gap-[4px] whitespace-nowrap border-b-[1.5px] border-[#888] text-[14px] font-medium text-black transition-colors hover:border-black"
+    >
+      Contact me
+      <ArrowUpRight className="size-[20px] transition-transform duration-300 group-hover/contact:translate-x-[2px] group-hover/contact:-translate-y-[2px]" />
+    </a>
+  );
+}
 
 const PHOTOS = [
   { src: "/assets/landing/final/carousal-1.webp", alt: "" },
@@ -41,11 +67,12 @@ export default function HowIWork({ variant = "desktop" }: { variant?: "desktop" 
       <SectionLabel className="w-[655px]">how I work</SectionLabel>
 
       <div className={`${PLATE} flex h-[639px] w-full items-center justify-between pl-[100px] pr-[62px]`}>
-        <div className="flex flex-col gap-[45px]">
+        <div className="flex flex-col items-start gap-[45px]">
           <p className="w-[499px] text-[22px] leading-[26px] text-ink-muted">{HOW_I_WORK_COPY}</p>
           <p className="font-display w-[387px] text-[38px] leading-[44px] text-black">
             <SwashText text={HOW_I_WORK_PULL} swashTracking="9px" />
           </p>
+          <ContactCta />
         </div>
 
         {/* The wheel is taller than the panel on purpose — the panel's
@@ -67,11 +94,12 @@ function HowIWorkMobile() {
     <Reveal className="flex flex-col items-center gap-[14px] px-5">
       <SectionLabel>how I work</SectionLabel>
       <div className={`${PLATE} w-full max-w-[560px] px-6 pb-0 pt-8`}>
-        <div className="flex flex-col gap-[28px]">
+        <div className="flex flex-col items-start gap-[28px]">
           <p className="text-[17px] leading-[24px] text-ink-muted">{HOW_I_WORK_COPY}</p>
           <p className="font-display text-[28px] leading-[34px] text-black">
             <SwashText text={HOW_I_WORK_PULL} swashTracking="6px" />
           </p>
+          <ContactCta />
         </div>
         <CylinderCarousel
           images={PHOTOS}

@@ -1,8 +1,17 @@
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import ProjectSheet from "@/components/work/ProjectSheet";
 import CaseStudyBody from "@/components/work/CaseStudyBody";
 import KoraPage from "@/app/work/kora/page";
+import DyslexiArPage from "@/app/work/dyslexiar/page";
 import { PROJECTS } from "@/lib/projects";
+
+/** Written-up case studies render their own page inside the sheet; the rest
+ *  fall back to the shared hero + coming-soon body. */
+const WRITTEN: Record<string, () => ReactNode> = {
+  kora: KoraPage,
+  dyslexiar: DyslexiArPage,
+};
 
 /**
  * Intercepting route: when a project card is clicked ON the landing page,
@@ -16,9 +25,9 @@ export default async function InterceptedCaseStudy({ params }: { params: Promise
   const project = PROJECTS.find((p) => p.id === slug);
   if (!project) notFound();
 
+  const Written = WRITTEN[slug];
+
   return (
-    <ProjectSheet>
-      {slug === "kora" ? <KoraPage /> : <CaseStudyBody project={project} />}
-    </ProjectSheet>
+    <ProjectSheet>{Written ? <Written /> : <CaseStudyBody project={project} />}</ProjectSheet>
   );
 }

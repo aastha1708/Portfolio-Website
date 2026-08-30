@@ -32,7 +32,12 @@ const run = promisify(execFile);
 
 const SOURCE = "design/assets-source";
 const OUT = "public/assets";
-const SECTIONS = { "Landing page": "landing", "About page": "about", "Kora page": "kora" };
+const SECTIONS = {
+  "Landing page": "landing",
+  "About page": "about",
+  "Kora page": "kora",
+  "DyslexiAR Page": "dyslexiar",
+};
 /** Version folder -> path suffix under the section. "" keeps archived exports
  *  at the paths components already reference. */
 const VERSIONS = { Archives: "", "Final version": "final" };
@@ -40,16 +45,27 @@ const VERSIONS = { Archives: "", "Final version": "final" };
 const MAX_IMAGE_WIDTH = 1200;
 const MAX_VIDEO_WIDTH = 1320;
 
+/**
+ * Case-study hero banners (exported as banner.png / thumbnail.png) span the
+ * full 1076px content column, so the 1200px
+ * default leaves them at barely 1.1x — visibly soft on any retina screen.
+ * They're the first thing a visitor sees, so they get a true 2x budget.
+ * Everything else (thumbnails at 502, feature art at ~530) is already well
+ * over 2x at the default and stays there.
+ */
+const WIDE_IMAGE = /^(banner|thumbnail)$/;
+const WIDE_IMAGE_WIDTH = 2160;
+
 const webName = (file) =>
   file
     .replace(/\.[^.]+$/, "")
     .toLowerCase()
     .replace(/[\s_]+/g, "-");
 
-async function optimizeImage(input, output) {
+async function optimizeImage(input, output, maxWidth = MAX_IMAGE_WIDTH) {
   const meta = await sharp(input).metadata();
   await sharp(input)
-    .resize({ width: Math.min(meta.width ?? MAX_IMAGE_WIDTH, MAX_IMAGE_WIDTH), withoutEnlargement: true })
+    .resize({ width: Math.min(meta.width ?? maxWidth, maxWidth), withoutEnlargement: true })
     .webp({ quality: 84, effort: 6, alphaQuality: 90 })
     .toFile(output);
 }
@@ -120,7 +136,8 @@ async function processDir(from, to) {
       after += (await stat(`${base}.mp4`)).size + (await stat(`${base}-poster.webp`)).size;
       console.log(`${webName(file)}.mp4 + poster`);
     } else {
-      await optimizeImage(input, `${base}.webp`);
+      const cap = WIDE_IMAGE.test(webName(file)) ? WIDE_IMAGE_WIDTH : MAX_IMAGE_WIDTH;
+      await optimizeImage(input, `${base}.webp`, cap);
       after += (await stat(`${base}.webp`)).size;
       console.log(`${webName(file)}.webp`);
     }

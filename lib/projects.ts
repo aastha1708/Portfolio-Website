@@ -9,6 +9,13 @@ export type Project = {
   image: string;
   /** Optional looping video that replaces the still. */
   video?: string;
+  /**
+   * Designed, not yet written up. The card renders inert — no link, no hover
+   * lift — and says "coming soon" through the cursor instead. Sending a
+   * hiring manager to an empty case study is worse than telling them it isn't
+   * ready; this way the work still shows and the promise stays honest.
+   */
+  comingSoon?: boolean;
 };
 
 /**
@@ -27,27 +34,17 @@ export const PROJECTS: Project[] = [
     description:
       "A career exploration app focused on self-discovery of users. Won 3rd place in India's first AI-focused designathon.",
     tags: ["Designathon", "Developed"],
-    image: "/assets/landing/kora-thumbnail.webp",
+    image: "/assets/landing/final/kora-thumbnail.webp",
   },
   {
-    id: "digital-gold",
-    title: "Revamping Digital Gold",
+    id: "design-system",
+    title: "Design System",
     year: "2026",
     description:
-      "Revamped first-time buy, SIP and sell journeys— met with great feedback from the product team.",
-    tags: ["Redesign", "Bootcamp"],
-    image: "/assets/landing/digital-gold-thumbnail-poster.webp",
-    video: "/assets/landing/digital-gold-thumbnail.mp4",
-  },
-  {
-    id: "credit-card-onboarding",
-    title: "Onboarding Journey",
-    year: "2026",
-    description:
-      "Shipped a smoother credit card application flow. Led to fewer drop-offs at essential KYC step.",
-    tags: ["Internship", "Shipped"],
-    image: "/assets/landing/cc-onboarding-thumbnail-poster.webp",
-    video: "/assets/landing/cc-onboarding-thumbnail.mp4",
+      "Built high-quality Figma components with variables for faster project setup and maintenance.",
+    tags: ["Atomic DS", "Tokenization"],
+    image: "/assets/landing/final/design-system-thumbnail.webp",
+    comingSoon: true,
   },
   {
     id: "sahayak",
@@ -55,7 +52,17 @@ export const PROJECTS: Project[] = [
     year: "2025",
     description:
       "An accessible smartphone user interface for elderly and low-literacy users using voice modality, and AI support.",
-    tags: ["Side project"],
-    image: "/assets/landing/final/sahayak-new-banner.webp",
+    tags: ["Side Project"],
+    image: "/assets/landing/final/sahayak-thumbnail.webp",
+    comingSoon: true,
+  },
+  {
+    id: "dyslexiar",
+    title: "DyslexiAR",
+    year: "2024",
+    description:
+      "An AR learning tool using game-like phonics practice to make dyslexia assessment less stressful for children.",
+    tags: ["Augmented Reality"],
+    image: "/assets/landing/final/dyslexiar-thumbnail.webp",
   },
 ];
