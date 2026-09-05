@@ -42,13 +42,19 @@ type NavItem = {
   ready: boolean;
   /** Landing-page section id — scrolls instead of navigating when already home. */
   anchor?: string;
+  /** Leaves the site, so it opens in a new tab. */
+  external?: boolean;
 };
 
+/* Resume is the same FlowCV link the footer carries — one URL, so a new
+   revision is a one-line change and the two can never disagree. It sits after
+   Work because that is the order a hiring manager reads in: the work first,
+   then the credentials that back it. */
 const LINKS: NavItem[] = [
   { label: "About", href: "/about", ready: true },
   { label: "Work", href: "/#projects", ready: true, anchor: "projects" },
+  { label: "Resume", href: "https://flowcv.com/resume/4rqffng202tj", ready: true, external: true },
   { label: "Playground", href: "/playground", ready: false },
-  { label: "Visitor Gallery", href: "/gallery", ready: false },
 ];
 
 const LINKEDIN = "https://www.linkedin.com/in/aasthasingh1708";
@@ -59,7 +65,7 @@ const LINKEDIN = "https://www.linkedin.com/in/aasthasingh1708";
    word — a target you can hit, not a box you have to aim at. */
 const ITEM =
   "rounded-[8px] px-[10px] py-[6px] text-[15px] leading-[20px] tracking-[-0.01em] " +
-  "transition-colors duration-200 max-lg:px-[8px] max-lg:text-[13px]";
+  "transition-colors duration-200 max-lg:px-[8px] max-lg:text-[13px] max-sm:px-[6px]";
 
 export default function Nav() {
   const reduceMotion = useReducedMotion();
@@ -94,10 +100,16 @@ export default function Nav() {
           as wide as the widest end, so a 137px button forces a 137px gutter on
           the left too and the whole thing overflows a phone. There, the links
           simply sit between the two ends instead. Nobody reads a 375px row as
-          "centred" anyway; they read it as three things that fit. */}
+          "centred" anyway; they read it as three things that fit.
+
+          And at 375 they only just fit: wordmark, three labels and the button
+          come to ~367 of the 375 available once the sm overrides here and on
+          ITEM tighten the gutter, the gaps and the label padding. That is the
+          width this row is designed against — anything added to it needs to
+          earn its place by pushing something else out. */}
       <nav
         aria-label="Primary"
-        className="flex w-full items-center justify-between gap-3 px-gutter py-[28px] md:grid md:grid-cols-[1fr_auto_1fr] max-lg:px-5 max-lg:py-5"
+        className="flex w-full items-center justify-between gap-3 px-gutter py-[28px] md:grid md:grid-cols-[1fr_auto_1fr] max-lg:px-5 max-lg:py-5 max-sm:gap-1.5 max-sm:px-4"
       >
         {/* The "AS" wordmark, painted as a mask (see .logo-wordmark). 30 tall:
             this is type, so it is set against the links rather than sized like
@@ -140,6 +152,8 @@ export default function Nav() {
                     href={item.href}
                     data-cursor="quiet"
                     aria-current={current ? "page" : undefined}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noreferrer noopener" : undefined}
                     onClick={item.anchor ? scrollToAnchor(item.anchor) : undefined}
                     className={`${ITEM} ${
                       current ? "text-black" : "text-ink-muted"

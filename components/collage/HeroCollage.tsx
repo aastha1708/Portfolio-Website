@@ -98,8 +98,14 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
 
       {/* Heading block — Figma 538:4721 (511 wide at 465,307, 36px side pad).
           pointer-events-none so the keepsakes behind it stay hoverable; the
-          type has nothing to click. */}
-      <div className="pointer-events-none absolute left-[465px] top-[307px] z-10 w-[511px] px-[36px]">
+          type has nothing to click.
+
+          Centred by translate rather than left-[465px]. 465 + 511 = 976 leaves
+          464 on the right, so the Figma value is half a pixel off the canvas
+          centre — invisible on its own, but it is the kind of thing that stops
+          you being able to trust the geometry when something else looks wrong.
+          This is exact by construction and stays exact if the width changes. */}
+      <div className="pointer-events-none absolute left-1/2 top-[307px] z-10 w-[511px] -translate-x-1/2 px-[36px]">
         <Wordmark />
       </div>
     </section>
@@ -141,10 +147,21 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
 
         <motion.div className="flex items-center justify-center gap-[12px]" {...rise(0.45)}>
           {META.map((word, i) => (
-            <span key={word} className="flex items-center gap-[12px]">
+            <span key={word} className="flex shrink-0 items-center gap-[12px]">
               {i > 0 && <span aria-hidden className="size-[6px] shrink-0 rounded-full bg-ink-muted" />}
+              {/* nowrap + shrink-0, and the reason is the whole point of this
+                  row. At 20px the three phrases plus their dots need ~469px;
+                  the heading block's content box is 439 (511 less its 36px
+                  side padding). Flex's default shrink then squeezed the last
+                  item until "drinking coffee" broke onto a second line, which
+                  read as the hero being off-centre — it was not, every block
+                  sits on the same axis, but a row that is one line on the left
+                  and two on the right cannot look centred. Refusing to shrink
+                  lets the row keep its natural width and spill ~15px into the
+                  block's own padding, still dead centre because the column
+                  centres it. */}
               <span
-                className={`text-center font-medium uppercase text-ink-muted ${
+                className={`shrink-0 whitespace-nowrap text-center font-medium uppercase text-ink-muted ${
                   mobile ? "text-[11px]" : "text-[20px]"
                 }`}
               >
