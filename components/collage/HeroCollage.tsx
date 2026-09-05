@@ -1,11 +1,10 @@
 "use client";
 
-import { MotionConfig, motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
-import CollageItem from "./CollageItem";
+import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useState } from "react";
+import StickerPeel from "./StickerPeel";
 import SwashText from "@/components/layout/SwashText";
 import { HERO_ITEMS, HERO_GROUP, HERO_CENTER } from "@/lib/collage-landing";
-import { useStageScale } from "@/components/layout/ScaledStage";
 
 /** The deal-out plays once per visit — returning from a case study should
  *  feel instant, not make the visitor sit through the intro again. */
@@ -13,14 +12,23 @@ const DEALT_KEY = "hero-dealt";
 
 const META = ["designing", "tinkering", "drinking coffee"];
 
+/**
+ * The hero: eight keepsakes stuck to the page, and the heading they frame.
+ *
+ * Sept 2026 — the stickers used to be draggable, drift with the pointer on a
+ * per-object parallax, and sway on an idle loop. All of it is gone. Three
+ * competing motions meant nothing on the page held still long enough to be
+ * looked at, and none of them said anything about the objects themselves.
+ * What replaced them is one gesture: bring the cursor onto a keepsake and it
+ * peels off the page, showing the blank liner underneath. One thing to notice,
+ * and it rewards the noticing. See StickerPeel for how.
+ *
+ * The deal-out entrance still lives here rather than in the sticker, because
+ * it is a property of the collage — eight objects opening out from behind the
+ * heading — not of any one object.
+ */
 export default function HeroCollage({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
   const reduceMotion = useReducedMotion();
-  const scale = useStageScale();
-  const deskRef = useRef<HTMLDivElement>(null);
-  const nx = useMotionValue(0);
-  const ny = useMotionValue(0);
-  const sx = useSpring(nx, { stiffness: 50, damping: 20, mass: 0.6 });
-  const sy = useSpring(ny, { stiffness: 50, damping: 20, mass: 0.6 });
 
   // Read once on the client; the server renders the pre-deal state either way.
   const [dealt] = useState(() => typeof window !== "undefined" && sessionStorage.getItem(DEALT_KEY) === "1");
@@ -29,50 +37,67 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
     sessionStorage.setItem(DEALT_KEY, "1");
   }, []);
 
-  useEffect(() => {
-    if (reduceMotion) return;
-    const onMove = (e: PointerEvent) => {
-      nx.set((e.clientX / window.innerWidth) * 2 - 1);
-      ny.set((e.clientY / window.innerHeight) * 2 - 1);
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
-  }, [nx, ny, reduceMotion]);
-
   if (variant === "mobile") return <HeroMobile />;
+
+  /* NOTE: `dealt` and `reduceMotion` must NOT reach `initial` — the server and
+     the first client render have to emit identical inline styles or React
+     flags a hydration mismatch. They only collapse the transition instead, so
+     the entrance snaps rather than plays. */
+  const skip = dealt || reduceMotion;
 
   return (
     <section aria-label="Introduction">
-      {/* The stage is CSS-scaled to the viewport, so pointer deltas must be
-          divided back into canvas px for dragging to track the cursor 1:1. */}
-      <MotionConfig transformPagePoint={(p) => ({ x: p.x / scale, y: p.y / scale })}>
-        <div
-          ref={deskRef}
-          className="absolute"
-          style={{
-            left: HERO_GROUP.left,
-            top: HERO_GROUP.top,
-            width: HERO_GROUP.width,
-            height: HERO_GROUP.height,
-          }}
-        >
-          {HERO_ITEMS.map((item, i) => (
-            <CollageItem
+      <div
+        className="absolute"
+        style={{
+          left: HERO_GROUP.left,
+          top: HERO_GROUP.top,
+          width: HERO_GROUP.width,
+          height: HERO_GROUP.height,
+        }}
+      >
+        {HERO_ITEMS.map((item, i) => {
+          const cx = item.box.left + item.box.width / 2;
+          const cy = item.box.top + item.box.height / 2;
+          const delay = skip ? 0 : 0.25 + i * 0.06;
+          return (
+            <motion.div
               key={item.id}
-              item={item}
-              index={i}
-              pointer={{ nx: sx, ny: sy }}
-              dealFrom={HERO_CENTER}
-              dealt={dealt}
-              drag
-              dragConstraints={deskRef}
-            />
-          ))}
-        </div>
-      </MotionConfig>
+              className="absolute"
+              style={{ left: item.box.left, top: item.box.top, width: item.box.width }}
+              initial={{
+                opacity: 0,
+                x: HERO_CENTER.x - cx,
+                y: HERO_CENTER.y - cy,
+                scale: 0.5,
+                rotate: i % 2 ? 7 : -7,
+              }}
+              animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+              transition={
+                skip
+                  ? { duration: 0 }
+                  : {
+                      type: "spring",
+                      stiffness: 170,
+                      damping: 22,
+                      delay,
+                      opacity: { delay, duration: 0.5 },
+                    }
+              }
+            >
+              <StickerPeel
+                src={item.src}
+                alt={item.alt}
+                rotate={item.rotate ?? 0}
+                peelDirection={item.peel ?? 0}
+              />
+            </motion.div>
+          );
+        })}
+      </div>
 
       {/* Heading block — Figma 538:4721 (511 wide at 465,307, 36px side pad).
-          pointer-events-none so the stickers behind it stay draggable; the
+          pointer-events-none so the keepsakes behind it stay hoverable; the
           type has nothing to click. */}
       <div className="pointer-events-none absolute left-[465px] top-[307px] z-10 w-[511px] px-[36px]">
         <Wordmark />
@@ -134,14 +159,15 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
 }
 
 /** Purpose-built small-screen hero: a curated six from the keepsakes rather
-    than all eight, scattered around the type instead of behind it. */
+    than all eight, scattered around the type instead of behind it. No peel —
+    it is a hover gesture, and there is no hover on a phone. */
 const MOBILE_PICKS = [
-  { id: "polaroid-beach", src: "/assets/landing/new-ver/56-2.webp", w: 84, cls: "right-[2%] top-[4%] rotate-3" },
-  { id: "heart", src: "/assets/landing/new-ver/56-3.webp", w: 68, cls: "left-[-2%] top-[8%] -rotate-6" },
-  { id: "cat", src: "/assets/landing/new-ver/56-1.webp", w: 84, cls: "left-[-4%] bottom-[10%] -rotate-3" },
-  { id: "headphones", src: "/assets/landing/new-ver/55-4.webp", w: 96, cls: "right-[-6%] bottom-[8%] rotate-6" },
-  { id: "latte", src: "/assets/landing/new-ver/55-5.webp", w: 62, cls: "right-[14%] top-[40%] rotate-6" },
-  { id: "flower-pink", src: "/assets/landing/new-ver/55-2.webp", w: 58, cls: "left-[12%] top-[38%] rotate-12" },
+  { id: "polaroid-beach", src: "/assets/landing/new-ver/die-cut/56-2.webp", w: 90, cls: "right-[2%] top-[4%] rotate-3" },
+  { id: "heart", src: "/assets/landing/new-ver/die-cut/56-3.webp", w: 74, cls: "left-[-2%] top-[8%] -rotate-6" },
+  { id: "cat", src: "/assets/landing/new-ver/die-cut/56-1.webp", w: 90, cls: "left-[-4%] bottom-[10%] -rotate-3" },
+  { id: "headphones", src: "/assets/landing/new-ver/die-cut/55-4.webp", w: 102, cls: "right-[-6%] bottom-[8%] rotate-6" },
+  { id: "latte", src: "/assets/landing/new-ver/die-cut/55-5.webp", w: 68, cls: "right-[14%] top-[40%] rotate-6" },
+  { id: "flower-pink", src: "/assets/landing/new-ver/die-cut/55-2.webp", w: 64, cls: "left-[12%] top-[38%] rotate-12" },
 ];
 
 function HeroMobile() {

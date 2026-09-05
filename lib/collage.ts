@@ -1,21 +1,14 @@
-/** Shared shape for every positioned object in a collage — hero and about alike. */
+/** Shared shape for every positioned object in the hero collage. */
 export type CollageItem = {
   id: string;
   src: string;
   alt: string;
-  /** Visual footprint on the canvas. */
+  /** Footprint on the 1440 canvas, un-rotated, INCLUDING the die-cut border. */
   box: { left: number; top: number; width: number; height: number };
   rotate?: number;
-  /** Inset in px, for logo marks that sit inside a larger padded frame. */
-  pad?: { x: number; y: number } | { top: number; right: number; bottom: number; left: number };
-  cursor?: string;
+  /** Which edge peels, in degrees clockwise from the top. */
+  peel?: number;
   href?: string;
-  /** Continuous idle sway (Figma note: "little movement"). */
-  idle?: boolean;
-  /** Pointer-following magnetism strength, 0–1. */
-  magnetic?: number;
-  /** Depth for the parallax layer — higher moves more. */
-  depth?: number;
   /** Richer interaction recorded in Figma, not yet built. */
   planned?: string;
 };

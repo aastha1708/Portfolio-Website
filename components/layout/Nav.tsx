@@ -1,19 +1,39 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import SpecularButton from "@/components/ui/SpecularButton";
 
 /**
- * Morphic navbar (adapted from kokonutui/morphic-navbar).
+ * The navigation, Sept 2026.
  *
- * The link cluster is one continuous pill. The lifted item — hovered, or the
- * active route when the pointer is elsewhere — pops out as its own rounded
- * segment, and its neighbours' corners morph to wrap around the gap. Restyled
- * from kokonut's black glass to the portfolio's paper palette: the cluster is
- * a faint ink wash, the lifted segment is a white paper chip.
+ * Three zones, in the order a visitor uses them: who this is (the wordmark),
+ * where they can go (the links), and the one thing they might want to do (the
+ * CTA). The links sit in the true centre of the page rather than after the
+ * wordmark, so the row reads as a masthead instead of a toolbar — and the
+ * centre stays centred no matter how wide the two ends get, because the grid is
+ * 1fr / auto / 1fr rather than a flex row with space-between.
+ *
+ * WHAT THIS REPLACED, AND WHY
+ * ---------------------------
+ * Before this it was a "morphic" cluster (adapted from kokonutui): five fused
+ * ink blocks where the hovered item detached into its own white pill and its
+ * neighbours' corners re-rounded around the gap. It was the most animated thing
+ * above the fold, animating the least interesting content on the page — it
+ * fought a hero built on eight hand-placed keepsakes, and it read as a
+ * component someone installed rather than something designed for this site.
+ *
+ * The links are now deliberately quiet: five words in muted ink carrying no
+ * chrome at rest, with a hover that does one honest thing — the label darkens
+ * to full black over a barely-there wash. The current page is the only item
+ * that is black without being hovered, so the nav answers "where am I" without
+ * an underline, a dot, or a pill. All the visual weight that used to be spread
+ * across five equal blocks now sits on the one item that is an action.
+ *
+ * The nav is ABSOLUTE, not fixed. A case study is a long read and a bar that
+ * followed the reader down 4000px of it would be earning nothing; scrolling
+ * away is the feature. Pages set their own top padding to clear it.
  */
 
 type NavItem = {
@@ -31,21 +51,19 @@ const LINKS: NavItem[] = [
   { label: "Visitor Gallery", href: "/gallery", ready: false },
 ];
 
-/* Light-mode take on the kokonut cluster: the fused blocks are a soft ink
-   wash instead of solid black, and the lifted segment is a white paper pill
-   carried by its shadow. Same morph, palette that belongs to this site. */
-/* px-[14px] gives the 28px gap between labels that the Figma row specifies,
-   since the gap there is measured text-edge to text-edge. */
-const SEGMENT =
-  "flex items-center justify-center whitespace-nowrap bg-black/[0.05] py-[9px] px-[14px] text-[16px] text-ink-muted transition-all duration-300 max-lg:px-[10px] max-lg:text-[13px]";
+const LINKEDIN = "https://www.linkedin.com/in/aasthasingh1708";
+
+/* One shared shape for links and coming-soon items, so the row's rhythm never
+   depends on which of the two an item happens to be. px-[10px] keeps ~20px of
+   air between labels while letting the hover wash sit a little wider than the
+   word — a target you can hit, not a box you have to aim at. */
+const ITEM =
+  "rounded-[8px] px-[10px] py-[6px] text-[15px] leading-[20px] tracking-[-0.01em] " +
+  "transition-colors duration-200 max-lg:px-[8px] max-lg:text-[13px]";
 
 export default function Nav() {
   const reduceMotion = useReducedMotion();
   const pathname = usePathname();
-  const [hovered, setHovered] = useState<string | null>(null);
-
-  const activeLabel = LINKS.find((l) => l.ready && !l.anchor && pathname.startsWith(l.href))?.label ?? null;
-  const lifted = hovered ?? activeLabel;
 
   const scrollToAnchor = (anchor: string) => (e: React.MouseEvent) => {
     if (pathname !== "/") return; // let the /#anchor navigation happen
@@ -67,71 +85,83 @@ export default function Nav() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Full-bleed row, 60px from each edge (Figma frame 394:1269) — the logo
-          and the link cluster sit at opposite ends of the whole page. */}
+      {/* Full-bleed row, 60px from each edge (Figma frame 394:1269). From md up
+          the outer columns are 1fr, so the link cluster is centred on the PAGE
+          rather than on whatever is left over between the wordmark and the
+          button — which is the difference between a masthead and a toolbar.
+
+          Below md that same rule breaks the row: equal 1fr columns have to be
+          as wide as the widest end, so a 137px button forces a 137px gutter on
+          the left too and the whole thing overflows a phone. There, the links
+          simply sit between the two ends instead. Nobody reads a 375px row as
+          "centred" anyway; they read it as three things that fit. */}
       <nav
         aria-label="Primary"
-        className="flex w-full items-center justify-between px-gutter py-[34px] max-lg:px-5 max-lg:py-6"
+        className="flex w-full items-center justify-between gap-3 px-gutter py-[28px] md:grid md:grid-cols-[1fr_auto_1fr] max-lg:px-5 max-lg:py-5"
       >
-        <Link
-          href="/"
-          data-cursor="hover"
-          aria-label="Aastha Singh — home"
-          className="block size-[48px] shrink-0 overflow-hidden rounded-[4px] max-lg:size-[40px]"
-        >
-          <Image
-            src="/assets/landing/final/aastha-logo.webp"
-            alt=""
-            width={96}
-            height={96}
-            priority
-            className="size-full object-cover"
-          />
-        </Link>
+        {/* The "AS" wordmark, painted as a mask (see .logo-wordmark). 30 tall:
+            this is type, so it is set against the links rather than sized like
+            an icon — a hair above their cap height, which reads as a masthead
+            initial and not as a logo tile parked in the corner. Width follows
+            from the artwork's proportions, so the caller sets one number. */}
+        <div className="justify-self-start">
+          <Link
+            href="/"
+            data-cursor="quiet"
+            aria-label="Aastha Singh — home"
+            className="block transition-opacity duration-200 hover:opacity-60"
+          >
+            <span
+              aria-hidden
+              className="logo-wordmark block aspect-[160/124] h-[30px] w-auto max-lg:h-[26px]"
+            />
+          </Link>
+        </div>
 
-        {/* -mr matches the segment's own padding, so the cluster's text edge —
-            not its hover pill — lines up with the 60px page gutter. */}
-        <ul
-          className="-mr-[14px] flex items-stretch overflow-hidden rounded-xl max-lg:-mr-[10px]"
-          onPointerLeave={() => setHovered(null)}
-        >
-          {LINKS.map((item, i) => {
-            const isLifted = lifted === item.label;
-            const prev = i > 0 ? LINKS[i - 1] : null;
-            const next = i < LINKS.length - 1 ? LINKS[i + 1] : null;
-            /* The kokonut morph: every segment is a solid ink block; the
-               lifted one detaches as its own rounded pill (the mx margin opens
-               a gap of page colour), and its neighbours' corners round toward
-               the gap so the cluster appears to split and re-fuse. */
-            const shape = isLifted
-              ? "mx-2 rounded-xl !bg-white font-semibold !text-black shadow-[0_1px_6px_rgba(15,23,42,0.12)]"
-              : [
-                  (i === 0 || lifted === prev?.label) && "rounded-l-xl",
-                  (i === LINKS.length - 1 || lifted === next?.label) && "rounded-r-xl",
-                ]
-                  .filter(Boolean)
-                  .join(" ");
+        <ul className="flex items-center gap-[2px] justify-self-center">
+          {/* Items render in order; the coming-soon ones hide themselves below
+              sm rather than being filtered here, so the list stays one source of
+              truth for what the site contains. */}
+          {LINKS.map((item) => {
+            // Anchor items live on the landing page, so they never own a route.
+            const current = item.ready && !item.anchor && pathname.startsWith(item.href);
 
             return (
-              <li key={item.label} className="flex" onPointerEnter={() => setHovered(item.label)}>
+              <li key={item.label} className={item.ready ? undefined : "max-sm:hidden"}>
                 {item.ready ? (
+                  /* "quiet", not "snap" and not the default. Snap hands the
+                     cursor this element's bounding box, and the cursor is a
+                     white disc under mix-blend-difference — over paper that
+                     inverts to a solid black plate behind the label. The
+                     default for any <a> is barely better: a 36px disc that
+                     lands on the word as a black blob. Quiet keeps it at its
+                     resting dot and lets the grey wash be the hover state. */
                   <Link
                     href={item.href}
-                    data-cursor="snap"
-                    aria-current={activeLabel === item.label ? "page" : undefined}
+                    data-cursor="quiet"
+                    aria-current={current ? "page" : undefined}
                     onClick={item.anchor ? scrollToAnchor(item.anchor) : undefined}
-                    className={`${SEGMENT} ${shape}`}
+                    className={`${ITEM} ${
+                      current ? "text-black" : "text-ink-muted"
+                    } hover:bg-black/[0.05] hover:text-black`}
                   >
                     {item.label}
                   </Link>
                 ) : (
-                  /* Coming-soon pages morph like real links — the hover cursor
-                     label is what communicates their state. */
+                  /* Unbuilt pages stay in the row — the roadmap is part of the
+                     story — but they don't take the hover wash, because a
+                     surface that lights up promises somewhere to go. The cursor
+                     label is what explains them.
+
+                     Below sm they drop out entirely. Four labels between a
+                     wordmark and a button on a 375px screen leaves nothing but
+                     labels, and the two doing the crowding are the two you
+                     can't open — there is no hover on a phone to tell you why. */
                   <span
                     data-cursor="label"
                     data-cursor-text="Coming soon"
                     aria-disabled="true"
-                    className={`${SEGMENT} ${shape} cursor-default`}
+                    className={`${ITEM} block cursor-default text-ink-muted/60 hover:text-ink-muted`}
                   >
                     {item.label}
                   </span>
@@ -140,6 +170,36 @@ export default function Nav() {
             );
           })}
         </ul>
+
+        {/* The only action in the row, so it is the only thing carrying colour
+            and weight. Ink pill on paper — the same black this site already
+            uses for the Kora CTA and the scroll-to-top button — which is also
+            what lets the specular rim read: a white travelling highlight needs
+            a dark object to travel on. */}
+        <div className="justify-self-end">
+          <SpecularButton
+            href={LINKEDIN}
+            target="_blank"
+            rel="noreferrer noopener"
+            /* Same reason as the links: the pill lights its own rim, and a
+               36px disc inverted to white over black ink would sit straight on
+               the label. */
+            data-cursor="quiet"
+            /* Tighter and brighter than the component's defaults. Those are set
+               for a large hero button; at 38px tall the streak has very little
+               border to travel, so a 40-degree falloff smears it into a general
+               glow. 26 keeps it a highlight with a start and an end. */
+            intensity={1.35}
+            shineFade={26}
+            thickness={1.1}
+            /* Tailwind's utilities layer outranks the components layer where
+               .specular-button lives, so these override its padding with no
+               importance flag. */
+            className="max-lg:px-[16px] max-lg:py-[10px] max-lg:text-[13px] max-sm:px-[14px] max-sm:py-[9px] max-sm:text-[12px]"
+          >
+            Let&rsquo;s connect!
+          </SpecularButton>
+        </div>
       </nav>
     </motion.header>
   );

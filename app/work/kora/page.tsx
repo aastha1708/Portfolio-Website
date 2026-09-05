@@ -128,7 +128,7 @@ function PhoneRow({ screens, alts }: { screens: readonly string[]; alts: string[
           <IphoneFrame
             src={`/assets/kora/${name}.webp`}
             alt={alts[i]}
-            className="w-[240px] max-w-[70vw] md:w-[262px]"
+            className="w-[240px] max-w-[70vw] md:w-[250px]"
           />
         </Reveal>
       ))}
@@ -150,7 +150,7 @@ export default function KoraPage() {
                 <h1 className="font-display text-[42px] leading-[42px] tracking-[-0.408px] text-black">
                   <SwashText text="Kora" swashTracking="4px" />
                 </h1>
-                <p className="max-w-[982px] text-[24px] leading-[28px] text-ink-muted">
+                <p className="text-[24px] leading-[28px] text-ink-muted">
                   A career guide that understands you.
                 </p>
               </div>
@@ -265,7 +265,7 @@ export default function KoraPage() {
                 students are largely untouched by any existing platform. This is where Kora wins.
               </p>
             </div>
-            <div className="relative aspect-[900/432] w-full max-w-[900px]">
+            <div className="relative aspect-[900/432] w-full">
               <Image
                 src="/assets/kora/market-analysis.webp"
                 alt="Donut chart of market drivers: youth population and demand 35%, digital adoption 25%, policy mandates 18%, rising household disposable income 13%, AI-powered personalisation 9%"

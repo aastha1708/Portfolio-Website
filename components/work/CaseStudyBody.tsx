@@ -24,7 +24,7 @@ export default function CaseStudyBody({ project }: { project: Project }) {
             <h1 className="font-display text-[42px] leading-[42px] tracking-[-0.408px] text-black">
               <SwashText text={project.title} swashTracking="4px" />
             </h1>
-            <p className="max-w-[982px] text-[24px] leading-[28px] text-ink-muted">
+            <p className="text-[24px] leading-[28px] text-ink-muted">
               {project.description}
             </p>
             <ul className="mt-[8px] flex flex-wrap items-center gap-[6px]">
@@ -43,7 +43,7 @@ export default function CaseStudyBody({ project }: { project: Project }) {
                 src={project.image}
                 alt={`${project.title} preview`}
                 fill
-                sizes="(max-width: 1120px) 100vw, 1080px"
+                sizes="(max-width: 928px) 100vw, 880px"
                 className="object-cover"
                 priority
               />

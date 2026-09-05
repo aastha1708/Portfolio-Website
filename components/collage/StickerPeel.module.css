@@ -1,0 +1,210 @@
+/*
+ * Sticker peel — geometry and light.
+ *
+ * Two stacked copies of the same artwork. `.main` is the sticker still stuck
+ * down, clipped from the peel edge inward as it lifts; `.flap` is a mirrored
+ * copy sitting directly above it, clipped to exactly the strip `.main` gave
+ * up, so the two always meet along one line. `--sp-peel-*` drives both, which
+ * is why the fold never separates.
+ *
+ * `.container` is rotated by the peel direction and every child counter-
+ * rotated, so one top-down peel serves all eight edges.
+ *
+ * SHADOW DIRECTION. Everything here lives inside that rotated container, so a
+ * plain `drop-shadow(2px 6px …)` would swing round with the peel direction and
+ * eight stickers would light themselves from eight different suns. Instead the
+ * component counter-rotates a page-fixed light into container space and hands
+ * it over as the unit vector (--sp-ux, --sp-uy); every offset below is that
+ * vector times a length, so the whole collage keeps one light source.
+ */
+
+.root {
+  /* Declared HERE, not on :root as the original does — custom properties
+     resolve against the element they are declared on, so a per-instance
+     --sp-pad had no effect on clip geometry computed at :root. */
+  --sp-peel: var(--sp-peel-hover);
+  --sp-start: calc(-1 * var(--sp-pad));
+  --sp-end: calc(100% + var(--sp-pad));
+  position: relative;
+}
+
+.container {
+  position: relative;
+  transform: rotate(var(--sp-direction));
+  transform-origin: center;
+}
+
+.container * {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------------------------------------------------------------- sticker */
+
+.main {
+  clip-path: polygon(
+    var(--sp-start) var(--sp-start),
+    var(--sp-end) var(--sp-start),
+    var(--sp-end) var(--sp-end),
+    var(--sp-start) var(--sp-end)
+  );
+  /* Contact shadow: short and tight, because this half is still stuck down. */
+  filter: drop-shadow(
+    calc(var(--sp-ux) * 2.5px) calc(var(--sp-uy) * 2.5px) 3.5px
+      rgb(22 20 16 / calc(0.2 * var(--sp-shadow)))
+  );
+  transition: clip-path 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------- flap */
+
+/* The flap's shadow lives on a wrapper because clip-path is applied AFTER
+   filter — a drop shadow on the clipped element gets clipped away with it.
+   This box is unclipped and unmirrored, so the shadow falls the right way
+   round and is free to extend past the sticker. */
+.flapShadow {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(
+    calc(var(--sp-ux) * 2px) calc(var(--sp-uy) * 2px) 2px
+      rgb(22 20 16 / calc(0.14 * var(--sp-shadow)))
+  );
+  transition: filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flap {
+  position: absolute;
+  left: 0;
+  top: calc(-100% - var(--sp-pad) - var(--sp-pad));
+  width: 100%;
+  height: 100%;
+  transform: scaleY(-1);
+  clip-path: polygon(
+    var(--sp-start) var(--sp-start),
+    var(--sp-end) var(--sp-start),
+    var(--sp-end) var(--sp-start),
+    var(--sp-start) var(--sp-start)
+  );
+  transition:
+    clip-path 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flapInner {
+  position: relative;
+}
+
+/* Undo the container's rotation so the artwork stays upright while the peel
+   edge moves around it. */
+.main > *,
+.flap > * {
+  transform: rotate(calc(-1 * var(--sp-direction)));
+}
+
+.image,
+.flapImage {
+  /* block, or the inline baseline gap makes .container a few px taller than
+     the artwork and the flap's -100% offset lands short of the fold. */
+  display: block;
+  width: 100%;
+  transform: rotate(var(--sp-rotate));
+}
+
+/* Shading across the liner: dark in the crease at the fold, lifting to a pale
+   catch of light at the free edge. Flat liner is what makes a peel disappear
+   on a light page — the shadow says the flap is up, this says it is curved.
+   Masked by the artwork so it keeps the die-cut silhouette, and rotated to sit
+   in the fold's frame rather than the artwork's. */
+.flapShade {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--sp-rotate));
+  /* The stops are anchored to the END of the gradient line, not the start,
+     because only the last `--sp-peel` of this element is ever unclipped — the
+     rest of the flap is still folded out of sight. Spreading the gradient over
+     the whole element (the obvious way to write it) puts every stop outside
+     the visible strip and the flap comes out one flat colour. 100% is the free
+     edge; 100% - peel is the fold. */
+  background: linear-gradient(
+    var(--sp-shade),
+    transparent 0%,
+    rgb(28 24 18 / calc(0.48 * var(--sp-shadow))) calc(100% - var(--sp-peel)),
+    rgb(28 24 18 / calc(0.11 * var(--sp-shadow))) calc(100% - var(--sp-peel) * 0.45),
+    rgb(255 255 255 / 0.18) 100%
+  );
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.main,
+.flap {
+  will-change: clip-path;
+}
+
+/* The peel is a pointer affordance and nothing else, so it is off wherever
+   there is no real hover (a touch device would stick mid-peel) and wherever
+   the visitor asked for less movement. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .container:hover .main {
+    clip-path: polygon(
+      var(--sp-start) var(--sp-peel-hover),
+      var(--sp-end) var(--sp-peel-hover),
+      var(--sp-end) var(--sp-end),
+      var(--sp-start) var(--sp-end)
+    );
+  }
+
+  .container:hover .flap {
+    clip-path: polygon(
+      var(--sp-start) var(--sp-start),
+      var(--sp-end) var(--sp-start),
+      var(--sp-end) var(--sp-peel-hover),
+      var(--sp-start) var(--sp-peel-hover)
+    );
+    top: calc(-100% + 2 * var(--sp-peel-hover) - 1px);
+  }
+
+  /* The shadow throws further and softer the higher the flap gets — this is
+     the whole reason the peel reads at all against a near-white page. */
+  .container:hover .flapShadow {
+    filter: drop-shadow(
+      calc(var(--sp-ux) * 13px) calc(var(--sp-uy) * 13px) 11px
+        rgb(22 20 16 / calc(0.34 * var(--sp-shadow)))
+    );
+  }
+
+  .container:active .main {
+    clip-path: polygon(
+      var(--sp-start) var(--sp-peel-active),
+      var(--sp-end) var(--sp-peel-active),
+      var(--sp-end) var(--sp-end),
+      var(--sp-start) var(--sp-end)
+    );
+  }
+
+  .container:active .flap {
+    clip-path: polygon(
+      var(--sp-start) var(--sp-start),
+      var(--sp-end) var(--sp-start),
+      var(--sp-end) var(--sp-peel-active),
+      var(--sp-start) var(--sp-peel-active)
+    );
+    top: calc(-100% + 2 * var(--sp-peel-active) - 1px);
+  }
+
+  .container:active .flapShade {
+    --sp-peel: var(--sp-peel-active);
+  }
+
+  .container:active .flapShadow {
+    filter: drop-shadow(
+      calc(var(--sp-ux) * 14px) calc(var(--sp-uy) * 14px) 11px
+        rgb(22 20 16 / calc(0.34 * var(--sp-shadow)))
+    );
+  }
+}

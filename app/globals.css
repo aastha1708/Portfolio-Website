@@ -9,11 +9,21 @@
   --color-ink-muted: #666666;
   --color-chip-bg: #ffd5e4;
   --color-chip-text: #9e3950;
-  /* Ruling: the Figma colour (#ddd) at half strength. Full strength was
-     correct on the canvas but reads heavy on a lit screen across 3000px of
-     page — the grid is paper texture, not a layer competing with the work. */
-  --color-grid-line: rgb(221 221 221 / 0.5);
+  /* The hero's ruling, and the only graph paper left on the site. Lighter
+     than the #ddd the Figma file specifies, and lighter again than the old
+     page-long ruling, because the band is masked (see .bg-grid-fade) and a
+     mask only ever removes ink: this is the value at the brightest point of
+     the fade, so it is set for where the grid is strongest — not for the
+     average of what you see. */
+  --color-grid-line-soft: rgb(221 221 221 / 0.42);
   --color-grid-dot: #cfcfcf;
+  /* The wordmark's ink. The mark is drawn as a CSS mask rather than shipped as
+     a coloured image (see .logo-wordmark), so this one value is the whole
+     logo's colour — including under forced-colors, where the browser
+     substitutes its own and the mark stays legible. Black, matching the source
+     artwork: the stamp's red now lives in the favicon, where it is the thing
+     that makes the tab findable in a row of twenty. */
+  --color-logo: #000000;
   --grid-size: 60px;
   /* Warm paper plate — the ground under project cards and the How-I-Work
      panel, and its hairline border. */
@@ -95,6 +105,13 @@
      webfont request behind it — had nothing left to set. */
 
   html {
+    /* This site has one ground, and it is light. Declaring that stops Chrome's
+       Auto Dark Theme (and Edge's equivalent) from force-inverting the page for
+       visitors whose OS is in dark mode — which would repaint the paper dark
+       and leave every hand-placed asset, the stamp included, sitting on a
+       colour it was never drawn for. Opting out is the fix; a half-inverted
+       page is worse than a light one. */
+    color-scheme: light;
     background-color: var(--color-paper);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -137,22 +154,54 @@
 
 @layer components {
   /* ---- Section grounds ------------------------------------------------
-     Each section of the page carries a different ruling, matching the Figma
-     file: full graph grid in the hero and work sections, horizontal rules
-     behind the philosophy note, and a fading dot field behind the footer.
-     All pure CSS — crisp at every DPI, zero image weight.
+     Two textures, one each: a masked graph grid behind the hero, and a
+     fading dot field behind the footer. Everything between them is plain
+     paper. Both pure CSS — crisp at every DPI, zero image weight.
   --------------------------------------------------------------------- */
-  .bg-grid-lines {
-    background-image:
-      repeating-linear-gradient(to right, var(--color-grid-line) 0 1px, transparent 1px var(--grid-size)),
-      repeating-linear-gradient(to bottom, var(--color-grid-line) 0 1px, transparent 1px var(--grid-size));
-  }
+  /* ---- Hero ruling ------------------------------------------------------
+     Sept 2026: the graph paper used to run the full height of the landing and
+     about pages. Across 3000px it stopped reading as texture and started
+     reading as a layer — every project card and every paragraph sat on top of
+     a live pattern competing for the same attention. It now appears exactly
+     once, behind the hero, where there is no reading to interrupt and where it
+     does the one job it was ever good at: telling the eye this is a sheet of
+     paper before the first sticker lands on it.
 
-  .bg-grid-rules {
-    background-image: repeating-linear-gradient(
-      to bottom,
-      var(--color-grid-line) 0 1px,
-      transparent 1px var(--grid-size)
+     Two things make it recede. The ink is --color-grid-line-soft, lighter than
+     the old ruling; and the whole field is masked by an ellipse so it is only
+     ever at full strength around the heading, dissolving toward the edges and
+     dying completely in the corners. That gives the band an edge that isn't a
+     line — nothing to see the grid "stop" against, so the hero blends into the
+     plain paper below it instead of ending on a seam.
+
+     The mask is deliberately tight: full strength across only the middle fifth,
+     half gone by 45% of the radius, and clear well before the box ends. A
+     gentler falloff spread the same ink over the whole band and read as an
+     evenly grey page rather than as a fade — a fade only registers as a
+     decision if there is somewhere it has visibly finished.
+
+     The mask is authored on the box, not in px, so it tracks whatever height
+     the band is given: the same class serves the 1440-wide desktop stage and
+     the mobile column. */
+  .bg-grid-fade {
+    background-image:
+      repeating-linear-gradient(to right, var(--color-grid-line-soft) 0 1px, transparent 1px var(--grid-size)),
+      repeating-linear-gradient(to bottom, var(--color-grid-line-soft) 0 1px, transparent 1px var(--grid-size));
+    -webkit-mask-image: radial-gradient(
+      ellipse 64% 60% at 50% 40%,
+      #000 0%,
+      #000 20%,
+      rgb(0 0 0 / 0.45) 45%,
+      rgb(0 0 0 / 0.12) 72%,
+      transparent 96%
+    );
+    mask-image: radial-gradient(
+      ellipse 64% 60% at 50% 40%,
+      #000 0%,
+      #000 20%,
+      rgb(0 0 0 / 0.45) 45%,
+      rgb(0 0 0 / 0.12) 72%,
+      transparent 96%
     );
   }
 
@@ -161,6 +210,113 @@
     background-size: 30px 30px;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 45%, #000 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 45%, #000 100%);
+  }
+
+  /* ---- Wordmark ---------------------------------------------------------
+     The "AS" is one flat ink on transparency, so it is painted rather than
+     placed: the PNG supplies only the shape (its alpha channel), and the ink is
+     --color-logo behind it. Three things fall out of that. The colour is a
+     token, so re-inking the mark for a dark ground is one line and never a
+     second asset to keep in sync. The file is a seventh the size, because the
+     RGB planes are a constant. And in forced-colors mode the browser paints it
+     with the system text colour, so it survives high-contrast themes that would
+     leave a coloured image unreadable.
+
+     Sized by height with the aspect locked, so the caller only ever picks one
+     number. `contain` rather than `cover`: the mark must never be cropped.
+  --------------------------------------------------------------------- */
+  .logo-wordmark {
+    background-color: var(--color-logo);
+    -webkit-mask: url("/assets/landing/final/aastha-wordmark.png") center / contain no-repeat;
+    mask: url("/assets/landing/final/aastha-wordmark.png") center / contain no-repeat;
+  }
+
+  /* High-contrast themes are the one place a visitor really does get a dark
+     ground here, and they are also where a painted mark would otherwise fail:
+     forced-colors overrides background-color to the canvas colour, which would
+     erase the wordmark. A system colour keyword is honoured instead of
+     overridden, so the mark inherits whatever the theme uses for text and stays
+     legible on black and on white alike. */
+  @media (forced-colors: active) {
+    .logo-wordmark {
+      background-color: CanvasText;
+    }
+  }
+
+  /* ---- Specular CTA -----------------------------------------------------
+     The shader paints only the rim (see components/ui/SpecularButton). The pill
+     itself is this: a solid ink fill on the paper ground, which is what makes a
+     white travelling highlight legible at all — a light-on-light button has
+     nothing for a specular to catch.
+
+     The shadow is the site's own paper lift scaled down, not the component's
+     default 0 8px 24px / 0.25. That default is tuned for a dark UI where a hard
+     shadow reads as depth; on #fdfeff it reads as dirt under the button.
+  --------------------------------------------------------------------- */
+  .specular-button {
+    --sb-radius: 999px;
+    --sb-tint: #0d0d0d;
+    --sb-text-color: #fdfeff;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    margin: 0;
+    /* inherit, so the label is DM Sans like the links beside it */
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    white-space: nowrap;
+    padding: 12px 20px;
+    color: var(--sb-text-color);
+    background: var(--sb-tint);
+    border-radius: var(--sb-radius);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.08),
+      0 2px 6px rgb(15 23 42 / 0.10),
+      0 10px 22px rgb(15 23 42 / 0.08);
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.25s ease;
+  }
+
+  .specular-button:hover {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.10),
+      0 3px 8px rgb(15 23 42 / 0.13),
+      0 14px 28px rgb(15 23 42 / 0.10);
+  }
+
+  .specular-button:active {
+    transform: scale(0.97);
+  }
+
+  .specular-button:focus-visible {
+    outline: 2px solid var(--color-chip-text);
+    outline-offset: 3px;
+  }
+
+  /* The canvas overhangs the button so the rim glow can bleed past the edge. */
+  .specular-button__fx {
+    position: absolute;
+    inset: -20px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .specular-button__fx canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .specular-button__label {
+    position: relative;
+    z-index: 2;
   }
 
   /* The Kora hero plate (Figma 459:3630). Sized in container units so the

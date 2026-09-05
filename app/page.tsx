@@ -52,14 +52,25 @@ export default function LandingPage() {
 
       {/* ---------- Mobile / tablet ---------- */}
       <div className="lg:hidden">
-        <div className="bg-grid-lines">
+        {/* Same rule as the stage: the ruling belongs to the hero and nowhere
+            else, and it dissolves rather than ending on an edge.
+
+            The ruling has to be its own layer, not a class on the wrapper. A
+            CSS mask applies to an element AND everything inside it, so putting
+            .bg-grid-fade on the container faded the nav and the keepsakes along
+            with the grid — the objects nearest the edges all but vanished. The
+            desktop stage never hit this because GridBackground already paints
+            its bands into empty absolutely-positioned divs; this is that same
+            arrangement, done by hand for the column. */}
+        <div className="relative">
+          <div aria-hidden className="bg-grid-fade pointer-events-none absolute inset-0" />
           <Nav />
           <HeroCollage variant="mobile" />
         </div>
-        <section className="bg-grid-lines py-16">
+        <section className="py-16">
           <HowIWork variant="mobile" />
         </section>
-        <section data-section="projects" className="bg-grid-lines pb-16">
+        <section data-section="projects" className="pb-16">
           <Reveal className="px-5 pb-10">
             <ProjectsHeading mobile />
           </Reveal>

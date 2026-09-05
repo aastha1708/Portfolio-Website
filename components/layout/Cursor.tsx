@@ -36,7 +36,17 @@ import {
  * Opt in from markup:
  *   data-cursor="hover"                                   grow
  *   data-cursor="snap"                                    morph to the element
+ *   data-cursor="quiet"                                   stay a dot
  *   data-cursor="label" data-cursor-text="View case study" caption pill
+ *
+ * "quiet" exists for targets that already say something on hover themselves —
+ * the nav links, which take a grey wash, and the CTA, which lights its own rim.
+ * Without it those get the default treatment for any <a>: the disc grows to
+ * 36px and, being white under difference blend, lands on the label as a black
+ * plate on paper or a white one on the ink pill, burying the very affordance it
+ * is meant to announce. Quiet keeps the disc at its resting size, so the
+ * pointer stays visible (the native one is hidden site-wide) and the element's
+ * own hover state is what the eye reads.
  *
  * Off on touch and under prefers-reduced-motion, where it falls back to the
  * system cursor entirely (see the [data-custom-cursor] rule in globals.css).
@@ -156,6 +166,9 @@ export default function Cursor() {
       release();
 
       if (!el) {
+        setHovering(false);
+        setLabel(null);
+      } else if (kind === "quiet") {
         setHovering(false);
         setLabel(null);
       } else if (kind === "label" && el.dataset.cursorText) {

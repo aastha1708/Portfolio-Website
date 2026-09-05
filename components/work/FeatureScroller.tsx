@@ -25,16 +25,21 @@ export type Feature = {
  */
 export type FeatureMedia = "screen" | "photo";
 
+/* Both frames keep their Figma proportions but are set to 400 wide, so the
+   list (max 420) and the artwork clear the 880 reading column with the 36px
+   gap between them. At the old Figma widths the pair totalled 1021 and the
+   panel wrapped underneath the cards — which breaks the whole point of the
+   section, since the artwork has to be beside the card it belongs to. */
 const PANEL: Record<FeatureMedia, { frame: string; image: string; align: string }> = {
   screen: {
-    frame: "h-[364px] w-[456px] rounded-[53px] bg-white",
-    image: "object-contain px-[70px] py-[31px]",
+    frame: "aspect-[456/364] w-[400px] rounded-[46px] bg-white",
+    image: "object-contain px-[61px] py-[27px]",
     align: "items-center",
   },
   photo: {
     /* 513x224 in Figma 641:861 — a landscape still, top-aligned with the
        first card rather than floating in the middle of the list. */
-    frame: "aspect-[513/224] w-[513px] rounded-[20px] bg-plate",
+    frame: "aspect-[513/224] w-[400px] rounded-[20px] bg-plate",
     image: "object-cover",
     align: "items-start",
   },
@@ -143,7 +148,7 @@ export default function FeatureScroller({
         {Header}
 
         <div className={`flex flex-wrap justify-between gap-[36px] ${panel.align}`}>
-          <ol className="flex w-full max-w-[529px] flex-col gap-[16px]">
+          <ol className="flex w-full max-w-[420px] flex-col gap-[16px]">
             {features.map((f, i) => {
               const on = i === index;
               return (
@@ -188,7 +193,7 @@ export default function FeatureScroller({
                   src={features[index].image}
                   alt={features[index].alt}
                   fill
-                  sizes="513px"
+                  sizes="400px"
                   className={panel.image}
                 />
               </motion.div>

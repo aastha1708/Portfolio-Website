@@ -7,7 +7,6 @@ import SwashText from "@/components/layout/SwashText";
 import PhotoWindow from "@/components/about/PhotoWindow";
 import FavouritesCarousel from "@/components/about/FavouritesCarousel";
 import { ABOUT_BIO, ABOUT_PLACES } from "@/lib/about";
-import GridBackground, { ABOUT_BANDS } from "@/components/layout/GridBackground";
 import FooterField from "@/components/layout/FooterField";
 import DotGridMouse from "@/components/motion/DotGridMouse";
 import Parallax from "@/components/motion/Parallax";
@@ -80,8 +79,10 @@ export default function AboutPage() {
     <main>
       {/* ---------- Desktop: the exact 1440 Figma composition ---------- */}
       <div className="max-lg:hidden">
+        {/* No ruling here. Sept 2026 pared the graph paper back to the
+            landing hero: this page opens straight into a photograph and a
+            paragraph, and a pattern behind either one is noise. */}
         <ScaledStage height={1959}>
-          <GridBackground bands={ABOUT_BANDS} />
           <Nav />
 
           {/* Photo window + bio — Figma 561:339 at (200, 200), the window
@@ -125,7 +126,7 @@ export default function AboutPage() {
 
       {/* ---------- Mobile / tablet ---------- */}
       <div className="lg:hidden">
-        <div className="bg-grid-lines">
+        <div>
           <Nav />
           <section className="px-5 pb-14 pt-28">
             <PhotoWindow fluid />

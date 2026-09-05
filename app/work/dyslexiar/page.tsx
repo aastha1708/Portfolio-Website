@@ -160,7 +160,7 @@ export default function DyslexiArPage() {
               <h1 className="font-display text-[42px] leading-[42px] tracking-[-0.408px] text-black">
                 <SwashText text="DyslexiAR" swashTracking="3px" />
               </h1>
-              <p className="max-w-[982px] text-[24px] leading-[28px] text-ink-muted">
+              <p className="text-[24px] leading-[28px] text-ink-muted">
                 An AR learning tool that turns dyslexia research into short, game-like phonics
                 practice for children.
               </p>
@@ -184,7 +184,7 @@ export default function DyslexiArPage() {
               alt="The DyslexiAR title card floating in a cloudy blue sky, ringed by soft 3D letters — p, a, q, b and d, the shapes dyslexic readers most often reverse"
               fill
               priority
-              sizes="(max-width: 1120px) 100vw, 1076px"
+              sizes="(max-width: 928px) 100vw, 880px"
               className="object-cover"
             />
           </div>
@@ -251,12 +251,12 @@ export default function DyslexiArPage() {
       <section id="persona" className="mt-[100px] flex scroll-mt-[120px] flex-col gap-[24px] outline-none">
         <Reveal>
           <div className="flex flex-col items-start gap-[32px] lg:flex-row">
-            <div className="relative aspect-[426/287] w-full shrink-0 overflow-hidden rounded-[12px] bg-white lg:w-[426px]">
+            <div className="relative aspect-[426/287] w-full shrink-0 overflow-hidden rounded-[12px] bg-white lg:w-[380px]">
               <Image
                 src="/assets/dyslexiar/final/persona-image.webp"
                 alt="A child laughing while playing with the AR letter cards"
                 fill
-                sizes="(max-width: 1024px) 100vw, 426px"
+                sizes="(max-width: 1024px) 100vw, 380px"
                 className="object-cover"
               />
             </div>

@@ -44,7 +44,7 @@ export default function KoraBanner() {
           <IphoneFrame
             src="/assets/kora/screen3.webp"
             alt="Kora's home screen, greeting the student by name and opening the career map"
-            sizes="(max-width: 1120px) 30vw, 330px"
+            sizes="(max-width: 928px) 30vw, 268px"
             priority
           />
         </div>

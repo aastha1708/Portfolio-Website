@@ -1,15 +1,14 @@
-type Band = { top: number; height: number; variant: "lines" | "rules" | "dots" };
+type Band = { top: number; height: number; variant: "fade" | "dots" };
 
 const CLASS = {
-  lines: "bg-grid-lines",
-  rules: "bg-grid-rules",
+  fade: "bg-grid-fade",
   dots: "bg-grid-dots",
 } as const;
 
 /**
- * Section-by-section page ruling, matching the Figma file: the hero and work
- * sections sit on a full graph grid, the philosophy note on horizontal rules
- * only, and the footer on a dot field that fades in toward the bottom.
+ * Section-by-section page ruling. The graph grid is no longer a page-long
+ * ground — it appears once, behind the hero, and fades out into plain paper
+ * (see .bg-grid-fade in globals.css for why).
  */
 export default function GridBackground({ bands }: { bands: Band[] }) {
   return (
@@ -26,30 +25,14 @@ export default function GridBackground({ bands }: { bands: Band[] }) {
 }
 
 /**
- * Landing page — Figma "Final version" frame 538:4602. The August 2026 design
- * dropped the horizontal-rules band that used to sit behind the philosophy
- * note, so the graph grid now runs unbroken from the top of the hero to the
- * bottom of the work section:
- *   "Line grid/ section 1"  0 → 1764
- *   "Line grid/ section 3"  1704 → 3024   (the two overlap by 60 in the file)
+ * Landing page — Figma "Final version" frame 538:4602.
  *
- * Rendered as one band rather than two, because two overlapping translucent
- * bands would double the ruling's alpha across the seam.
+ * Sept 2026: one masked band over the hero only. The hero group is 0 → 939
+ * (HERO_GROUP in lib/collage-landing.ts); the band runs to 1040 so the mask's
+ * lower falloff finishes inside the empty space above the How-I-Work panel
+ * rather than behind its first line of type.
  *
  * The footer dot field (2970 → end) is not a CSS band: DotGridMouse draws the
  * identical field on canvas so the dots can follow the cursor.
  */
-export const LANDING_BANDS: Band[] = [{ top: 0, height: 3024, variant: "lines" }];
-
-/**
- * About page — Figma "Final version" frame 546:4978. One graph band behind
- * the window/bio block and the favourites shelf. The footer's dot field (from
- * 1356) is not a CSS band: DotGridMouse draws it so the dots follow the cursor.
- *
- * The band stops at 1410 rather than the frame's 1764, because from 1356 the
- * dot field takes over and two textures stacked read as a grey wash — the
- * landing page overlaps them by 54px for exactly one row of dots' worth of
- * cross-fade, and this matches it. The Figma frame can afford the full 1764
- * because its footer plate is opaque on the canvas.
- */
-export const ABOUT_BANDS: Band[] = [{ top: 0, height: 1410, variant: "lines" }];
+export const LANDING_BANDS: Band[] = [{ top: 0, height: 1040, variant: "fade" }];

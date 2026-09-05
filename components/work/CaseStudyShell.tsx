@@ -5,11 +5,32 @@ import NextProject from "@/components/work/NextProject";
 import Reveal from "@/components/motion/Reveal";
 
 /**
- * Every case study on the site is this page: a contents rail on the left and a
- * 1080 reading column on the right. Kora fills it with the real thing; the
- * other three fill it with their hero and a coming-soon note. Same frame
- * either way — a visitor should never feel they've landed on a different
- * website halfway through the work.
+ * Every case study on the site is this page: a contents rail on the left and
+ * the article on the right. Kora fills it with the real thing; the other three
+ * fill it with their hero and a coming-soon note. Same frame either way — a
+ * visitor should never feel they've landed on a different website halfway
+ * through the work.
+ *
+ * TWO WIDTHS, NOT ONE
+ * -------------------
+ * The article occupies a 1080 track — the Figma frame's width — but sets its
+ * contents in an 880 measure centred inside it. The distinction matters,
+ * because the two numbers answer different questions.
+ *
+ * 1080 is a LAYOUT width: it is what positions the rail. The rail, the gap and
+ * the track are one centred group, so anything subtracted from the track drags
+ * the rail inward with it. The rail's place on the page is part of the design
+ * and shouldn't move because the prose got narrower, so the track keeps its
+ * original width and the rail keeps its original x.
+ *
+ * 880 is a READING width. Body copy set at 22/32 across 1080px runs past 100
+ * characters a line and the eye loses its place on every return sweep; 880 puts
+ * it at roughly 75-80, the range typography has agreed on for a century. The
+ * 100px it gives back on each side is the article's margin — air around the
+ * document instead of content pushed to the window.
+ *
+ * Everything sized off the old full-width column (FeatureScroller's panel, the
+ * phone rows, the persona still) was rescaled to 880 rather than left to wrap.
  *
  * NO FOOTER. A case study is a bottom sheet over the page you came from, not a
  * destination of its own, so it has no reason to end with a sign-off and a
@@ -61,13 +82,20 @@ export default function CaseStudyShell({
         ) : null}
 
         <article className="w-full min-w-0 max-w-[1080px]">
-          {/* Shown only when the rail isn't carrying it. */}
-          <div className={hasRail ? "mb-8 xl:hidden" : "mb-8"}>
-            <Reveal immediate>
-              <NextProject current={slug} />
-            </Reveal>
+          {/* The measure, centred in the track. max-w rather than px, so the
+              inset collapses on its own once the viewport is narrower than the
+              measure — a phone gets the page gutter and nothing more. */}
+          <div className="mx-auto w-full max-w-[880px]">
+            {/* Shown only when the rail isn't carrying it. Inside the measure,
+                so it lines up with the article's first line rather than
+                hanging off the wider track. */}
+            <div className={hasRail ? "mb-8 xl:hidden" : "mb-8"}>
+              <Reveal immediate>
+                <NextProject current={slug} />
+              </Reveal>
+            </div>
+            {children}
           </div>
-          {children}
         </article>
       </div>
     </main>
