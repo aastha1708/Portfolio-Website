@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Serif, Homemade_Apple, DM_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Cursor from "@/components/layout/Cursor";
 import IntroGate from "@/components/layout/IntroGate";
 import "./globals.css";
@@ -59,6 +60,7 @@ export default function RootLayout({
         <Cursor />
         {children}
         {sheet}
+        <Analytics />
       </body>
     </html>
   );
