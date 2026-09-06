@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Serif, Homemade_Apple, DM_Sans } from "next/font/google";
 import Cursor from "@/components/layout/Cursor";
+import IntroGate from "@/components/layout/IntroGate";
 import "./globals.css";
 
 // The interface voice (Aug 2026, replacing Neue Montreal). Variable font, so
@@ -44,7 +45,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${ibmPlexSerif.variable} ${homemadeApple.variable}`}>
+      <head>
+        {/* The intro is a single sentence set in these two faces, and it is the
+            first thing painted. Without a preload they arrive on `swap`, so the
+            first frame of the loader is the fallback serif and the sentence
+            re-flows mid-type — the one place on the site where a FOUT is not
+            survivable. */}
+        <link rel="preload" href="/fonts/PPEditorialOld-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Amoresa-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      </head>
       <body className="min-h-screen bg-paper antialiased">
+        <IntroGate />
         <Cursor />
         {children}
         {sheet}

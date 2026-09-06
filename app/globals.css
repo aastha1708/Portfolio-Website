@@ -243,6 +243,26 @@
     }
   }
 
+  /* ---- Typed text (components/ui/TextType) ------------------------------
+     pre-wrap is what keeps the sentence from re-flowing as it is typed: with
+     normal white-space the trailing space of a half-typed word collapses, the
+     line breaks one word earlier, and the whole block jumps a line-height
+     every few characters. */
+  .text-type {
+    display: inline-block;
+    white-space: pre-wrap;
+  }
+
+  .text-type__cursor {
+    margin-left: 0.25rem;
+    display: inline-block;
+    opacity: 1;
+  }
+
+  .text-type__cursor--hidden {
+    display: none;
+  }
+
   /* ---- Specular CTA -----------------------------------------------------
      The shader paints only the rim (see components/ui/SpecularButton). The pill
      itself is this: a solid ink fill on the paper ground, which is what makes a

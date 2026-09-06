@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import StickerPeel from "./StickerPeel";
 import SwashText from "@/components/layout/SwashText";
 import { HERO_ITEMS, HERO_GROUP, HERO_CENTER } from "@/lib/collage-landing";
+import { useIntroDone } from "@/lib/intro";
 
 /** The deal-out plays once per visit — returning from a case study should
  *  feel instant, not make the visitor sit through the intro again. */
@@ -29,6 +30,10 @@ const META = ["designing", "tinkering", "drinking coffee"];
  */
 export default function HeroCollage({ variant = "desktop" }: { variant?: "desktop" | "mobile" }) {
   const reduceMotion = useReducedMotion();
+  /* The intro covers this section while it plays. Without waiting for it the
+     deal-out happens under an opaque plate and the iris opens onto a collage
+     that has already finished arriving — the entrance is spent on nobody. */
+  const introDone = useIntroDone();
 
   // Read once on the client; the server renders the pre-deal state either way.
   const [dealt] = useState(() => typeof window !== "undefined" && sessionStorage.getItem(DEALT_KEY) === "1");
@@ -60,19 +65,23 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
           const cx = item.box.left + item.box.width / 2;
           const cy = item.box.top + item.box.height / 2;
           const delay = skip ? 0 : 0.25 + i * 0.06;
+          /* Held at the initial pose until the intro is out of the way. Note
+             this is on `animate` only — `initial` still has to be identical on
+             the server and the first client render (see the NOTE above). */
+          const held = {
+            opacity: 0,
+            x: HERO_CENTER.x - cx,
+            y: HERO_CENTER.y - cy,
+            scale: 0.5,
+            rotate: i % 2 ? 7 : -7,
+          };
           return (
             <motion.div
               key={item.id}
               className="absolute"
               style={{ left: item.box.left, top: item.box.top, width: item.box.width }}
-              initial={{
-                opacity: 0,
-                x: HERO_CENTER.x - cx,
-                y: HERO_CENTER.y - cy,
-                scale: 0.5,
-                rotate: i % 2 ? 7 : -7,
-              }}
-              animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+              initial={held}
+              animate={introDone ? { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 } : held}
               transition={
                 skip
                   ? { duration: 0 }
@@ -118,9 +127,12 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
 
 function Wordmark({ mobile = false }: { mobile?: boolean }) {
   const reduceMotion = useReducedMotion();
+  /* Same reason as the keepsakes: the type should arrive when the iris opens,
+     not while it is still behind an opaque plate. */
+  const introDone = useIntroDone();
   const rise = (delay: number) => ({
     initial: reduceMotion ? false : { opacity: 0, y: 12 },
-    animate: { opacity: 1, y: 0 },
+    animate: introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 },
     transition: { delay, duration: 0.6, ease: [0.23, 1, 0.32, 1] as const },
   });
 
