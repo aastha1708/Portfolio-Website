@@ -96,7 +96,11 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
         })}
       </div>
 
-      {/* Heading block — Figma 538:4721 (511 wide at 465,307, 36px side pad).
+      {/* Heading block — Figma 538:4721 (511 wide at 465,307, 36px side pad),
+          at 267 rather than 307 because the whole hero is lifted 40; see
+          HERO_GROUP in lib/collage-landing.ts for why, and note that the ring
+          and the type have to move by the same amount or the type stops
+          sitting inside the keepsakes.
           pointer-events-none so the keepsakes behind it stay hoverable; the
           type has nothing to click.
 
@@ -105,7 +109,7 @@ export default function HeroCollage({ variant = "desktop" }: { variant?: "deskto
           centre — invisible on its own, but it is the kind of thing that stops
           you being able to trust the geometry when something else looks wrong.
           This is exact by construction and stays exact if the width changes. */}
-      <div className="pointer-events-none absolute left-1/2 top-[307px] z-10 w-[511px] -translate-x-1/2 px-[36px]">
+      <div className="pointer-events-none absolute left-1/2 top-[267px] z-10 w-[511px] -translate-x-1/2 px-[36px]">
         <Wordmark />
       </div>
     </section>

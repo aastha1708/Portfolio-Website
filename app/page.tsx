@@ -13,7 +13,11 @@ import FooterMotion from "@/components/motion/FooterMotion";
 
 /**
  * Landing page — Figma frame 538:4602 ("Final version" / "Landing page"),
- * a 1440 x 3614 composition.
+ * a 1440 x 3574 composition: the Figma frame is 3614, and every top below the
+ * hero is its Figma value less 40, because the hero is lifted by that much to
+ * sit in the middle of a real first screen rather than the middle of the
+ * artboard (see HERO_GROUP in lib/collage-landing.ts). The gaps between
+ * sections are unchanged; only the dead air above the hero is spent.
  *
  * Desktop renders the canvas at true size inside ScaledStage and scales it to
  * the viewport, so every hand-placed object keeps its exact relationship to
@@ -25,7 +29,7 @@ export default function LandingPage() {
     <main>
       {/* ---------- Desktop: the exact 1440 Figma composition ---------- */}
       <div className="max-lg:hidden">
-        <ScaledStage height={3614}>
+        <ScaledStage height={3574}>
           <GridBackground bands={LANDING_BANDS} />
           <Nav />
           <HeroCollage />
@@ -33,18 +37,18 @@ export default function LandingPage() {
           <HowIWork />
 
           {/* Work — Figma 569:571 at (137, 1764). */}
-          <div id="projects" data-section="projects" className="absolute" style={{ top: 1764 }} />
-          <Reveal style={{ position: "absolute", left: 137, top: 1764, width: 1165.88 }}>
+          <div id="projects" data-section="projects" className="absolute" style={{ top: 1724 }} />
+          <Reveal style={{ position: "absolute", left: 137, top: 1724, width: 1165.88 }}>
             <ProjectsHeading />
           </Reveal>
-          <div className="absolute" style={{ left: 140, top: 1856 }}>
+          <div className="absolute" style={{ left: 140, top: 1816 }}>
             <ProjectGrid />
           </div>
 
           {/* Footer dot field — canvas twin of .bg-grid-dots that leans
               toward the cursor. */}
-          <DotGridMouse fullBleed className="absolute" style={{ top: 2970, height: 644 }} />
-          <FooterMotion style={{ position: "absolute", left: 122, top: 3143, width: 1189 }}>
+          <DotGridMouse fullBleed className="absolute" style={{ top: 2930, height: 644 }} />
+          <FooterMotion style={{ position: "absolute", left: 122, top: 3103, width: 1189 }}>
             <PostcardFooter />
           </FooterMotion>
         </ScaledStage>

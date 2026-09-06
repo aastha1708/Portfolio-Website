@@ -61,7 +61,7 @@ export default function HowIWork({ variant = "desktop" }: { variant?: "desktop" 
 
   return (
     <Reveal
-      style={{ position: "absolute", left: 107, top: 939, width: 1228 }}
+      style={{ position: "absolute", left: 107, top: 899, width: 1228 }}
       className="flex flex-col items-center gap-[18px]"
     >
       <SectionLabel className="w-[655px]">how I work</SectionLabel>

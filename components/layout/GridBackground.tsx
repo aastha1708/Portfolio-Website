@@ -27,12 +27,13 @@ export default function GridBackground({ bands }: { bands: Band[] }) {
 /**
  * Landing page — Figma "Final version" frame 538:4602.
  *
- * Sept 2026: one masked band over the hero only. The hero group is 0 → 939
- * (HERO_GROUP in lib/collage-landing.ts); the band runs to 1040 so the mask's
+ * Sept 2026: one masked band over the hero only. The hero group is -40 → 899
+ * (HERO_GROUP in lib/collage-landing.ts); the band runs to 1000 so the mask's
  * lower falloff finishes inside the empty space above the How-I-Work panel
- * rather than behind its first line of type.
+ * rather than behind its first line of type — 40 shorter than before, tracking
+ * the hero's lift so the fade stays centred on the type.
  *
  * The footer dot field (2970 → end) is not a CSS band: DotGridMouse draws the
  * identical field on canvas so the dots can follow the cursor.
  */
-export const LANDING_BANDS: Band[] = [{ top: 0, height: 1040, variant: "fade" }];
+export const LANDING_BANDS: Band[] = [{ top: 0, height: 1000, variant: "fade" }];
