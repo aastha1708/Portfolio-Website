@@ -3,6 +3,8 @@ import ScaledStage from "@/components/layout/ScaledStage";
 import PostcardFooter from "@/components/layout/PostcardFooter";
 import HowIWork from "@/components/layout/HowIWork";
 import ProjectGrid from "@/components/work/ProjectGrid";
+import PlaygroundCanvas, { PlaygroundStrip } from "@/components/work/PlaygroundCanvas";
+import SectionLabel from "@/components/layout/SectionLabel";
 import HeroCollage from "@/components/collage/HeroCollage";
 import SwashText from "@/components/layout/SwashText";
 import GridBackground, { LANDING_BANDS } from "@/components/layout/GridBackground";
@@ -13,11 +15,12 @@ import FooterMotion from "@/components/motion/FooterMotion";
 
 /**
  * Landing page — Figma frame 538:4602 ("Final version" / "Landing page"),
- * a 1440 x 3574 composition: the Figma frame is 3614, and every top below the
- * hero is its Figma value less 40, because the hero is lifted by that much to
- * sit in the middle of a real first screen rather than the middle of the
- * artboard (see HERO_GROUP in lib/collage-landing.ts). The gaps between
- * sections are unchanged; only the dead air above the hero is spent.
+ * a 1440 x 4529 composition. The Figma frame ("Landing page 6/9/26", 700:6206)
+ * is 4569, and every top below the hero is its Figma value less 40, because the
+ * hero is lifted by that much to sit in the middle of a real first screen
+ * rather than the middle of the artboard (see HERO_GROUP in
+ * lib/collage-landing.ts). The gaps between sections are unchanged; only the
+ * dead air above the hero is spent.
  *
  * Desktop renders the canvas at true size inside ScaledStage and scales it to
  * the viewport, so every hand-placed object keeps its exact relationship to
@@ -29,7 +32,7 @@ export default function LandingPage() {
     <main>
       {/* ---------- Desktop: the exact 1440 Figma composition ---------- */}
       <div className="max-lg:hidden">
-        <ScaledStage height={3574}>
+        <ScaledStage height={4529}>
           <GridBackground bands={LANDING_BANDS} />
           <Nav />
           <HeroCollage />
@@ -45,10 +48,20 @@ export default function LandingPage() {
             <ProjectGrid />
           </div>
 
+          {/* Playground — Figma 700:6549 at (107, 3072). */}
+          <div id="playground" data-section="playground" className="absolute" style={{ top: 3032 }} />
+          <Reveal
+            style={{ position: "absolute", left: 107, top: 3032, width: 1228 }}
+            className="flex flex-col items-center gap-[36px]"
+          >
+            <PlaygroundHeading />
+            <PlaygroundCanvas />
+          </Reveal>
+
           {/* Footer dot field — canvas twin of .bg-grid-dots that leans
               toward the cursor. */}
-          <DotGridMouse fullBleed className="absolute" style={{ top: 2930, height: 644 }} />
-          <FooterMotion style={{ position: "absolute", left: 122, top: 3103, width: 1189 }}>
+          <DotGridMouse fullBleed className="absolute" style={{ top: 3885, height: 644 }} />
+          <FooterMotion style={{ position: "absolute", left: 122, top: 4058, width: 1189 }}>
             <PostcardFooter />
           </FooterMotion>
         </ScaledStage>
@@ -80,6 +93,12 @@ export default function LandingPage() {
           </Reveal>
           <ProjectGrid />
         </section>
+        <section data-section="playground" className="pb-16">
+          <Reveal className="px-5 pb-8">
+            <PlaygroundHeading mobile />
+          </Reveal>
+          <PlaygroundStrip />
+        </section>
         <FooterField />
       </div>
     </main>
@@ -87,23 +106,32 @@ export default function LandingPage() {
 }
 
 /**
- * "My projects" — Figma 629:96. PP Editorial Old 38/44 with the ornamental
- * Amoresa "M", centred over the grid.
+ * "Tiny fraction of my work" — Figma 700:11006.
  *
- * This replaces the old lowercase SectionLabel here on purpose: the projects
- * are the reason the page exists, and a display line earns them a beat of
- * attention that a 16px marker doesn't. "how I work" keeps its SectionLabel,
- * so the two sections now read as headline and footnote rather than as two
- * equal markers.
+ * This was a display line ("My projects", PP Editorial Old 38/44) and is now a
+ * marker again, which inverts what the two sections were doing. The reason is
+ * the section that follows: the playground takes the display heading, so the
+ * page reads as work first and curiosity second rather than as two headlines
+ * competing. It also lets the copy do something a heading could not — "tiny
+ * fraction" says there is more, which is a better thing for a grid of four
+ * projects to say than "My projects".
  */
 function ProjectsHeading({ mobile = false }: { mobile?: boolean }) {
+  return <SectionLabel className={mobile ? "" : "w-full"}>tiny fraction of my work</SectionLabel>;
+}
+
+/**
+ * "Record of my curiosity" — Figma 700:6550. PP Editorial Old 38/44 with the
+ * ornamental Amoresa "R", centred over the canvas.
+ */
+function PlaygroundHeading({ mobile = false }: { mobile?: boolean }) {
   return (
     <h2
       className={`font-display text-center text-black ${
         mobile ? "text-[28px] leading-[34px]" : "text-[38px] leading-[44px]"
       }`}
     >
-      <SwashText text="My projects" swashTracking={mobile ? "4px" : "5px"} />
+      <SwashText text="Record of my curiosity" swashTracking={mobile ? "4px" : "5px"} />
     </h2>
   );
 }

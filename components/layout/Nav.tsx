@@ -44,6 +44,14 @@ type NavItem = {
   anchor?: string;
   /** Leaves the site, so it opens in a new tab. */
   external?: boolean;
+  /**
+   * Dropped below sm. The row only fits four labels between a wordmark and a
+   * button down to about 375px, so something has to give — and the honest
+   * thing to give is an anchor to a section further down the same page, which
+   * a phone visitor reaches by scrolling anyway. External destinations and
+   * other pages stay, because scrolling will not get you to those.
+   */
+  hideOnMobile?: boolean;
 };
 
 /* Resume is the same FlowCV link the footer carries — one URL, so a new
@@ -54,7 +62,7 @@ const LINKS: NavItem[] = [
   { label: "About", href: "/about", ready: true },
   { label: "Work", href: "/#projects", ready: true, anchor: "projects" },
   { label: "Resume", href: "https://flowcv.com/resume/4rqffng202tj", ready: true, external: true },
-  { label: "Playground", href: "/playground", ready: false },
+  { label: "Playground", href: "/#playground", ready: true, anchor: "playground", hideOnMobile: true },
 ];
 
 const LINKEDIN = "https://www.linkedin.com/in/aasthasingh1708";
@@ -139,7 +147,7 @@ export default function Nav() {
             const current = item.ready && !item.anchor && pathname.startsWith(item.href);
 
             return (
-              <li key={item.label} className={item.ready ? undefined : "max-sm:hidden"}>
+              <li key={item.label} className={!item.ready || item.hideOnMobile ? "max-sm:hidden" : undefined}>
                 {item.ready ? (
                   /* "quiet", not "snap" and not the default. Snap hands the
                      cursor this element's bounding box, and the cursor is a
@@ -167,10 +175,11 @@ export default function Nav() {
                      surface that lights up promises somewhere to go. The cursor
                      label is what explains them.
 
-                     Below sm they drop out entirely. Four labels between a
-                     wordmark and a button on a 375px screen leaves nothing but
-                     labels, and the two doing the crowding are the two you
-                     can't open — there is no hover on a phone to tell you why. */
+                     Below sm they drop out entirely (see hideOnMobile). Four
+                     labels between a wordmark and a button on a 375px screen
+                     leaves nothing but labels, and an item you can't open is
+                     the first that should go — there is no hover on a phone to
+                     tell you why it doesn't respond. */
                   <span
                     data-cursor="label"
                     data-cursor-text="Coming soon"

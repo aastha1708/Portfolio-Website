@@ -243,6 +243,79 @@
     }
   }
 
+  /* ---- Playground canvas ground -----------------------------------------
+     The dashed ruling the canvas sits on (Figma 700:6552). Dashed rather than
+     solid on purpose: it reads as drafting paper — a surface you are meant to
+     move things around on — where a solid grid reads as a table.
+
+     An SVG tile rather than repeating-linear-gradients, because a dash pattern
+     is one property in SVG and an arithmetic problem in CSS gradients. One
+     120px tile, ~250 bytes, no request.
+  --------------------------------------------------------------------- */
+  .bg-canvas-grid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg stroke='%23d8d6d0' stroke-width='1' stroke-dasharray='3 6'%3E%3Cpath d='M0 .5H120'/%3E%3Cpath d='M.5 0V120'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 120px 120px;
+  }
+
+  /* ---- Playground cards --------------------------------------------------
+     Written as CSS rather than utilities because every value here contains a
+     comma — two-layer shadows, a cubic-bezier, a two-property transition — and
+     Tailwind's arbitrary-value parser drops those classes silently. They appear
+     in the markup and simply never reach the stylesheet, which is a
+     particularly nasty failure mode: nothing errors, the effect is just absent.
+
+     The hover is a lift and a push-in. The card rises and its shadow deepens as
+     though it came off the paper, while the artwork scales up behind a frame
+     that does not move — so it reads as looking further into a window rather
+     than a picture getting bigger. The image eases slower than the card (650ms
+     against 450) so the two are not one flat move; that lag is most of what
+     makes it feel like a physical thing.
+  --------------------------------------------------------------------- */
+  .pg-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow:
+      0 2px 10px rgb(15 23 42 / 0.06),
+      0 12px 28px rgb(15 23 42 / 0.05);
+    transition:
+      transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 450ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .pg-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 6px 16px rgb(15 23 42 / 0.10),
+      0 24px 50px rgb(15 23 42 / 0.11);
+  }
+
+  .pg-card__img {
+    object-fit: cover;
+    pointer-events: none;
+    transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .pg-card:hover .pg-card__img {
+    transform: scale(1.07);
+  }
+
+  /* The lift is the affordance; under reduced motion the shadow alone says
+     "this one" without anything moving. */
+  @media (prefers-reduced-motion: reduce) {
+    .pg-card,
+    .pg-card__img {
+      transition: box-shadow 200ms ease;
+    }
+    .pg-card:hover {
+      transform: none;
+    }
+    .pg-card:hover .pg-card__img {
+      transform: none;
+    }
+  }
+
   /* ---- Typed text (components/ui/TextType) ------------------------------
      pre-wrap is what keeps the sentence from re-flowing as it is typed: with
      normal white-space the trailing space of a half-typed word collapses, the

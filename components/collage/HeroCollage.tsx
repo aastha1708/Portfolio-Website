@@ -130,10 +130,20 @@ function Wordmark({ mobile = false }: { mobile?: boolean }) {
   /* Same reason as the keepsakes: the type should arrive when the iris opens,
      not while it is still behind an opaque plate. */
   const introDone = useIntroDone();
+  /* `initial` must not read reduceMotion: it is rendered on the server, which
+     cannot know the visitor's setting, so the two renders disagree and React
+     throws away the whole tree and rebuilds it. (React only surfaces this as a
+     hydration error when the setting is actually on, which is why it sat here
+     unnoticed.) The setting collapses the DURATION instead — same end state,
+     no motion, one markup. */
   const rise = (delay: number) => ({
-    initial: reduceMotion ? false : { opacity: 0, y: 12 },
+    initial: { opacity: 0, y: 12 },
     animate: introDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 },
-    transition: { delay, duration: 0.6, ease: [0.23, 1, 0.32, 1] as const },
+    transition: {
+      delay: reduceMotion ? 0 : delay,
+      duration: reduceMotion ? 0 : 0.6,
+      ease: [0.23, 1, 0.32, 1] as const,
+    },
   });
 
   return (
